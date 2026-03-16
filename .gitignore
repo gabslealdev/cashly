@@ -1,0 +1,180 @@
+# =========================
+# OS
+# =========================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# =========================
+# Logs
+# =========================
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# =========================
+# Environment files
+# =========================
+.env
+.env.*
+!.env.example
+
+# =========================
+# Node / Angular
+# =========================
+node_modules/
+dist/
+.angular/
+coverage/
+.npm/
+.pnpm-store/
+
+# Angular cache / build
+/.cache
+/.sass-cache
+/connect.lock
+/typings
+
+# Test outputs
+test-results/
+playwright-report/
+
+# =========================
+# .NET / C#
+# =========================
+bin/
+obj/
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+
+# User-specific files
+*.rsuser
+*.user
+*.userosscache
+*.suo
+*.sln.docstates
+
+# Rider / ReSharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# NuGet
+*.nupkg
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+*.nuget.props
+*.nuget.targets
+
+# Entity Framework / local db artifacts
+*.mdf
+*.ldf
+
+# =========================
+# Visual Studio
+# =========================
+.vs/
+Generated\ Files/
+*_i.c
+*_p.c
+*.ilk
+*.meta
+*.obj
+*.pch
+*.pdb
+*.pgc
+*.pgd
+*.rsp
+*.sbr
+*.tlb
+*.tli
+*.tlh
+*.tmp
+*.tmp_proj
+*.vspscc
+*.vssscc
+.builds
+*.pidb
+*.svclog
+*.scc
+
+# Visual Studio profiler
+*.psess
+*.vsp
+*.vspx
+*.sap
+
+# IIS Express / local config
+/.idea/
+*.sln.iml
+
+# =========================
+# VS Code
+# =========================
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/tasks.json
+
+# =========================
+# Docker
+# =========================
+.docker/
+docker-data/
+*.tar
+
+# Docker override local files
+docker-compose.override.yml
+
+# =========================
+# Database / local runtime
+# =========================
+*.db
+*.sqlite
+*.sqlite3
+
+# SQL Server local artifacts
+*.bak
+
+# PostgreSQL dumps
+*.dump
+
+# =========================
+# Publish outputs
+# =========================
+publish/
+out/
+
+# =========================
+# Temporary files
+# =========================
+tmp/
+temp/
+*.tmp
+
+# =========================
+# Package managers
+# =========================
+package-lock.json.*
+yarn.lock.*
+pnpm-lock.yaml.*
+
+# =========================
+# Optional: keep lock files tracked
+# Remova as linhas abaixo se quiser versionar lock files
+# =========================
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
