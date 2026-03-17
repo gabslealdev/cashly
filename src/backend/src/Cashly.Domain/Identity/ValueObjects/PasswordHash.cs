@@ -15,7 +15,7 @@ namespace Cashly.Domain.Identity.ValueObjects
             Value = value;
         }
 
-        public PasswordHash Create(string value)
+        public static PasswordHash Create(string value)
         {
             var normalizedValue = Normalized(value);
             Validate(normalizedValue);
