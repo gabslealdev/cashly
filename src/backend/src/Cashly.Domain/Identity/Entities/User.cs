@@ -5,9 +5,9 @@ namespace Cashly.Domain.Identity.Entities
 {
     public sealed class User : Entity
     {
-        public Name Name { get; private set; }
-        public Email Email { get; private set; }
-        public PasswordHash PasswordHash { get; private set; }
+        public Name Name { get; private set; } = null!;
+        public Email Email { get; private set; } = null!;
+        public PasswordHash PasswordHash { get; private set; } = null!;
         public DateTimeOffset CreatedAt { get; private set; }
         public DateTimeOffset UpdatedAt { get; private set; }
 
