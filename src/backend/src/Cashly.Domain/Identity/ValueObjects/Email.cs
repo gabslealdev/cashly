@@ -35,9 +35,9 @@ namespace Cashly.Domain.Identity.ValueObjects
         private static void Validate(string value)
         {
             DomainExceptionValidation.When(string.IsNullOrEmpty(value), EmailErrors.EmailRequired);
-            DomainExceptionValidation.When(IsValid(value), EmailErrors.EmailFormatInvalid);
             DomainExceptionValidation.When(value.Length <=  MinLength, EmailErrors.EmailTooShort);
             DomainExceptionValidation.When(value.Length >=  MaxLength, EmailErrors.EmailTooLong);
+            DomainExceptionValidation.When(!IsValid(value), EmailErrors.EmailFormatInvalid);
         }
 
     }
