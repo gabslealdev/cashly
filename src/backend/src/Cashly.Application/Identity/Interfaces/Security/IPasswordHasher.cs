@@ -2,7 +2,7 @@
 
 namespace Cashly.Application.Identity.Interfaces.Security
 {
-    public interface IPasswordHash
+    public interface IPasswordHasher
     {
         string Hash(string password);
         bool Verify(string password, PasswordHash passwordHash);
