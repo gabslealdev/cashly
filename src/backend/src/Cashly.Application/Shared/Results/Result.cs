@@ -35,7 +35,7 @@
         private Result(Error error) : base(false, error)
             => _value = default;
 
-        public T value
+        public T Value
             => IsSuccess ? _value! : throw new InvalidOperationException("Cannot access the value of a failed result.");
 
         public static Result<T> Success(T value)
