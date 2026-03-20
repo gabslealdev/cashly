@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lexend+Mega:wght@100..900&display=swap');
+
+:root {
+  /* colors */
+  --red: #F94144;
+  --orange: #F9844A;
+  --yellow: #F9C74F;
+  --green: #43AA8B ;
+  --blue: #0077B6 ;
+  --color-primary: #60A5FA;
+  --color-primary-hover: #3B82F6;
+  --color-surface: #0F172A;
+  --color-background: #121212;
+  --color-border: #E0E0E0;
+  --color-text: #F8FAFC;
+  --color-text-muted: #94A3B8;
+  --color-danger: #DC2626;
+  --color-success: #16A34A;
+  --fill-transparent: rgb(217, 217, 217, 0.2);
+
+  /* typography */
+  --font-base: 'Inter', Arial, Helvetica, sans-serif;
+  --font-special: 'Lexend Mega', sans-serif;
+
+  --font-size-1xs: 0.5rem;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.5rem;
+  --font-size-2xl: 2rem;
+
+  /* spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-8: 3rem;
+
+  /* radius */
+  --radius-xs: 0.25rem
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+
+  /* shadow */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 10px 30px rgba(15, 23, 42, 0.08);
+
+  /* layout */
+  --container-sm: 480px;
+  --container-md: 768px;
+  --container-lg: 1200px;
+}

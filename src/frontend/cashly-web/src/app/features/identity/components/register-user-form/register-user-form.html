@@ -1,0 +1,70 @@
+<form [formGroup]="registerForm"  (ngSubmit)="onSubmit()">
+    <div class="form-group">
+        <input class="form-input" [class.input-error]="firstName?.touched && firstName?.invalid"
+            formControlName="firstName" type="text" placeholder="Nome">
+        @if (firstName?.touched && firstName?.hasError('required')){
+        <small class="error-message">Nome é um campo obrigatório.</small>
+        }
+        @if (firstName?.touched && firstName?.hasError('minlength')) {
+        <small class="error-message">O nome deve ter pelo menos 3 caracteres.</small>
+        }
+    </div>
+
+    <div class="form-group">
+        <input class="form-input" [class.input-error]="lastName?.touched && lastName?.invalid"
+            formControlName="lastName" type="text" placeholder="Sobrenome">
+        @if (lastName?.touched && lastName?.hasError('required')){
+        <small class="error-message">Nome é um campo obrigatório.</small>
+        }
+        @if (lastName?.touched && lastName?.hasError('minlength')) {
+        <small class="error-message">Nome deve ter pelo menos 3 caracteres.</small>
+        }
+    </div>
+
+    <div class="form-group">
+        <input class="form-input" [class.input-error]="email?.touched && email?.invalid" formControlName="email"
+            type="text" placeholder="Email">
+        @if (email?.touched && email?.hasError('required')) {
+        <small class="error-message">E-mail é obrigatório.</small>
+        }
+        @if (email?.touched && email?.hasError('email')) {
+        <small class="error-message">Digite um e-mail válido.</small>
+        }
+        @if (email?.touched && email?.hasError('minlength')){
+        <small class="error-message">Email deve ter pelo menos 8 caracteres</small>
+        }
+    </div>
+
+    <div class="form-group">
+        <input class="form-input"
+            [class.input-error]="password?.touched && password?.invalid || password?.touched && !passwordsMatch()"
+            formControlName="password" type="password" placeholder="Senha">
+        @if (password?.touched && !passwordsMatch()){
+        <small class="error-message">Senhas não coincidem.</small>
+        }
+        @if (password?.touched && password?.hasError('required')){
+        <small class="error-message">Senha é um campo obrigatório.</small>
+        }
+        @if (password?.touched && password?.hasError('minlength')){
+        <small class="error-message">Senha deve ter pelo menos 8 caracteres.</small>
+        }
+    </div>
+
+    <div class="form-group">
+        <input class="form-input"
+            [class.input-error]="confirmPassword?.touched && confirmPassword?.invalid || password?.touched && !passwordsMatch()"
+            formControlName="confirmPassword" type="password" placeholder="Confirmação de Senha">
+        @if (confirmPassword?.touched && !passwordsMatch()){
+        <small class="error-message">Senhas não coincidem.</small>
+        }
+        @if (confirmPassword?.touched && confirmPassword?.hasError('required')){
+        <small class="error-message">Confirmação de Senha de é um campo obrigatório.</small>
+        }
+        @if (confirmPassword?.touched && confirmPassword?.hasError('minlength')){
+        <small class="error-message">Senha deve ter pelo menos 8 caracteres.</small>
+        }
+    </div>
+
+    <app-identity-button text="Criar Conta"></app-identity-button>
+
+</form>
