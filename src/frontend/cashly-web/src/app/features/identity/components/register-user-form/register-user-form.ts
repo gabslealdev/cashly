@@ -2,6 +2,8 @@ import { Component, inject } from '@angular/core';
 import { IdentityButton } from '../identity-button/identity-button';
 import { FormBuilder, ReactiveFormsModule, Validators, AbstractControl } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { RegisterUserRequest } from '../../models/register-user-request.model';
+import { IdentityService } from '../../services/identity-service';
 
 
 
@@ -12,8 +14,8 @@ import { CommonModule } from '@angular/common';
   styleUrl: './register-user-form.scss',
 })
 export class RegisterUserForm {
-  private readonly formBuilder = inject(FormBuilder)
-
+  private readonly formBuilder = inject(FormBuilder);
+  private identityService = inject(IdentityService);
 
   protected registerForm = this.formBuilder.group({
     firstName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(80)]],
@@ -29,7 +31,24 @@ export class RegisterUserForm {
       return;
     }
 
-    console.log(this.registerForm.value);
+    const registerRequest: RegisterUserRequest = {
+      firstName: this.firstName?.value ?? '',
+      lastName: this.lastName?.value ?? '',
+      email: this.email?.value ?? '',
+      password: this.password?.value ?? ''
+    };
+
+    this.identityService.registerUser(registerRequest).subscribe({
+      next: (response) => {
+        console.log("Usuário registrado com sucesso", response)
+        this.registerForm.reset();
+      },
+      error: (error) => {
+        console.error('Erro ao registrar usuário:', error)
+      }
+    });
+
+
   }
 
   protected get firstName(){
