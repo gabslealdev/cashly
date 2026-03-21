@@ -1,0 +1,22 @@
+:host{
+    display: flex;
+    width: 100%;
+}
+
+button{
+    margin-top: var(--space-4);
+    margin-bottom: var(--space-4);
+    height: 2.5rem;
+    color: var(--color-text);
+    background-color: var(--color-primary);
+    border-radius: 4px;
+    width: inherit;
+    outline: none;
+    border: none;
+}
+
+button:hover{
+    border: 2px solid var(--color-border);
+    background-color: var(--color-primary-hover);
+    font-weight: bold;
+}
