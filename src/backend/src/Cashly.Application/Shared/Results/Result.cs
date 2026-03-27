@@ -8,10 +8,10 @@
 
         protected Result(bool isSuccess, Error error)
         {
-            if (isSuccess && error != Error.None)
+            if (isSuccess && error == Error.None)
                 throw new InvalidOperationException("A successful result cannot have an error.");
 
-            if (!isSuccess && error != Error.None)
+            if (!isSuccess && error == Error.None)
                 throw new InvalidOperationException("A failed result must have an error.");
 
             IsSuccess = isSuccess;
