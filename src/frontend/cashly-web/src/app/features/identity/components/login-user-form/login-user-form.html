@@ -1,0 +1,23 @@
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+        <input [class.input-error]="email?.invalid && email?.touched" type="text" placeholder="Email"
+            formControlName="email">
+        @if (email?.touched && email?.hasError('required')) {
+        <small class="error-message">E-mail é obrigatório.</small>
+        }
+    </div>
+    <div class="form-group">
+        <input [class.input-error]="password?.invalid && password?.touched" type="password" placeholder="Senha"
+            formControlName="password">
+        @if (password?.touched && password?.hasError('required')) {
+        <small class="error-message">Senha é obrigatório.</small>
+        }
+        @if (apiErrorMessage) {
+        <small class="error-message">{{ apiErrorMessage }}</small>
+        }
+    </div>
+    <app-identity-button text="Entrar"></app-identity-button>
+</form>
+<section class="links">
+    <p>Não tem uma conta? <a href="/register">Registrar-se</a></p>
+</section>
