@@ -3,6 +3,7 @@ import { IdentityButton } from '../identity-button/identity-button';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LoginService } from '../../services/login-service';
 import { LoginUserRequest } from '../../models/login-user-request.model';
+import { AuthService } from '../../services/auth-service';
 
 @Component({
   selector: 'app-login-user-form',
@@ -13,6 +14,7 @@ import { LoginUserRequest } from '../../models/login-user-request.model';
 export class LoginUserForm {
   private readonly formBuilder = inject(FormBuilder);
   private readonly loginService = inject(LoginService);
+  private readonly authService = inject(AuthService);
   private readonly cdr = inject(ChangeDetectorRef);
 
   protected apiErrorMessage: string | null = null;
@@ -44,12 +46,10 @@ export class LoginUserForm {
 
         this.loginService.login(loginRequest).subscribe({
           next: (response) => {
-            console.log("Login realizado com sucesso", response)
+            this.authService.saveSession(response);
 
-            localStorage.setItem('accessToken', response.accessToken);
-            localStorage.setItem('expiresAt', response.expiresAt);
-
-            console.log(localStorage.getItem('accessToken'))
+            console.log("Token salvo:", this.authService.getToken());
+            console.log("Expira em:", this.authService.getExpiresAt());
 
             this.loginForm.reset();
 
@@ -65,7 +65,6 @@ export class LoginUserForm {
             }
 
             this.cdr.detectChanges();
-
           }
 
         });
