@@ -1,4 +1,5 @@
-﻿using Cashly.Application.Identity.UseCases.loginUser;
+﻿using Cashly.Api.Contracts.Identity.LoginUser;
+using Cashly.Application.Identity.UseCases.loginUser;
 using Cashly.Application.Shared.Results;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
@@ -21,8 +22,14 @@ namespace Cashly.Api.Controllers.Identity
         [HttpPost]
         [ProducesResponseType(typeof(LoginUserResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Login([FromBody] LoginUserCommand command)
+        public async Task<IActionResult> Login([FromBody] LoginUserResquestDto request)
         {
+            var command = new LoginUserCommand
+            {
+               Email = request.Email,
+               Password = request.Password
+            };
+
             var validationResult = await _validator.ValidateAsync(command);
 
             if (!validationResult.IsValid)
@@ -47,7 +54,9 @@ namespace Cashly.Api.Controllers.Identity
                 });
             }
 
-            return Ok(result.Value);
+            var response = new LoginUserResponseDto(result.Value.AccessToken, result.Value.ExpiresAt);
+
+            return Ok(response);
 
         }
 
