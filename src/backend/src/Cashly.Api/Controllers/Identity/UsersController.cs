@@ -49,7 +49,7 @@ namespace Cashly.Api.Controllers.Identity
 
             if (result.IsFailure)
             {
-                return BadRequest(new
+                return BadRequest(new 
                 {
                     code = result.Error.Code,
                     message = result.Error.Message,
