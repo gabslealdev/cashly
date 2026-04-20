@@ -7,5 +7,6 @@ namespace Cashly.Application.Identity.Interfaces.Repository
     {
         Task<bool> ExistByEmailAsync(Email email);
         Task AddAsync(User user);
+        Task<User?> GetByEmailAsync(Email email);
     }
 }

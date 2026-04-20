@@ -1,4 +1,5 @@
-﻿using Cashly.Application.Identity.UseCases.RegisterUser;
+﻿using Cashly.Api.Contracts.Identity.RegisterUser;
+using Cashly.Application.Identity.UseCases.RegisterUser;
 using Cashly.Application.Shared.Results;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
@@ -21,8 +22,16 @@ namespace Cashly.Api.Controllers.Identity
         [HttpPost]
         [ProducesResponseType(typeof(RegisterUserResponse), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Register([FromBody] RegisterUserCommand command)
+        public async Task<IActionResult> Register([FromBody] RegisterUserRequestDto request)
         {
+            var command = new RegisterUserCommand
+            {
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                Email = request.Email,
+                Password = request.Password,
+            };
+
             var validationResult = await _validator.ValidateAsync(command);
 
             if (!validationResult.IsValid)
@@ -40,14 +49,16 @@ namespace Cashly.Api.Controllers.Identity
 
             if (result.IsFailure)
             {
-                return BadRequest(new
+                return BadRequest(new 
                 {
                     code = result.Error.Code,
                     message = result.Error.Message,
                 });
             }
 
-            return Created(string.Empty, result.Value);
+            var response = new RegisterUserResponseDto(result.Value.UserId);
+
+            return Created(string.Empty, response);
         }
     }
 }

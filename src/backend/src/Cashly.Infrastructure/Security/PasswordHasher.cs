@@ -25,9 +25,9 @@ namespace Cashly.Infrastructure.Security
                 Convert.ToBase64String(hash));
         }
 
-        public bool Verify(string password, string passwordHash)
+        public bool Verify(string password, PasswordHash passwordHash)
         {
-            var parts = passwordHash.Split('.');
+            var parts = passwordHash.Value.Split('.');
 
             if (parts.Length != 2)
                 return false;
@@ -53,11 +53,6 @@ namespace Cashly.Infrastructure.Security
             };
 
             return argon2.GetBytes(HashSize);
-        }
-
-        public bool Verify(string password, PasswordHash passwordHash)
-        {
-            throw new NotImplementedException();
         }
     }
 }
