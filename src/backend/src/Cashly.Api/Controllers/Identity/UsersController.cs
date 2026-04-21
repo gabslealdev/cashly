@@ -17,20 +17,14 @@ namespace Cashly.Api.Controllers.Identity
         {
             _handler = handler;
             _validator = validator;
-        }
+        }       
 
         [HttpPost]
         [ProducesResponseType(typeof(RegisterUserResponse), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Register([FromBody] RegisterUserRequestDto request)
         {
-            var command = new RegisterUserCommand
-            {
-                FirstName = request.FirstName,
-                LastName = request.LastName,
-                Email = request.Email,
-                Password = request.Password,
-            };
+            var command = new RegisterUserCommand(request.FirstName, request.LastName, request.Email, request.Password);
 
             var validationResult = await _validator.ValidateAsync(command);
 
