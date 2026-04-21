@@ -24,11 +24,7 @@ namespace Cashly.Api.Controllers.Identity
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Login([FromBody] LoginUserResquestDto request)
         {
-            var command = new LoginUserCommand
-            {
-               Email = request.Email,
-               Password = request.Password
-            };
+            var command = new LoginUserCommand(request.Email, request.Password);
 
             var validationResult = await _validator.ValidateAsync(command);
 

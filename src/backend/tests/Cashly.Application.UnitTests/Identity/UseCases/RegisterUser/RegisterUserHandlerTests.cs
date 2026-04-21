@@ -25,7 +25,8 @@ public sealed class RegisterUserHandlerTests
         
         passwordHasherMock.Setup(x => x.Hash("password1234")).Returns("hashedPassword1234");
         
-        var handler = new RegisterUserHandler(userRepositoryMock.Object, passwordHasherMock.Object, unitOfWorkMock.Object);
+        var handler = new RegisterUserHandler(userRepositoryMock.Object, 
+            passwordHasherMock.Object, unitOfWorkMock.Object);
        
         // act 
         var result = await handler.HandleAsync(command);
@@ -34,11 +35,8 @@ public sealed class RegisterUserHandlerTests
         result.IsSuccess.ShouldBeTrue();
         
         userRepositoryMock.Verify(x => x.ExistByEmailAsync(It.IsAny<Email>()), Times.Once);
-        
         unitOfWorkMock.Verify(x => x.CommitAsync(), Times.Once);
-        
         passwordHasherMock.Verify(x => x.Hash("password1234"), Times.Once);
-        
     }
 
     [Fact]

@@ -46,3 +46,4 @@ namespace Cashly.Application.Identity.UseCases.RegisterUser
 
     }
 }
+                    
