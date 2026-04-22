@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="CashflowContext\Entities\" />
-    <Folder Include="CashflowContext\Enums\" />
   </ItemGroup>
 
 </Project>
