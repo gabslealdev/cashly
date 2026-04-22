@@ -178,3 +178,26 @@ pnpm-lock.yaml.*
 # package-lock.json
 # yarn.lock
 # pnpm-lock.yaml
+
+# Build
+bin/
+obj/
+
+# JetBrains / Rider
+.idea/
+*.sln.iml
+
+# User-specific
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+*.DotSettings.user
+
+# ReSharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+
+# Logs
+*.log
