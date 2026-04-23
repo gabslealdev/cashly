@@ -28,5 +28,10 @@ namespace Cashly.Infrastructure.Data.Repositories.Identity
         {
             return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
         }
+
+        public async Task<bool> ExistByIdAsync(Guid id)
+        {
+            return await _context.Users.AnyAsync(x => x.Id == id);
+        }
     }
 }

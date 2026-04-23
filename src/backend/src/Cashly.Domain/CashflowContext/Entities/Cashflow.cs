@@ -27,7 +27,7 @@ public sealed class Cashflow : Entity
     }
     
 
-    public Cashflow Create(Title title, Guid userId)
+    public static Cashflow Create(Title title, Guid userId)
     {
        var cashflow = new Cashflow(title); 
        cashflow.AssignOwner(userId);
