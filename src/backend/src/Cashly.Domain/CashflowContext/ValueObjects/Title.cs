@@ -1,9 +1,10 @@
 using Cashly.Domain.CashflowContext.Errors;
 using Cashly.Domain.Shared.Exceptions;
+using Cashly.Domain.Shared.ValueObjects;
 
 namespace Cashly.Domain.CashflowContext.ValueObjects;
 
-public sealed record Title
+public sealed record Title : ValueObject
 {
     private const int MinLength = 3;
     private const int MaxLength = 50;

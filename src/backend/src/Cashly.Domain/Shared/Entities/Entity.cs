@@ -6,7 +6,7 @@
 
         protected Entity()
         {
-            Id = Guid.NewGuid();
+            Id = Guid.CreateVersion7();
         }
     }
 }
