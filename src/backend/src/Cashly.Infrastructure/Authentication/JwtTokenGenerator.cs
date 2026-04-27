@@ -19,8 +19,6 @@ namespace Cashly.Infrastructure.Authentication
         }
         public JwtTokenResult GenerateToken(Guid userId, string email)
         {
-            var expiresAt = DateTime.UtcNow.AddMinutes(_options.ExpirationInMinutes);
-
             var claims = new List<Claim>
             {
                 new (JwtRegisteredClaimNames.Sub, userId.ToString()),
@@ -31,18 +29,20 @@ namespace Cashly.Infrastructure.Authentication
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey));
 
             var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
+            
+            var expires = DateTime.UtcNow.AddMinutes(_options.ExpirationInMinutes);
+            
             var tokenDescriptor = new JwtSecurityToken(
                 issuer: _options.Issuer,
                 audience: _options.Audience,
                 claims: claims,
-                expires: expiresAt,
+                expires: expires,
                 signingCredentials: signingCredentials
             );
 
             var token = new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
 
-            return new JwtTokenResult(token, expiresAt);
+            return new JwtTokenResult(token, expires);
         }
 
     }

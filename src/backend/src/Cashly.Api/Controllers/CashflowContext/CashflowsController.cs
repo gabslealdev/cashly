@@ -2,10 +2,12 @@ using Cashly.Api.Contracts.CashflowContext.CreateCashflow;
 using Cashly.Application.CashflowContext.UseCases.CreateCashflow;
 using Cashly.Application.Shared.Results;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cashly.Api.Controllers.CashflowContext;
 
+[Authorize(Policy = "AuthenticatedOnly")]
 [ApiController]
 [Route("api/cashflows")]
 public sealed class CashflowsController : ControllerBase
