@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Cashly.Api.Contracts.CashflowContext.CreateCashflow;
 using Cashly.Application.CashflowContext.UseCases.CreateCashflow;
 using Cashly.Application.Shared.Results;
@@ -26,7 +27,11 @@ public sealed class CashflowsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateCashflow([FromBody] CreateCashflowRequestDto request)
     {
-        var command = new CreateCashflowCommand(request.Title, request.UserId);
+        var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!Guid.TryParse(userIdClaim, out var userId))
+            return Unauthorized();
+        
+        var command = new CreateCashflowCommand(request.Title, userId);
 
         var validationResult = await _validator.ValidateAsync(command);
 
