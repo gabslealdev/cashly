@@ -1,0 +1,65 @@
+main{
+    background-color: var(--color-background);
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    padding: var(--space-3);
+
+    & .aside-container{
+        background-color: var(--color-surface);
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        width: 15%;
+        margin-right: var(--space-3);
+        border-radius: var(--radius-xs);
+        padding-inline: var(--space-2);
+
+        & .logo-wrapper{
+            width: 70%;
+            margin-top: var(--space-3);
+            margin-bottom: var(--space-7);
+            align-self: center;
+        }
+
+        & h2{
+            font-size: var(--font-size-lg);
+            font-weight: 300;
+            color: var(--color-title);
+            margin-bottom: var(--space-3);
+            margin-left: var(--space-3);
+        }
+    }
+
+    & .main-container{
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-3);
+        width: 85%;
+        height: 100%;
+
+
+        & .dashboard-header{
+            background-color: var(--color-surface);
+            height: 10%;
+            width: 100%;
+            border-radius: var(--radius-xs);
+            padding: var(--space-3);
+        }
+
+        & .dashboard-main{
+            background-color: var(--color-surface);
+            height: 90%;
+            width: 100%;
+            border-radius: var(--radius-xs);
+            padding: var(--space-3);
+        }
+    }
+}
+
+.month-container{
+    border: 1px solid var(--fill-transparent);
+    border-radius: var(--radius-xs);
+    height: 100%;
+    width: 15%;
+}

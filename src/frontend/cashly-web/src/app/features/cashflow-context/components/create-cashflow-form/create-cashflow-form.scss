@@ -1,0 +1,38 @@
+main {
+    width: 100%;
+
+    & form {
+
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+
+        & input {
+            height: 2.5rem;
+            border: none;
+            outline: none;
+            border-bottom: 2px solid var(--color-border);
+            border-radius: 4px;
+            color: var(--color-text);
+            background-color: var(--fill-transparent);
+            padding-left: var(--space-1);
+        }
+
+        & input::placeholder {
+            padding-left: var(--space-1);
+        }
+
+        & .input-error {
+            height: 2.5rem;
+            border: 2px solid var(--color-danger);
+            border-radius: 4px;
+            color: var(--color-text);
+            background-color: var(--fill-transparent);
+        }
+    }
+}
+
+.error-message {
+    color: var(--color-danger);
+    margin: var(--space-1);
+}
