@@ -4,6 +4,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LoginService } from '../../services/login-service';
 import { LoginUserRequest } from '../../models/login-user-request.model';
 import { AuthService } from '../../services/auth-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-user-form',
@@ -16,6 +17,7 @@ export class LoginUserForm {
   private readonly loginService = inject(LoginService);
   private readonly authService = inject(AuthService);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly router = inject(Router)
 
   protected apiErrorMessage: string | null = null;
 
@@ -53,7 +55,7 @@ export class LoginUserForm {
 
             this.loginForm.reset();
 
-            // redirecionar para a página principal ou dashboard
+            this.router.navigate(['dashboard'])
           },
           error: (error) => {
             console.error("Erro ao realizar login", error.status);

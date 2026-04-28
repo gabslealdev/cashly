@@ -1,0 +1,17 @@
+<main>
+  <form [formGroup]="form" (submit)="onSubmit()">
+    <input
+      type="text"
+      [class.input-error]="title?.touched && title?.invalid"
+      formControlName="title"
+      placeholder="Título"/>
+    @if (title?.touched && title?.hasError("required")) {
+      <small class="error-message">Título é um campo obrigatório.</small>
+    }
+    @if (title?.touched && title?.hasError("minlength")) {
+      <small class="error-message"
+        >O nome deve ter pelo menos 3 caracteres.</small>
+    }
+    <app-identity-button text="Adicionar"></app-identity-button>
+  </form>
+</main>

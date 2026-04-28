@@ -4,6 +4,7 @@ import { FormBuilder, ReactiveFormsModule, Validators, AbstractControl } from '@
 import { CommonModule } from '@angular/common';
 import { RegisterUserRequest } from '../../models/register-user-request.model';
 import { IdentityService } from '../../services/identity-service';
+import { Router } from '@angular/router';
 
 
 
@@ -16,6 +17,7 @@ import { IdentityService } from '../../services/identity-service';
 export class RegisterUserForm {
   private readonly formBuilder = inject(FormBuilder);
   private identityService = inject(IdentityService);
+  private readonly router = inject(Router)
 
   protected registerForm = this.formBuilder.group({
     firstName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(80)]],
@@ -40,8 +42,10 @@ export class RegisterUserForm {
 
     this.identityService.registerUser(registerRequest).subscribe({
       next: (response) => {
-        console.log("Usuário registrado com sucesso", response)
+        console.log(response)
         this.registerForm.reset();
+
+        this.router.navigate(['login'])
       },
       error: (error) => {
         console.error('Erro ao registrar usuário:', error)

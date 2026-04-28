@@ -21,7 +21,7 @@ export class AuthService {
     return localStorage.getItem(this.expiresAtKey);
   }
 
-  public clearSession(): void {
+  public logout(): void {
     localStorage.removeItem(this.tokenKey);
     localStorage.removeItem(this.expiresAtKey);
   }
@@ -34,6 +34,14 @@ export class AuthService {
       return false;
     }
 
-    return new Date(expiresAt) > new Date();
+    const isTokenValid = new Date(expiresAt) > new Date();
+
+    if(!isTokenValid){
+      this.logout();
+      return false;
+    }
+
+    return true;
   }
+
 }

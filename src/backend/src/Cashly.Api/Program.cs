@@ -23,9 +23,26 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddInfrastructure(builder.Configuration);
 
 var jwtSection = builder.Configuration.GetSection("Jwt");
-var secretKey = jwtSection["SecretKey"]!;
+var secretKey = jwtSection["SecretKey"];
 var issuer = jwtSection["Issuer"];
 var audience = jwtSection["Audience"];
+
+if (string.IsNullOrWhiteSpace(secretKey))
+    throw new InvalidOperationException("Jwt:SecretKey is missing.");
+
+if (string.IsNullOrWhiteSpace(issuer))
+    throw new InvalidOperationException("Jwt:Issuer is missing.");
+
+if (string.IsNullOrWhiteSpace(audience))
+    throw new InvalidOperationException("Jwt:Audience is missing.");
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AuthenticatedOnly", policy =>
+    {
+        policy.RequireAuthenticatedUser();
+    });
+});
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -46,8 +63,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ClockSkew = TimeSpan.Zero
         };
     });
-
-builder.Services.AddAuthorization();
 
 var app = builder.Build();
 

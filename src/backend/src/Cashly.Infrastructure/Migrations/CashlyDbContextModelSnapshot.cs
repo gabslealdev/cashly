@@ -22,6 +22,67 @@ namespace Cashly.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Cashly.Domain.CashflowContext.Entities.Cashflow", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("id");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("datetimeoffset")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar")
+                        .HasColumnName("title");
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("datetimeoffset")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("Id")
+                        .HasName("PK_cashflows");
+
+                    b.ToTable("cashflows", (string)null);
+                });
+
+            modelBuilder.Entity("Cashly.Domain.CollaborationContext.Entities.CashflowMember", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CashflowId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("cashflow_id");
+
+                    b.Property<DateTimeOffset>("JoinedAt")
+                        .HasColumnType("datetimeoffset")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)")
+                        .HasColumnName("role");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id")
+                        .HasName("PK_cashflow_member");
+
+                    b.HasIndex("CashflowId", "Role");
+
+                    b.HasIndex("CashflowId", "UserId")
+                        .IsUnique();
+
+                    b.ToTable("cashflow_member", (string)null);
+                });
+
             modelBuilder.Entity("Cashly.Domain.Identity.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -57,6 +118,15 @@ namespace Cashly.Infrastructure.Migrations
                     b.ToTable("users", (string)null);
                 });
 
+            modelBuilder.Entity("Cashly.Domain.CollaborationContext.Entities.CashflowMember", b =>
+                {
+                    b.HasOne("Cashly.Domain.CashflowContext.Entities.Cashflow", null)
+                        .WithMany("CashflowMembers")
+                        .HasForeignKey("CashflowId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Cashly.Domain.Identity.Entities.User", b =>
                 {
                     b.OwnsOne("Cashly.Domain.Identity.ValueObjects.Name", "Name", b1 =>
@@ -86,6 +156,11 @@ namespace Cashly.Infrastructure.Migrations
 
                     b.Navigation("Name")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Cashly.Domain.CashflowContext.Entities.Cashflow", b =>
+                {
+                    b.Navigation("CashflowMembers");
                 });
 #pragma warning restore 612, 618
         }

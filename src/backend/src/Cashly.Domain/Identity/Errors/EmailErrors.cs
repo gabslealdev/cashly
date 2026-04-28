@@ -4,9 +4,9 @@ namespace Cashly.Domain.Identity.Errors
 {
     public static class EmailErrors
     {
-        public readonly static DomainError EmailRequired = new DomainError("User.Email.EmailRequired", "Email is required.");
-        public readonly static DomainError EmailFormatInvalid = new DomainError("User.Email.EmailFormatInvalid", "Email is invalid.");
-        public readonly static DomainError EmailTooShort = new DomainError("User.Email.EmailTooShort", "Email is too short.");
-        public readonly static DomainError EmailTooLong = new DomainError("User.Email.EmailTooLong", "Email is too long.");
+        public static readonly DomainError EmailRequired = new DomainError("User.Email.EmailRequired", "Email is required.");
+        public static readonly DomainError EmailFormatInvalid = new DomainError("User.Email.EmailFormatInvalid", "Email is invalid.");
+        public static readonly DomainError EmailTooShort = new DomainError("User.Email.EmailTooShort", "Email is too short.");
+        public static readonly DomainError EmailTooLong = new DomainError("User.Email.EmailTooLong", "Email is too long.");
     }
 }

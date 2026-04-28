@@ -1,0 +1,21 @@
+<main>
+  <div class="aside-container">
+    <div class="logo-wrapper">
+      <img class="logo" src="svg/cashly-logotype.svg" alt="" />
+    </div>
+    <section class="aside-menu">
+      <h2>Menu</h2>
+      <app-menu-button label="Novo Cashflow" (clicked)="openCreateCashflowModal()"></app-menu-button>
+      <app-modal
+        [isOpen]="isCreateCashflowModalOpen()"
+        title="Novo Cashflow"
+        (closed)="closeCreateCashflowModal()">
+        <app-create-cashflow-form></app-create-cashflow-form>
+      </app-modal>
+    </section>
+  </div>
+  <div class="main-container">
+    <div class="dashboard-header"></div>
+    <div class="dashboard-main"></div>
+  </div>
+</main>

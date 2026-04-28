@@ -1,10 +1,13 @@
-﻿using Cashly.Application.Identity.Interfaces.Repository;
+﻿using Cashly.Application.CashflowContext.Interfaces.Repository;
+using Cashly.Application.CashflowContext.UseCases.CreateCashflow;
+using Cashly.Application.Identity.Interfaces.Repository;
 using Cashly.Application.Identity.Interfaces.Security;
 using Cashly.Application.Identity.UseCases.loginUser;
 using Cashly.Application.Identity.UseCases.RegisterUser;
 using Cashly.Application.Shared.Abstractions;
 using Cashly.Infrastructure.Authentication;
 using Cashly.Infrastructure.Data.Context;
+using Cashly.Infrastructure.Data.Repositories.CashflowContext;
 using Cashly.Infrastructure.Data.Repositories.Identity;
 using Cashly.Infrastructure.Data.UnitOfWork;
 using Cashly.Infrastructure.Security;
@@ -34,6 +37,9 @@ public static class DependencyInjection
         services.AddScoped<IValidator<RegisterUserCommand>, RegisterUserCommandValidator>();
         services.AddScoped<IValidator<LoginUserCommand>, LoginUserCommandValidator>();
         services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+        services.AddScoped<ICashflowRepository, CashflowRepository>();
+        services.AddScoped<CreateCashflowHandler>();
+        services.AddScoped<IValidator<CreateCashflowCommand>, CreateCashflowCommandValidator>();
 
         return services;
     }
