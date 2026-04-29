@@ -1,6 +1,6 @@
 ﻿using Bogus;
-using Cashly.Domain.Identity.Entities;
-using Cashly.Domain.Identity.ValueObjects;
+using Cashly.Domain.IdentityContext.Entities;
+using Cashly.Domain.IdentityContext.ValueObjects;
 using Cashly.Domain.UnitTests.Identity.Builders;
 using Shouldly;
 

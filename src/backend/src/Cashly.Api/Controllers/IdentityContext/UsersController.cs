@@ -1,5 +1,5 @@
-﻿using Cashly.Api.Contracts.Identity.RegisterUser;
-using Cashly.Application.Identity.UseCases.RegisterUser;
+﻿using Cashly.Api.Contracts.IdentityContext.RegisterUser;
+using Cashly.Application.IdentityContext.UseCases.RegisterUser;
 using Cashly.Application.Shared.Results;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;

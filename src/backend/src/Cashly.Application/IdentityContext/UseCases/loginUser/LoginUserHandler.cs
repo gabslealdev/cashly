@@ -2,7 +2,7 @@
 using Cashly.Application.Identity.Interfaces.Security;
 using Cashly.Application.Identity.UseCases.loginUser.Errors;
 using Cashly.Application.Shared.Results;
-using Cashly.Domain.Identity.ValueObjects;
+using Cashly.Domain.IdentityContext.ValueObjects;
 
 namespace Cashly.Application.Identity.UseCases.loginUser
 {

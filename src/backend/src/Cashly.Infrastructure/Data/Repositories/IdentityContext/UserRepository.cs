@@ -1,10 +1,10 @@
-﻿using Cashly.Application.Identity.Interfaces.Repository;
-using Cashly.Domain.Identity.Entities;
-using Cashly.Domain.Identity.ValueObjects;
+﻿using Cashly.Application.IdentityContext.Interfaces.Repository;
+using Cashly.Domain.IdentityContext.Entities;
+using Cashly.Domain.IdentityContext.ValueObjects;
 using Cashly.Infrastructure.Data.Context;
 using Microsoft.EntityFrameworkCore;
 
-namespace Cashly.Infrastructure.Data.Repositories.Identity
+namespace Cashly.Infrastructure.Data.Repositories.IdentityContext
 {
     public sealed class UserRepository : IUserRepository
     {

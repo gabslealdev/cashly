@@ -1,6 +1,6 @@
 ﻿using Bogus;
-using Cashly.Domain.Identity.Errors;
-using Cashly.Domain.Identity.ValueObjects;
+using Cashly.Domain.IdentityContext.Errors;
+using Cashly.Domain.IdentityContext.ValueObjects;
 using Cashly.Domain.Shared.Exceptions;
 using Shouldly;
 

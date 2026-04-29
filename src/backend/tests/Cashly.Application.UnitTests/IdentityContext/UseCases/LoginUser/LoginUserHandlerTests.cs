@@ -1,9 +1,9 @@
-using Cashly.Application.Identity.Interfaces.Repository;
-using Cashly.Application.Identity.Interfaces.Security;
-using Cashly.Application.Identity.Models;
-using Cashly.Application.Identity.UseCases.loginUser;
-using Cashly.Domain.Identity.Entities;
-using Cashly.Domain.Identity.ValueObjects;
+using Cashly.Application.IdentityContext.Interfaces.Repository;
+using Cashly.Application.IdentityContext.Interfaces.Security;
+using Cashly.Application.IdentityContext.Models;
+using Cashly.Application.IdentityContext.UseCases.loginUser;
+using Cashly.Domain.IdentityContext.Entities;
+using Cashly.Domain.IdentityContext.ValueObjects;
 using Moq;
 using Shouldly;
 

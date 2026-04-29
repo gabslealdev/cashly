@@ -1,9 +1,9 @@
-using Cashly.Application.Identity.Interfaces.Repository;
-using Cashly.Application.Identity.Interfaces.Security;
-using Cashly.Application.Identity.UseCases.RegisterUser;
-using Cashly.Application.Identity.UseCases.RegisterUser.Errors;
+using Cashly.Application.IdentityContext.Interfaces.Repository;
+using Cashly.Application.IdentityContext.Interfaces.Security;
+using Cashly.Application.IdentityContext.UseCases.RegisterUser;
+using Cashly.Application.IdentityContext.UseCases.RegisterUser.Errors;
 using Cashly.Application.Shared.Abstractions;
-using Cashly.Domain.Identity.ValueObjects;
+using Cashly.Domain.IdentityContext.ValueObjects;
 using Shouldly;
 using Moq;
 

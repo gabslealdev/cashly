@@ -1,5 +1,5 @@
-﻿using Cashly.Domain.Identity.Entities;
-using Cashly.Domain.Identity.ValueObjects;
+﻿using Cashly.Domain.IdentityContext.Entities;
+using Cashly.Domain.IdentityContext.ValueObjects;
 
 namespace Cashly.Application.Identity.Interfaces.Repository
 {

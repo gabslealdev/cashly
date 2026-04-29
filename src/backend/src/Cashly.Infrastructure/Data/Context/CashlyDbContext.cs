@@ -1,6 +1,6 @@
 ﻿using Cashly.Domain.CashflowContext.Entities;
 using Cashly.Domain.CollaborationContext.Entities;
-using Cashly.Domain.Identity.Entities;
+using Cashly.Domain.IdentityContext.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Cashly.Infrastructure.Data.Context
