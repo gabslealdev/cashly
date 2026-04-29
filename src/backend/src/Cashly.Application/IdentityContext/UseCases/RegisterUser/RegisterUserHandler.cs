@@ -1,12 +1,12 @@
-﻿using Cashly.Application.Identity.Interfaces.Repository;
-using Cashly.Application.Identity.Interfaces.Security;
-using Cashly.Application.Identity.UseCases.RegisterUser.Errors;
+﻿using Cashly.Application.IdentityContext.Interfaces.Repository;
+using Cashly.Application.IdentityContext.Interfaces.Security;
+using Cashly.Application.IdentityContext.UseCases.RegisterUser.Errors;
 using Cashly.Application.Shared.Abstractions;
 using Cashly.Application.Shared.Results;
 using Cashly.Domain.IdentityContext.Entities;
 using Cashly.Domain.IdentityContext.ValueObjects;
 
-namespace Cashly.Application.Identity.UseCases.RegisterUser
+namespace Cashly.Application.IdentityContext.UseCases.RegisterUser
 {
     public sealed class RegisterUserHandler
     {

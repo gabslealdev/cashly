@@ -1,15 +1,10 @@
 ﻿using Bogus;
-using Cashly.Domain.Shared.Exceptions;
-using Shouldly;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Cashly.Domain.IdentityContext.Errors;
 using Cashly.Domain.IdentityContext.ValueObjects;
+using Cashly.Domain.Shared.Exceptions;
+using Shouldly;
 
-namespace Cashly.Domain.UnitTests.Identity.ValueObjects
+namespace Cashly.Domain.UnitTests.IdentityContext.ValueObjects
 {
     public class PasswordHashUnitTest
     {

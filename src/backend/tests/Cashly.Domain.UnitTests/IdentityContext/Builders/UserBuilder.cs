@@ -2,7 +2,7 @@
 using Cashly.Domain.IdentityContext.Entities;
 using Cashly.Domain.IdentityContext.ValueObjects;
 
-namespace Cashly.Domain.UnitTests.Identity.Builders
+namespace Cashly.Domain.UnitTests.IdentityContext.Builders
 {
     public sealed class UserBuilder
     {

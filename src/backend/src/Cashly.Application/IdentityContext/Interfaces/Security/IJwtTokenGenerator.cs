@@ -1,6 +1,6 @@
-﻿using Cashly.Application.Identity.Models;
+﻿using Cashly.Application.IdentityContext.Models;
 
-namespace Cashly.Application.Identity.Interfaces.Security
+namespace Cashly.Application.IdentityContext.Interfaces.Security
 {
     public interface IJwtTokenGenerator
     {

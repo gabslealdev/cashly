@@ -1,9 +1,9 @@
-﻿using Cashly.Domain.Identity.Errors;
+﻿using System.Text.RegularExpressions;
+using Cashly.Domain.IdentityContext.Errors;
 using Cashly.Domain.Shared.Exceptions;
 using Cashly.Domain.Shared.ValueObjects;
-using System.Text.RegularExpressions;
 
-namespace Cashly.Domain.Identity.ValueObjects
+namespace Cashly.Domain.IdentityContext.ValueObjects
 {
     public sealed record Email : ValueObject
     {

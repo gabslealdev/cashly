@@ -4,7 +4,7 @@ using Cashly.Domain.IdentityContext.ValueObjects;
 using Cashly.Domain.Shared.Exceptions;
 using Shouldly;
 
-namespace Cashly.Domain.UnitTests.Identity.ValueObjects
+namespace Cashly.Domain.UnitTests.IdentityContext.ValueObjects
 {
     public class NameUnitTest
     {

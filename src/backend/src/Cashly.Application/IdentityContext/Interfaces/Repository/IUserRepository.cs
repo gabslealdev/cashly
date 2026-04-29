@@ -1,7 +1,7 @@
 ﻿using Cashly.Domain.IdentityContext.Entities;
 using Cashly.Domain.IdentityContext.ValueObjects;
 
-namespace Cashly.Application.Identity.Interfaces.Repository
+namespace Cashly.Application.IdentityContext.Interfaces.Repository
 {
     public interface IUserRepository
     {

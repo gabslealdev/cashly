@@ -1,6 +1,6 @@
 ﻿using Cashly.Application.Shared.Results;
 
-namespace Cashly.Application.Identity.UseCases.loginUser.Errors
+namespace Cashly.Application.IdentityContext.UseCases.loginUser.Errors
 {
     public static class LoginUserApplicationErrors
     {

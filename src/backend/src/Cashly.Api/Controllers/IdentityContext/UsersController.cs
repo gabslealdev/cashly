@@ -4,7 +4,7 @@ using Cashly.Application.Shared.Results;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Cashly.Api.Controllers.Identity
+namespace Cashly.Api.Controllers.IdentityContext
 {
     [ApiController]
     [Route("api/identity/user")]

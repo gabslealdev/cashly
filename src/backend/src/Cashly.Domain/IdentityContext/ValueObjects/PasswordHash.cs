@@ -1,8 +1,8 @@
-﻿using Cashly.Domain.Identity.Errors;
+﻿using Cashly.Domain.IdentityContext.Errors;
 using Cashly.Domain.Shared.Exceptions;
 using Cashly.Domain.Shared.ValueObjects;
 
-namespace Cashly.Domain.Identity.ValueObjects
+namespace Cashly.Domain.IdentityContext.ValueObjects
 {
     public sealed record PasswordHash : ValueObject
     {

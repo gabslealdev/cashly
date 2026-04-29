@@ -1,10 +1,10 @@
-﻿using Cashly.Application.Identity.Interfaces.Repository;
-using Cashly.Application.Identity.Interfaces.Security;
-using Cashly.Application.Identity.UseCases.loginUser.Errors;
+﻿using Cashly.Application.IdentityContext.Interfaces.Repository;
+using Cashly.Application.IdentityContext.Interfaces.Security;
+using Cashly.Application.IdentityContext.UseCases.loginUser.Errors;
 using Cashly.Application.Shared.Results;
 using Cashly.Domain.IdentityContext.ValueObjects;
 
-namespace Cashly.Application.Identity.UseCases.loginUser
+namespace Cashly.Application.IdentityContext.UseCases.loginUser
 {
     public sealed class LoginUserHandler
     {

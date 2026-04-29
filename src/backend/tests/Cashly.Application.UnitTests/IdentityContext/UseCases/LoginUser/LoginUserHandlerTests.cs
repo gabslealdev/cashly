@@ -7,7 +7,7 @@ using Cashly.Domain.IdentityContext.ValueObjects;
 using Moq;
 using Shouldly;
 
-namespace Cashly.Application.UnitTests.Identity.UseCases.LoginUser;
+namespace Cashly.Application.UnitTests.IdentityContext.UseCases.LoginUser;
 
 public class LoginUserHandlerTests
 {

@@ -1,6 +1,6 @@
 ﻿using Cashly.Domain.IdentityContext.ValueObjects;
 
-namespace Cashly.Application.Identity.Interfaces.Security
+namespace Cashly.Application.IdentityContext.Interfaces.Security
 {
     public interface IPasswordHasher
     {

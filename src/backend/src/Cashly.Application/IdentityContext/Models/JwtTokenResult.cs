@@ -1,4 +1,4 @@
-﻿namespace Cashly.Application.Identity.Models
+﻿namespace Cashly.Application.IdentityContext.Models
 {
     public record JwtTokenResult(string AccessToken, DateTime ExpiresAt);
 }

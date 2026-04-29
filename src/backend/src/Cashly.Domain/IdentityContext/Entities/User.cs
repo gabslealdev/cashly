@@ -1,7 +1,7 @@
-﻿using Cashly.Domain.Identity.ValueObjects;
+﻿using Cashly.Domain.IdentityContext.ValueObjects;
 using Cashly.Domain.Shared.Entities;
 
-namespace Cashly.Domain.Identity.Entities
+namespace Cashly.Domain.IdentityContext.Entities
 {
     public sealed class User : Entity
     {

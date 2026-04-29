@@ -1,10 +1,10 @@
 ﻿using Bogus;
 using Cashly.Domain.IdentityContext.Entities;
 using Cashly.Domain.IdentityContext.ValueObjects;
-using Cashly.Domain.UnitTests.Identity.Builders;
+using Cashly.Domain.UnitTests.IdentityContext.Builders;
 using Shouldly;
 
-namespace Cashly.Domain.UnitTests.Identity.Entities
+namespace Cashly.Domain.UnitTests.IdentityContext.Entities
 {
     public class UserUnitTest
     {

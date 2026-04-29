@@ -1,6 +1,6 @@
 ﻿using Cashly.Domain.Shared.Errors;
 
-namespace Cashly.Domain.Identity.Errors
+namespace Cashly.Domain.IdentityContext.Errors
 {
     public static class UserErrors
     {

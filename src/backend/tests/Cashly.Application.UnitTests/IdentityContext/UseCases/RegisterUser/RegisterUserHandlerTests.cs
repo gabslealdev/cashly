@@ -4,10 +4,10 @@ using Cashly.Application.IdentityContext.UseCases.RegisterUser;
 using Cashly.Application.IdentityContext.UseCases.RegisterUser.Errors;
 using Cashly.Application.Shared.Abstractions;
 using Cashly.Domain.IdentityContext.ValueObjects;
-using Shouldly;
 using Moq;
+using Shouldly;
 
-namespace Cashly.Application.UnitTests.Identity.UseCases.RegisterUser;
+namespace Cashly.Application.UnitTests.IdentityContext.UseCases.RegisterUser;
 
 public sealed class RegisterUserHandlerTests
 {

@@ -1,4 +1,3 @@
-using Cashly.Application.Identity.UseCases.RegisterUser;
 using FluentValidation;
 
 namespace Cashly.Application.CashflowContext.UseCases.CreateCashflow;
