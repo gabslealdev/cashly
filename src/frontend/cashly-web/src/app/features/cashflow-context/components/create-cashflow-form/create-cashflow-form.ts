@@ -1,7 +1,7 @@
-import { Component, inject } from '@angular/core';
-import { IdentityButton } from "../../../identity/components/identity-button/identity-button";
+import { Component, inject, output } from '@angular/core';
+import { IdentityButton } from "../../../identity-context/components/identity-button/identity-button";
 import { FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
-import { CreateCashflowService } from '../../services/create-cashflow-service';
+import { CashflowService } from '../../services/cashflow-service';
 import { CreateCashflowRequest } from '../../models/create-cashflow-request.model';
 
 @Component({
@@ -11,8 +11,12 @@ import { CreateCashflowRequest } from '../../models/create-cashflow-request.mode
   styleUrl: './create-cashflow-form.scss',
 })
 export class CreateCashflowForm {
+  cashflowCreated = output<void>();
+  closeModal = output<void>();
+
   private readonly formBuilder = inject(FormBuilder);
-  private readonly cashflowCreateService = inject(CreateCashflowService)
+  private readonly cashflowService = inject(CashflowService)
+
 
   protected form = this.formBuilder.group({
     title: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]]
@@ -28,10 +32,12 @@ export class CreateCashflowForm {
       title: this.title?.value ?? '',
     }
 
-    this .cashflowCreateService.createCashflow(request).subscribe({
+    this.cashflowService.createCashflow(request).subscribe({
       next: (response) => {
         console.log(response)
         this.form.reset();
+        this.cashflowCreated.emit()
+        this.closeModal.emit()
       },
       error: (error) => {
         console.log('Erro ao registrar usuário', error)

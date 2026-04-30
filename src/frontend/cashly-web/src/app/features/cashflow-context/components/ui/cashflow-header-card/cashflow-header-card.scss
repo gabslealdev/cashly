@@ -1,0 +1,33 @@
+section{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: var(--fill-transparent);
+    border-radius: var(--radius-xs);
+    padding: var(--space-2);
+    width: var(--container-xs);
+    color: var(--color-text);
+
+    & h2{
+        font-size: var(--font-size-md);
+        font-weight: 350;
+    }
+
+    & hr {
+        border: none;
+        height: 1px;
+        background: var(--fill-transparent);
+    }
+    
+    & .cashflow-info{
+        display: flex;
+        justify-content: space-between;
+        font-size: var(--font-size-sm);
+        font-weight: 250;
+    }
+
+}
+
+section:hover{
+    outline: 2px solid var(--blue);
+}
