@@ -1,6 +1,6 @@
 using Cashly.Application.CashflowContext.Errors;
 using Cashly.Application.CashflowContext.Interfaces.Repository;
-using Cashly.Application.Identity.Interfaces.Repository;
+using Cashly.Application.IdentityContext.Interfaces.Repository;
 using Cashly.Application.Shared.Abstractions;
 using Cashly.Application.Shared.Results;
 using Cashly.Domain.CashflowContext.Entities;

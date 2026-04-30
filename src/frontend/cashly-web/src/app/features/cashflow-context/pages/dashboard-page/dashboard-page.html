@@ -10,12 +10,16 @@
         [isOpen]="isCreateCashflowModalOpen()"
         title="Novo Cashflow"
         (closed)="closeCreateCashflowModal()">
-        <app-create-cashflow-form></app-create-cashflow-form>
+        <app-create-cashflow-form (cashflowCreated)="onCashflowCreated()" (closeModal)="closeCreateCashflowModal()"></app-create-cashflow-form>
       </app-modal>
     </section>
   </div>
   <div class="main-container">
-    <div class="dashboard-header"></div>
+    <div class="dashboard-header">
+      @for(cashflow of cashflows(); track cashflow.cashflowId){
+        <app-cashflow-header-card [cashflow]="cashflow"></app-cashflow-header-card>
+      }
+    </div>
     <div class="dashboard-main"></div>
   </div>
 </main>
