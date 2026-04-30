@@ -1,5 +1,6 @@
 ﻿using Cashly.Application.CashflowContext.Interfaces.Repository;
 using Cashly.Application.CashflowContext.UseCases.CreateCashflow;
+using Cashly.Application.CashflowContext.UseCases.GetUserCashflows;
 using Cashly.Application.IdentityContext.Interfaces.Repository;
 using Cashly.Application.IdentityContext.Interfaces.Security;
 using Cashly.Application.IdentityContext.UseCases.loginUser;
@@ -67,6 +68,7 @@ public static class DependencyInjection
     {
         services.AddCashflowWrite();
         services.AddCashflowRead();
+        
         return services;
     }
 
@@ -82,6 +84,8 @@ public static class DependencyInjection
     private static IServiceCollection AddCashflowRead(this IServiceCollection services)
     {
         services.AddScoped<ICashflowReadRepository, CashflowReadRepository>();
+        services.AddScoped<GetUserCashflowHandler>();
+        
         return services;
     }
     
