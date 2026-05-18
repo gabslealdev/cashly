@@ -1,20 +1,21 @@
+using Cashly.Application.Abstractions.Messaging;
+using Cashly.Application.Abstractions.Persistence;
 using Cashly.Application.CashflowContext.Errors;
 using Cashly.Application.CashflowContext.Interfaces.Repository;
 using Cashly.Application.IdentityContext.Interfaces.Repository;
-using Cashly.Application.Shared.Abstractions;
 using Cashly.Application.Shared.Results;
 using Cashly.Domain.CashflowContext.Entities;
 using Cashly.Domain.CashflowContext.ValueObjects;
 
 namespace Cashly.Application.CashflowContext.UseCases.CreateCashflow;
 
-public class CreateCashflowHandler
+public class CreateCashflowHandler : ICommandHandler<CreateCashflowCommand, Result<CreateCashflowResponse>>
 {
     private readonly ICashflowRepository _cashflowRepository;
     private readonly IUserRepository _userRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public CreateCashflowHandler(ICashflowRepository  cashflowRepository, IUserRepository userRepository, IUnitOfWork unitOfWork)
+    public CreateCashflowHandler(ICashflowRepository cashflowRepository, IUserRepository userRepository, IUnitOfWork unitOfWork)
     {
         _cashflowRepository = cashflowRepository;
         _userRepository = userRepository;
@@ -31,7 +32,6 @@ public class CreateCashflowHandler
         var title = Title.Create(command.Title);
         var cashflow = Cashflow.Create(title, command.UserId);
 
-        
         await _cashflowRepository.AddAsync(cashflow);
         await _unitOfWork.CommitAsync();
         

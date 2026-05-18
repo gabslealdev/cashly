@@ -1,20 +1,25 @@
-﻿using Cashly.Application.IdentityContext.Interfaces.Repository;
+﻿using Cashly.Application.Abstractions.Messaging;
+using Cashly.Application.Abstractions.Persistence;
+using Cashly.Application.IdentityContext.Interfaces.Repository;
 using Cashly.Application.IdentityContext.Interfaces.Security;
 using Cashly.Application.IdentityContext.UseCases.RegisterUser.Errors;
-using Cashly.Application.Shared.Abstractions;
 using Cashly.Application.Shared.Results;
 using Cashly.Domain.IdentityContext.Entities;
 using Cashly.Domain.IdentityContext.ValueObjects;
 
 namespace Cashly.Application.IdentityContext.UseCases.RegisterUser
 {
-    public sealed class RegisterUserHandler
+    public sealed class RegisterUserHandler : ICommandHandler<RegisterUserCommand, Result<RegisterUserResponse>>
     {
         private readonly IUserRepository _userRepository;
         private readonly IPasswordHasher _passwordHasher;
         private readonly IUnitOfWork _unitOfWork;
 
-        public RegisterUserHandler(IUserRepository userRepository, IPasswordHasher passwordHash, IUnitOfWork unitOfWork)
+        public RegisterUserHandler(
+            IUserRepository userRepository,
+            IPasswordHasher passwordHash,
+            IUnitOfWork unitOfWork
+            )
         {
             _userRepository = userRepository;
             _passwordHasher = passwordHash;

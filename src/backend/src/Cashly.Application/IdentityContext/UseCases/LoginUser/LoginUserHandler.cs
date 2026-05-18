@@ -1,25 +1,30 @@
-﻿using Cashly.Application.IdentityContext.Interfaces.Repository;
+﻿using Cashly.Application.Abstractions.Messaging;
+using Cashly.Application.IdentityContext.Interfaces.Repository;
 using Cashly.Application.IdentityContext.Interfaces.Security;
-using Cashly.Application.IdentityContext.UseCases.loginUser.Errors;
+using Cashly.Application.IdentityContext.UseCases.LoginUser.Errors;
 using Cashly.Application.Shared.Results;
 using Cashly.Domain.IdentityContext.ValueObjects;
 
-namespace Cashly.Application.IdentityContext.UseCases.loginUser
+namespace Cashly.Application.IdentityContext.UseCases.LoginUser
 {
-    public sealed class LoginUserHandler
+    public sealed class LoginUserHandler : ICommandHandler<LoginUserCommand, Result<LoginUserResponse>>
     {
         private readonly IUserRepository _userRepository;
         private readonly IPasswordHasher _passwordHasher;
         private readonly IJwtTokenGenerator _jwtTokenGenerator;
 
-        public LoginUserHandler(IUserRepository userRepository, IPasswordHasher passwordHasher, IJwtTokenGenerator jwtTokenGenerator)
+        public LoginUserHandler(
+            IUserRepository userRepository, 
+            IPasswordHasher passwordHasher, 
+            IJwtTokenGenerator jwtTokenGenerator
+            )
         {
             _userRepository = userRepository; 
             _passwordHasher = passwordHasher;
             _jwtTokenGenerator = jwtTokenGenerator;
         }
 
-        public async Task<Result<LoginUserResponse>> Handle(LoginUserCommand command)
+        public async Task<Result<LoginUserResponse>> HandleAsync(LoginUserCommand command)
         {
             var email = Email.Create(command.Email);
 
@@ -38,6 +43,5 @@ namespace Cashly.Application.IdentityContext.UseCases.loginUser
             return Result<LoginUserResponse>.Success(new LoginUserResponse(token.AccessToken, token.ExpiresAt));
 
         }
-
     }
 }

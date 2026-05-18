@@ -1,9 +1,10 @@
+using Cashly.Application.Abstractions.Messaging;
 using Cashly.Application.CashflowContext.Interfaces.Repository;
 using Cashly.Application.Shared.Results;
 
 namespace Cashly.Application.CashflowContext.UseCases.GetUserCashflows;
 
-public sealed class GetUserCashflowHandler
+public sealed class GetUserCashflowHandler : IQueryHandler<GetUserCashflowsQuery, Result<GetUserCashflowsResponse>>
 {
     private readonly ICashflowReadRepository _cashflowReadRepository;
 

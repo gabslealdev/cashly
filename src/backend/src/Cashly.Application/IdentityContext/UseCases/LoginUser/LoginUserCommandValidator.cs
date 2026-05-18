@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Cashly.Application.IdentityContext.UseCases.loginUser
+namespace Cashly.Application.IdentityContext.UseCases.LoginUser
 {
     public class LoginUserCommandValidator : AbstractValidator<LoginUserCommand>
     {

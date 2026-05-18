@@ -1,5 +1,6 @@
 ﻿using Cashly.Api.Contracts.IdentityContext.LoginUser;
-using Cashly.Application.IdentityContext.UseCases.loginUser;
+using Cashly.Application.Abstractions.Messaging;
+using Cashly.Application.IdentityContext.UseCases.LoginUser;
 using Cashly.Application.Shared.Results;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
@@ -10,19 +11,19 @@ namespace Cashly.Api.Controllers.IdentityContext
     [Route("api/login")]
     public sealed class LoginController : ControllerBase
     {
-        private readonly LoginUserHandler _handler;
+        private readonly IMediator _mediator;
         private readonly IValidator<LoginUserCommand> _validator;
 
-        public LoginController(LoginUserHandler handler, IValidator<LoginUserCommand> validator)
+        public LoginController(IMediator mediator, IValidator<LoginUserCommand> validator)
         {
-            _handler = handler;
+            _mediator = mediator;
             _validator = validator;
         }
 
         [HttpPost]
         [ProducesResponseType(typeof(LoginUserResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Login([FromBody] LoginUserResquestDto request)
+        public async Task<IActionResult> Login([FromBody] LoginUserRequestDto request, CancellationToken cancellationToken)
         {
             var command = new LoginUserCommand(request.Email, request.Password);
 
@@ -39,7 +40,7 @@ namespace Cashly.Api.Controllers.IdentityContext
                 return BadRequest(errors);
             }
 
-            Result<LoginUserResponse> result = await _handler.Handle(command);
+            Result<LoginUserResponse> result = await _mediator.SendAsync(command, cancellationToken);
 
             if (result.IsFailure)
             {

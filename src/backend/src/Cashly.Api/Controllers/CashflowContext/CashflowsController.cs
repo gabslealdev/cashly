@@ -1,14 +1,12 @@
 using System.Security.Claims;
 using Cashly.Api.Contracts.CashflowContext.CreateCashflow;
-using Cashly.Application.CashflowContext.Interfaces.Repository;
+using Cashly.Application.Abstractions.Messaging;
 using Cashly.Application.CashflowContext.UseCases.CreateCashflow;
 using Cashly.Application.CashflowContext.UseCases.GetUserCashflows;
 using Cashly.Application.Shared.Results;
-using Cashly.Infrastructure.Data.Repositories.CashflowContext;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.JsonWebTokens;
 
 namespace Cashly.Api.Controllers.CashflowContext;
 
@@ -17,27 +15,21 @@ namespace Cashly.Api.Controllers.CashflowContext;
 [Route("api/cashflows")]
 public sealed class CashflowsController : ControllerBase
 {
-    private readonly CreateCashflowHandler _createCashflowHandler;
+    private readonly IMediator _mediator;
     private readonly IValidator<CreateCashflowCommand> _validator;
-    private readonly GetUserCashflowHandler _getUserCashflowHandler;
 
-    public CashflowsController(CreateCashflowHandler createCashflowHandler, 
-        IValidator<CreateCashflowCommand> validator, 
-        ICashflowReadRepository cashflowReadRepository,
-        GetUserCashflowHandler getUserCashflowHandler)
+    public CashflowsController(IMediator mediator, IValidator<CreateCashflowCommand> validator)
     {
-        _createCashflowHandler = createCashflowHandler;
+        _mediator = mediator;
         _validator = validator;
-        _getUserCashflowHandler = getUserCashflowHandler;
     }
 
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> CreateCashflow([FromBody] CreateCashflowRequestDto request)
+    public async Task<IActionResult> CreateCashflow([FromBody] CreateCashflowRequestDto request, CancellationToken cancellationToken)
     {
         var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        Console.WriteLine("O Claim é: " + userIdClaim);
         
         if (!Guid.TryParse(userIdClaim, out var userId))
             return Unauthorized();
@@ -53,9 +45,11 @@ public sealed class CashflowsController : ControllerBase
                 property = error.PropertyName,
                 error = error.ErrorMessage
             });
+
+            return BadRequest(error);
         }
 
-        Result<CreateCashflowResponse> result = await _createCashflowHandler.HandleAsync(command);
+        Result<CreateCashflowResponse> result = await _mediator.SendAsync(command, cancellationToken);
 
         if (result.IsFailure)
         {
@@ -75,7 +69,7 @@ public sealed class CashflowsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> GetUserCashflows()
+    public async Task<IActionResult> GetUserCashflows(CancellationToken cancellationToken)
     {
         var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
         
@@ -83,7 +77,7 @@ public sealed class CashflowsController : ControllerBase
             return Unauthorized();
         var query = new GetUserCashflowsQuery(userId);
         
-        Result<GetUserCashflowsResponse> result = await _getUserCashflowHandler.HandleAsync(query);
+        Result<GetUserCashflowsResponse> result = await _mediator.SendAsync(query, cancellationToken);
 
         if (result.IsFailure)
         {

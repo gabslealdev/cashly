@@ -1,4 +1,4 @@
-﻿namespace Cashly.Application.Shared.Abstractions
+﻿namespace Cashly.Application.Abstractions.Persistence
 {
     public interface IUnitOfWork
     {
