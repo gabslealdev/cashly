@@ -23,6 +23,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Cashly.Application\Cashly.Application.csproj" />
     <ProjectReference Include="..\..\src\Cashly.Domain\Cashly.Domain.csproj" />
+    <ProjectReference Include="..\..\src\Cashly.Infrastructure\Cashly.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

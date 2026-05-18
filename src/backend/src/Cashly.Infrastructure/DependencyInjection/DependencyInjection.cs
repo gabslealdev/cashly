@@ -1,16 +1,19 @@
-﻿using Cashly.Application.CashflowContext.Interfaces.Repository;
+﻿using Cashly.Application.Abstractions.Messaging;
+using Cashly.Application.Abstractions.Persistence;
+using Cashly.Application.CashflowContext.Interfaces.Repository;
 using Cashly.Application.CashflowContext.UseCases.CreateCashflow;
 using Cashly.Application.CashflowContext.UseCases.GetUserCashflows;
 using Cashly.Application.IdentityContext.Interfaces.Repository;
 using Cashly.Application.IdentityContext.Interfaces.Security;
-using Cashly.Application.IdentityContext.UseCases.loginUser;
+using Cashly.Application.IdentityContext.UseCases.LoginUser;
 using Cashly.Application.IdentityContext.UseCases.RegisterUser;
-using Cashly.Application.Shared.Abstractions;
+using Cashly.Application.Shared.Results;
 using Cashly.Infrastructure.Authentication;
 using Cashly.Infrastructure.Data.Context;
 using Cashly.Infrastructure.Data.Repositories.CashflowContext;
 using Cashly.Infrastructure.Data.Repositories.IdentityContext;
 using Cashly.Infrastructure.Data.UnitOfWork;
+using Cashly.Infrastructure.Messaging;
 using Cashly.Infrastructure.Security;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +27,7 @@ public static class DependencyInjection
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddUnitOfWork(configuration);
+        services.AddMediator();
         services.AddAuthenticationInfrastructure(configuration);
         services.AddIdentityContext();
         services.AddCashflowContext();
@@ -37,6 +41,13 @@ public static class DependencyInjection
         
         services.AddDbContext<CashlyDbContext>(options => options.UseSqlServer(connectionString));
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+        
+        return services;
+    }
+
+    private static IServiceCollection AddMediator(this IServiceCollection services)
+    {
+        services.AddScoped<IMediator, Mediator>();
         
         return services;
     }
@@ -56,8 +67,8 @@ public static class DependencyInjection
     private static IServiceCollection AddIdentityContext(this IServiceCollection services)
     {
         services.AddScoped<IUserRepository, UserRepository>();
-        services.AddScoped<RegisterUserHandler>();
-        services.AddScoped<LoginUserHandler>();
+        services.AddScoped<ICommandHandler<RegisterUserCommand, Result<RegisterUserResponse>>, RegisterUserHandler>();
+        services.AddScoped<ICommandHandler<LoginUserCommand, Result<LoginUserResponse>>, LoginUserHandler>();
         services.AddScoped<IValidator<RegisterUserCommand>, RegisterUserCommandValidator>();
         services.AddScoped<IValidator<LoginUserCommand>, LoginUserCommandValidator>();
         
@@ -75,7 +86,7 @@ public static class DependencyInjection
     private static IServiceCollection AddCashflowWrite(this IServiceCollection services)
     {
         services.AddScoped<ICashflowRepository, CashflowRepository>();
-        services.AddScoped<CreateCashflowHandler>();
+        services.AddScoped<ICommandHandler<CreateCashflowCommand, Result<CreateCashflowResponse>>, CreateCashflowHandler>();
         services.AddScoped<IValidator<CreateCashflowCommand>, CreateCashflowCommandValidator>();
 
         return services;
@@ -84,7 +95,7 @@ public static class DependencyInjection
     private static IServiceCollection AddCashflowRead(this IServiceCollection services)
     {
         services.AddScoped<ICashflowReadRepository, CashflowReadRepository>();
-        services.AddScoped<GetUserCashflowHandler>();
+        services.AddScoped<IQueryHandler<GetUserCashflowsQuery, Result<GetUserCashflowsResponse>>, GetUserCashflowHandler>();
         
         return services;
     }

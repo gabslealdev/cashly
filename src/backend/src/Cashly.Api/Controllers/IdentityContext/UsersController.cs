@@ -1,4 +1,5 @@
 ﻿using Cashly.Api.Contracts.IdentityContext.RegisterUser;
+using Cashly.Application.Abstractions.Messaging;
 using Cashly.Application.IdentityContext.UseCases.RegisterUser;
 using Cashly.Application.Shared.Results;
 using FluentValidation;
@@ -10,19 +11,19 @@ namespace Cashly.Api.Controllers.IdentityContext
     [Route("api/identity/user")]
     public sealed class UsersController : ControllerBase
     {
-        private readonly RegisterUserHandler _handler;
+        private readonly IMediator _mediator;
         private readonly IValidator<RegisterUserCommand> _validator;
 
-        public UsersController(RegisterUserHandler handler, IValidator<RegisterUserCommand> validator)
+        public UsersController(IMediator mediator, IValidator<RegisterUserCommand> validator)
         {
-            _handler = handler;
+            _mediator = mediator;
             _validator = validator;
         }       
 
         [HttpPost]
         [ProducesResponseType(typeof(RegisterUserResponse), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Register([FromBody] RegisterUserRequestDto request)
+        public async Task<IActionResult> Register([FromBody] RegisterUserRequestDto request, CancellationToken cancellationToken)
         {
             var command = new RegisterUserCommand(request.FirstName, request.LastName, request.Email, request.Password);
 
@@ -39,7 +40,7 @@ namespace Cashly.Api.Controllers.IdentityContext
                 return BadRequest(errors);
             }
 
-            Result<RegisterUserResponse> result = await _handler.HandleAsync(command);
+            Result<RegisterUserResponse> result = await _mediator.SendAsync(command, cancellationToken);
 
             if (result.IsFailure)
             {

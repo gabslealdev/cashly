@@ -1,4 +1,4 @@
-﻿using Cashly.Application.Shared.Abstractions;
+﻿using Cashly.Application.Abstractions.Persistence;
 using Cashly.Infrastructure.Data.Context;
 
 namespace Cashly.Infrastructure.Data.UnitOfWork

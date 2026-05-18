@@ -1,9 +1,13 @@
+using Cashly.Application.Abstractions.Messaging;
 using Cashly.Application.IdentityContext.Interfaces.Repository;
 using Cashly.Application.IdentityContext.Interfaces.Security;
 using Cashly.Application.IdentityContext.Models;
-using Cashly.Application.IdentityContext.UseCases.loginUser;
+using Cashly.Application.IdentityContext.UseCases.LoginUser;
+using Cashly.Application.Shared.Results;
 using Cashly.Domain.IdentityContext.Entities;
 using Cashly.Domain.IdentityContext.ValueObjects;
+using Cashly.Infrastructure.Messaging;
+using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using Shouldly;
 
@@ -15,7 +19,7 @@ public class LoginUserHandlerTests
     public async Task LoginUser_ShouldLogin_WhenDataIsValid()
     {
         // arrange
-        var userRespositoryMock = new Mock<IUserRepository>();
+        var userRepositoryMock = new Mock<IUserRepository>();
         var passwordHasherMock = new Mock<IPasswordHasher>();
         var jwtTokenGeneratorMock = new Mock<IJwtTokenGenerator>();
         const string email = "joao.silva@email.com";
@@ -26,7 +30,7 @@ public class LoginUserHandlerTests
             Email.Create(email),
             PasswordHash.Create("hashedPassword"));
 
-        userRespositoryMock.Setup(x => x.GetByEmailAsync(It.IsAny<Email>())).ReturnsAsync(user);
+        userRepositoryMock.Setup(x => x.GetByEmailAsync(It.IsAny<Email>())).ReturnsAsync(user);
 
         passwordHasherMock.Setup(x => x.Verify(password, user.PasswordHash)).Returns(true);
 
@@ -34,16 +38,18 @@ public class LoginUserHandlerTests
             .Setup(x => x.GenerateToken(user.Id, user.Email.Value))
             .Returns(new JwtTokenResult("token", DateTime.UtcNow.AddHours(1)));
 
-        var handler = new LoginUserHandler(userRespositoryMock.Object, 
-            passwordHasherMock.Object, jwtTokenGeneratorMock.Object);
+        var mediator = CreateMediator(
+            userRepositoryMock,
+            passwordHasherMock,
+            jwtTokenGeneratorMock);
         
         // act
-        var result = await handler.Handle(command);
+        var result = await mediator.SendAsync(command);
         
         // assert
         result.IsSuccess.ShouldBeTrue();
         
-        userRespositoryMock.Verify(x => x.GetByEmailAsync(It.IsAny<Email>()), Times.Once);
+        userRepositoryMock.Verify(x => x.GetByEmailAsync(It.IsAny<Email>()), Times.Once);
         passwordHasherMock.Verify(x => x.Verify(password, user.PasswordHash), Times.Once);
         jwtTokenGeneratorMock.Verify(x => x.GenerateToken(user.Id, user.Email.Value), Times.Once);
 
@@ -53,19 +59,21 @@ public class LoginUserHandlerTests
     public async Task LoginUser_ShouldNotLogin_WhenUserDoesNotExist()
     {
         // arrange
-        var userRespositoryMock = new Mock<IUserRepository>();
+        var userRepositoryMock = new Mock<IUserRepository>();
         var passwordHasherMock = new Mock<IPasswordHasher>();
         var jwtTokenGeneratorMock = new Mock<IJwtTokenGenerator>();
         
         var command = new LoginUserCommand("joaosilva@email.com", "password123");
         
-        userRespositoryMock.Setup(x => x.GetByEmailAsync(It.IsAny<Email>())).ReturnsAsync((User?)null);
+        userRepositoryMock.Setup(x => x.GetByEmailAsync(It.IsAny<Email>())).ReturnsAsync((User?)null);
         
-        var handler = new LoginUserHandler(userRespositoryMock.Object, 
-            passwordHasherMock.Object, jwtTokenGeneratorMock.Object);
+        var mediator = CreateMediator(
+            userRepositoryMock,
+            passwordHasherMock,
+            jwtTokenGeneratorMock);
         
         // act
-        var result = await handler.Handle(command);
+        var result = await mediator.SendAsync(command);
         
         // assert
         result.IsSuccess.ShouldBeFalse();
@@ -78,5 +86,21 @@ public class LoginUserHandlerTests
             x => x.GenerateToken(It.IsAny<Guid>(), It.IsAny<string>()),
             Times.Never);
 
+    }
+
+    private static IMediator CreateMediator(
+        Mock<IUserRepository> userRepositoryMock,
+        Mock<IPasswordHasher> passwordHasherMock,
+        Mock<IJwtTokenGenerator> jwtTokenGeneratorMock)
+    {
+        var services = new ServiceCollection();
+
+        services.AddSingleton(userRepositoryMock.Object);
+        services.AddSingleton(passwordHasherMock.Object);
+        services.AddSingleton(jwtTokenGeneratorMock.Object);
+        services.AddSingleton<ICommandHandler<LoginUserCommand, Result<LoginUserResponse>>, LoginUserHandler>();
+        services.AddSingleton<IMediator, Mediator>();
+
+        return services.BuildServiceProvider().GetRequiredService<IMediator>();
     }
 }
