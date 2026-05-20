@@ -2,6 +2,7 @@
 using Cashly.Application.Abstractions.Persistence;
 using Cashly.Application.CashflowContext.Interfaces.Repository;
 using Cashly.Application.CashflowContext.UseCases.CreateCashflow;
+using Cashly.Application.CashflowContext.UseCases.GetCashflowBoard;
 using Cashly.Application.CashflowContext.UseCases.GetUserCashflows;
 using Cashly.Application.IdentityContext.Interfaces.Repository;
 using Cashly.Application.IdentityContext.Interfaces.Security;
@@ -95,7 +96,13 @@ public static class DependencyInjection
     private static IServiceCollection AddCashflowRead(this IServiceCollection services)
     {
         services.AddScoped<ICashflowReadRepository, CashflowReadRepository>();
-        services.AddScoped<IQueryHandler<GetUserCashflowsQuery, Result<GetUserCashflowsResponse>>, GetUserCashflowHandler>();
+        services.AddScoped<ICashflowMemberReadRepository, CashflowMemberReadRepository>();
+        
+        services.AddScoped<IQueryHandler<GetUserCashflowsQuery,
+            Result<GetUserCashflowsResponse>>, GetUserCashflowHandler>();
+
+        services.AddScoped<IQueryHandler<GetCashflowBoardQuery,
+            Result<GetCashflowBoardResponse>>, GetCashflowBoardHandler>();
         
         return services;
     }
