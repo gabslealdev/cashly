@@ -1,25 +1,29 @@
-<main>
+<main [class.aside-expanded]="isAsideExpanded()">
   <div class="aside-container">
     <div class="logo-wrapper">
-      <img class="logo" src="svg/cashly-logotype.svg" alt="" />
+      <img class="logo logo-full" src="svg/cashly-logotype.svg" alt="Cashly" (click)="toggleAsideMenu()" />
+      <img class="logo logo-compact" src="svg/cashly-icon.svg" alt="Cashly"  (click)="toggleAsideMenu()"/>
     </div>
     <section class="aside-menu">
-      <h2>Menu</h2>
+      <h2 class="menu-title">Menu</h2>
       <app-menu-button label="Novo Cashflow" (clicked)="openCreateCashflowModal()"></app-menu-button>
-      <app-modal
-        [isOpen]="isCreateCashflowModalOpen()"
-        title="Novo Cashflow"
-        (closed)="closeCreateCashflowModal()">
-        <app-create-cashflow-form (cashflowCreated)="onCashflowCreated()" (closeModal)="closeCreateCashflowModal()"></app-create-cashflow-form>
+      <app-modal [isOpen]="isCreateCashflowModalOpen()" title="Novo Cashflow" (closed)="closeCreateCashflowModal()">
+        <app-create-cashflow-form (cashflowCreated)="onCashflowCreated()"
+          (closeModal)="closeCreateCashflowModal()"></app-create-cashflow-form>
       </app-modal>
     </section>
   </div>
   <div class="main-container">
     <div class="dashboard-header">
       @for(cashflow of cashflows(); track cashflow.cashflowId){
-        <app-cashflow-header-card [cashflow]="cashflow"></app-cashflow-header-card>
+      <app-cashflow-header-card [cashflow]="cashflow"
+        (selected)="onCashflowSelected($event)"></app-cashflow-header-card>
       }
     </div>
-    <div class="dashboard-main"></div>
+    <div class="dashboard-main">
+      @if (selectedCashflow(); as cashflow){
+      <app-cashflow-board [cashflowId]="cashflow.cashflowId"></app-cashflow-board>
+      }
+    </div>
   </div>
 </main>

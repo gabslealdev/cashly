@@ -9,10 +9,10 @@ import { LoginUserResponse } from '../models/login-user-response.model';
   providedIn: 'root',
 })
 export class LoginService {
-  private readonly _http = inject(HttpClient);
-  private readonly _apiUrl = environment.apiUrl;
+  private readonly http = inject(HttpClient);
+  private readonly apiUrl = environment.apiUrl;
 
   login(request: LoginUserRequest): Observable<LoginUserResponse>{
-    return this._http.post<LoginUserResponse>(`${this._apiUrl}/api/login`, request);
+    return this.http.post<LoginUserResponse>(`${this.apiUrl}/api/login`, request);
   }
 }

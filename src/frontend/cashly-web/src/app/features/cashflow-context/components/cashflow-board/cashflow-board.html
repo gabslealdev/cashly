@@ -1,0 +1,35 @@
+<main>
+    <section class="title">
+        <h2>{{board()?.title}}</h2>
+    </section>
+        @if (board(); as board){
+            <section class="period-group">
+                @for(month of board.months; track month.period){
+                    <div class="period-column">
+                        <div class="period-header">
+                            <p>{{month.period}}</p>
+                        </div>
+                        <div class="period-summary">
+                            <p class="balance">R$ 7000,00</p>
+                            <div class="status-tag">
+                                <p>healthy</p>
+                            </div>
+                        </div>
+                        <div class="transaction-card">
+                            <div class="header-card">
+                                <p class="type-card">ENTRADA</p>
+                            </div>
+                            <div class="body-card">
+                                <p class="title-card">Salário do mês</p>
+                                <p class="amount-card">R$1650,00</p>
+                            </div>
+                            <div class="footer-card">
+                                <p class="date-card">01/01/2024</p>
+                                <p class="status-card">COMPLETED</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </section>
+        }
+</main>

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { IdentityButton } from '../identity-button/identity-button';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LoginService } from '../../services/login-service';
@@ -16,10 +16,9 @@ export class LoginUserForm {
   private readonly formBuilder = inject(FormBuilder);
   private readonly loginService = inject(LoginService);
   private readonly authService = inject(AuthService);
-  private readonly cdr = inject(ChangeDetectorRef);
   private readonly router = inject(Router)
 
-  protected apiErrorMessage: string | null = null;
+  protected apiErrorMessage = signal<string | null>(null);
 
 
   protected loginForm = this.formBuilder.group({
@@ -49,24 +48,16 @@ export class LoginUserForm {
         this.loginService.login(loginRequest).subscribe({
           next: (response) => {
             this.authService.saveSession(response);
-
-            console.log("Token salvo:", this.authService.getToken());
-            console.log("Expira em:", this.authService.getExpiresAt());
-
             this.loginForm.reset();
 
             this.router.navigate(['dashboard'])
           },
           error: (error) => {
-            console.error("Erro ao realizar login", error.status);
-
             if (error.status === 400) {
-              this.apiErrorMessage = "Email ou Senha inválidos.";
+              this.apiErrorMessage.set("Email ou Senha inválidos.");
             } else {
-             this.apiErrorMessage = "Ocorreu um erro ao tentar realizar login. Por favor, tente novamente mais tarde.";
+             this.apiErrorMessage.set("Ocorreu um erro ao tentar realizar login. Por favor, tente novamente mais tarde.");
             }
-
-            this.cdr.detectChanges();
           }
 
         });

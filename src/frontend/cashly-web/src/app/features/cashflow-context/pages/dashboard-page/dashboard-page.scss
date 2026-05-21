@@ -1,28 +1,41 @@
-main{
+main {
     background-color: var(--color-background);
     display: flex;
     width: 100vw;
     height: 100vh;
     padding: var(--space-3);
 
-    & .aside-container{
+    & .aside-container {
         background-color: var(--color-surface);
         display: flex;
         flex-direction: column;
         height: 100%;
-        width: 15%;
+        width: 12%;
         margin-right: var(--space-3);
         border-radius: var(--radius-xs);
         padding-inline: var(--space-2);
 
-        & .logo-wrapper{
+        & .aside-toggle {
+            display: none;
+        }
+
+        & .logo-wrapper {
             width: 90%;
             margin-top: var(--space-3);
             margin-bottom: var(--space-8);
             align-self: center;
+
+            & .logo {
+                display: block;
+                width: 100%;
+            }
+
+            & .logo-compact {
+                display: none;
+            }
         }
 
-        & h2{
+        & h2 {
             font-size: var(--font-size-lg);
             font-weight: 300;
             color: var(--color-title);
@@ -31,27 +44,27 @@ main{
         }
     }
 
-    & .main-container{
+    & .main-container {
         display: flex;
         flex-direction: column;
         gap: var(--space-3);
-        width: 85%;
+        width: 88%;
         height: 100%;
 
 
-        & .dashboard-header{
+        & .dashboard-header {
             display: flex;
             gap: var(--space-3);
             background-color: var(--color-surface);
-            height: 15%;
+            height: 10%;
             width: 100%;
             border-radius: var(--radius-xs);
             padding: var(--space-3);
         }
 
-        & .dashboard-main{
+        & .dashboard-main {
             background-color: var(--color-surface);
-            height: 85%;
+            height: 90%;
             width: 100%;
             border-radius: var(--radius-xs);
             padding: var(--space-3);
@@ -59,9 +72,151 @@ main{
     }
 }
 
-.month-container{
+.month-container {
     border: 1px solid var(--fill-transparent);
     border-radius: var(--radius-xs);
     height: 100%;
     width: 15%;
+}
+
+@media (max-width: 1366px) {
+
+    main {
+        background-color: var(--color-background);
+        display: flex;
+        width: 100vw;
+        height: 100vh;
+        padding: var(--space-2);
+
+        & .aside-container {
+            background-color: var(--color-surface);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            align-items: center;
+            width: 5%;
+            margin-right: var(--space-2);
+            border-radius: var(--radius-xs);
+            padding-inline: var(--space-2);
+
+            & .menu-box{
+                display: flex;
+                align-items: center;
+                justify-content: space-around;
+            }
+
+            & .aside-toggle {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 2rem;
+                height: 2rem;
+                margin-top: var(--space-2);
+                color: var(--color-text);
+                background-color: transparent;
+                border: 1px solid var(--fill-transparent);
+                border-radius: var(--radius-xs);
+                cursor: pointer;
+            }
+
+            & .aside-toggle:hover {
+                background-color: var(--fill-transparent-2);
+            }
+
+            & .logo-wrapper {
+                width: 100%;
+                margin-top: var(--space-4);
+                margin-bottom: 0;
+                align-self: center;
+
+                & .logo-full {
+                    display: none;
+                }
+
+                & .logo-compact {
+                    display: block;
+                }
+            }
+
+            & .aside-menu {
+                display: none;
+            }
+
+
+            & .menu-title {
+                font-size: var(--font-size-lg);
+                font-weight: 300;
+                color: var(--color-title);
+                margin-bottom: var(--space-2);
+                margin-left: var(--space-2);
+            }
+        }
+
+        & .main-container {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-2);
+            width: 95%;
+            height: 100%;
+
+
+            & .dashboard-header {
+                display: flex;
+                gap: var(--space-2);
+                background-color: var(--color-surface);
+                height: 14%;
+                width: 100%;
+                border-radius: var(--radius-xs);
+                padding: var(--space-2);
+            }
+
+            & .dashboard-main {
+                background-color: var(--color-surface);
+                height: 86%;
+                width: 100%;
+                border-radius: var(--radius-xs);
+                padding: var(--space-2);
+            }
+        }
+    }
+
+    main.aside-expanded {
+        & .aside-container {
+            align-items: stretch;
+            width: 14%;
+
+            & .aside-toggle {
+                align-self: flex-end;
+            }
+
+            & .logo-wrapper {
+                width: 100%;
+                margin-top: var(--space-2);
+                margin-bottom: var(--space-6);
+
+                & .logo-full {
+                    display: block;
+                }
+
+                & .logo-compact {
+                    display: none;
+                }
+            }
+
+            & .aside-menu {
+                display: block;
+            }
+        }
+
+        & .main-container {
+            width: 86%;
+        }
+    }
+
+    .month-container {
+        border: 1px solid var(--fill-transparent);
+        border-radius: var(--radius-xs);
+        height: 100%;
+        width: 15%;
+    }
 }

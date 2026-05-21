@@ -12,8 +12,8 @@
         @if (password?.touched && password?.hasError('required')) {
         <small class="error-message">Senha é obrigatório.</small>
         }
-        @if (apiErrorMessage) {
-        <small class="error-message">{{ apiErrorMessage }}</small>
+        @if (apiErrorMessage()) {
+        <small class="error-message">{{ apiErrorMessage() }}</small>
         }
     </div>
     <app-identity-button text="Entrar"></app-identity-button>
