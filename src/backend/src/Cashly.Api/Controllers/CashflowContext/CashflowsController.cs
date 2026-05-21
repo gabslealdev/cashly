@@ -2,6 +2,7 @@ using System.Security.Claims;
 using Cashly.Api.Contracts.CashflowContext.CreateCashflow;
 using Cashly.Application.Abstractions.Messaging;
 using Cashly.Application.CashflowContext.UseCases.CreateCashflow;
+using Cashly.Application.CashflowContext.UseCases.GetCashflowBoard;
 using Cashly.Application.CashflowContext.UseCases.GetUserCashflows;
 using Cashly.Application.Shared.Results;
 using FluentValidation;
@@ -75,6 +76,7 @@ public sealed class CashflowsController : ControllerBase
         
         if (!Guid.TryParse(userIdClaim, out var userId))
             return Unauthorized();
+        
         var query = new GetUserCashflowsQuery(userId);
         
         Result<GetUserCashflowsResponse> result = await _mediator.SendAsync(query, cancellationToken);
@@ -89,5 +91,32 @@ public sealed class CashflowsController : ControllerBase
         }
         
         return Ok(result.Value.Cashflows);
+    }
+
+    [HttpGet("{cashflowId:guid}/board")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetUserCashflowBoard([FromRoute] Guid cashflowId, CancellationToken cancellationToken)
+    {
+        var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        if (!Guid.TryParse(userIdClaim, out var userId))
+            return Unauthorized();
+        
+        var query = new GetCashflowBoardQuery(userId, cashflowId);
+
+        Result<GetCashflowBoardResponse> result = await _mediator.SendAsync(query, cancellationToken);
+
+        if (result.IsFailure)
+        {
+            return NotFound(new
+            {
+                code = result.Error.Code,
+                message = result.Error.Message
+            });
+        }
+
+        return Ok(result.Value);
     }
 }

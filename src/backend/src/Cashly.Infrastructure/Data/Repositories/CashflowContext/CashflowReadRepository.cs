@@ -1,4 +1,5 @@
 using Cashly.Application.CashflowContext.Interfaces.Repository;
+using Cashly.Application.CashflowContext.UseCases.GetCashflowBoard;
 using Cashly.Application.CashflowContext.UseCases.GetUserCashflows;
 using Cashly.Infrastructure.Data.Context;
 using Microsoft.EntityFrameworkCore;
@@ -29,5 +30,21 @@ public class CashflowReadRepository : ICashflowReadRepository
             )).ToListAsync();
         
         return cashflows;
+    }
+
+    public async Task<CashflowBoardHeaderReadModel?> GetCashflowBoardHeaderAsync(Guid cashflowId, Guid userId)
+    {
+        return await _context.Cashflows
+            .AsNoTracking()
+            .Where(cashflow => cashflow.Id == cashflowId &&
+                               cashflow.CashflowMembers.Any(member => member.UserId == userId))
+            .Select(cashflow => new CashflowBoardHeaderReadModel(
+                cashflow.Id,
+                cashflow.Title.Value,
+                cashflow.CashflowMembers
+                    .Where(member => member.UserId == userId)
+                    .Select(member => member.Role.ToString())
+                    .First()
+            )).FirstOrDefaultAsync();
     }
 }

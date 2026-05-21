@@ -4,12 +4,14 @@ import { environment } from '../../../../environments/environment.development';
 import { CreateCashflowRequest } from '../models/create-cashflow-request.model';
 import { Observable } from 'rxjs';
 import { CreateCashflowResponse } from '../models/create-cashflow-response.model';
-import { UserCashflowReadModel } from '../models/user-cashflow-readmodel';
+import { UserCashflowReadModel } from '../models/user-cashflow-read-model.model';
+import { GetCashflowBoardResponse } from '../models/get-cashflow-board-response.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CashflowService {
+  [x: string]: any;
   private readonly http = inject(HttpClient);
   private readonly apiUrl = environment.apiUrl 
 
@@ -20,6 +22,9 @@ export class CashflowService {
   getUserCashflow(): Observable<UserCashflowReadModel[]> {
     return this.http.get<UserCashflowReadModel[]>(`${this.apiUrl}/api/cashflows`)
   }
-}
 
+  getCashflowBoard(cashflowId: string): Observable<GetCashflowBoardResponse> {
+    return this.http.get<GetCashflowBoardResponse>(`${this.apiUrl}/api/cashflows/${cashflowId}/board`)
+  }
+}
 

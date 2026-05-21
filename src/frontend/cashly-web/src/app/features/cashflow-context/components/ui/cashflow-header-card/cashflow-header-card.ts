@@ -1,5 +1,5 @@
-import { Component, input } from '@angular/core';
-import { UserCashflowReadModel } from '../../../models/user-cashflow-readmodel';
+import { Component, input, output } from '@angular/core';
+import { UserCashflowReadModel } from '../../../models/user-cashflow-read-model.model';
 
 @Component({
   selector: 'app-cashflow-header-card',
@@ -9,4 +9,9 @@ import { UserCashflowReadModel } from '../../../models/user-cashflow-readmodel';
 })
 export class CashflowHeaderCard {
   cashflow = input.required<UserCashflowReadModel>();
+  selected = output<UserCashflowReadModel>();
+
+  selectCashflow(): void {
+    this.selected.emit(this.cashflow());
+  }
 }

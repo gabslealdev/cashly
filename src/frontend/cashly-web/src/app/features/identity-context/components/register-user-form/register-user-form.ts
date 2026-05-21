@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register-user-form',
-  imports: [CommonModule, IdentityButton, ReactiveFormsModule, IdentityButton],
+  imports: [CommonModule, IdentityButton, ReactiveFormsModule],
   templateUrl: './register-user-form.html',
   styleUrl: './register-user-form.scss',
 })
@@ -41,14 +41,10 @@ export class RegisterUserForm {
     };
 
     this.identityService.registerUser(registerRequest).subscribe({
-      next: (response) => {
-        console.log(response)
+      next: () => {
         this.registerForm.reset();
 
         this.router.navigate(['login'])
-      },
-      error: (error) => {
-        console.error('Erro ao registrar usuário:', error)
       }
     });
 

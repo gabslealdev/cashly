@@ -33,14 +33,10 @@ export class CreateCashflowForm {
     }
 
     this.cashflowService.createCashflow(request).subscribe({
-      next: (response) => {
-        console.log(response)
+      next: () => {
         this.form.reset();
         this.cashflowCreated.emit()
         this.closeModal.emit()
-      },
-      error: (error) => {
-        console.log('Erro ao registrar usuário', error)
       }
     });
   }
@@ -50,6 +46,4 @@ export class CreateCashflowForm {
   }
 
 }
-
-
 

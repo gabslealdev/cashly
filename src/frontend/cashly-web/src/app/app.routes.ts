@@ -12,5 +12,5 @@ export const routes: Routes = [
         loadComponent: () => 
             import('./features/cashflow-context/pages/dashboard-page/dashboard-page')
             .then(c => c.DashboardPage)
-    },
+    }
 ];

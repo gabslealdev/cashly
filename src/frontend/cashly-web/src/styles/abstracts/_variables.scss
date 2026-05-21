@@ -15,15 +15,13 @@
   --color-button-hover: #242424;
   --color-border: #E0E0E0;
   --color-title: #6C757D;
+  --color-text-secondary: #BFC0C0;
   --color-text: #F8FAFC;
   --color-text-muted: #94A3B8;
   --color-danger: #DC2626;
   --color-success: #16A34A;
   --fill-transparent: rgb(217, 217, 217, 0.2);
-
-  /* typography */
-  --font-base: 'Inter', Arial, Helvetica, sans-serif;
-  --font-special: 'Lexend Mega', sans-serif;
+  --fill-transparent-2: rgb(217, 217, 217, 0.04);
 
   --font-size-1xs: 0.5rem;
   --font-size-xs: 0.75rem;
@@ -32,6 +30,10 @@
   --font-size-lg: 1.125rem;
   --font-size-xl: 1.5rem;
   --font-size-2xl: 2rem;
+
+  --font: 'Inter', sans-serif;
+
+  
 
   /* spacing */
   --space-1: 0.25rem;
@@ -58,4 +60,5 @@
   --container-sm: 480px;
   --container-md: 768px;
   --container-lg: 1200px;
+
 }
