@@ -91,13 +91,21 @@ Representa o hash da senha do usuário armazenado de forma segura no domínio.
 
 # CASHFLOW CONTEXT
 
-Responsabilidade: Gerenciar o controle financeiro dos usuários, incluindo transações, saldos e histórico. 
+Responsabilidade: Gerenciar o controle financeiro dos usuários, incluindo cashflows, transações, saldos derivados e histórico. 
 
 - Criação de Cashflows
 - Registro de transações (receitas/despesas)
 - Cálculo de saldo por período
 - Status financeiro (health, closed month)
 - Organização por período (mês)
+
+## Decisões de Modelagem
+
+- `Cashflow` é um agregado responsável por identidade, título e regras de colaboração.
+- `Transaction` é um agregado próprio, associado a `Cashflow` por `CashflowId`.
+- O relacionamento `Cashflow 1:N Transaction` existe no banco e nos modelos de leitura, mas não implica uma coleção `Transactions` dentro do agregado `Cashflow`.
+- Saldos e `Health Status` de períodos abertos são derivados em consultas/read models a partir das transações.
+- O status consolidado de um período fechado pertence a `ClosedMonth`.
 
 # Entidades
 
@@ -110,13 +118,11 @@ Responsabilidade: Gerenciar o controle financeiro dos usuários, incluindo trans
 
 **Responsabilidades**: 
 
-- Armazenar todas as transações do mês atual.
-- Armazenar informações sobre meses anteriores
-- Armazenar todos os membros do cashflow
+- Representar o controle financeiro de um usuário ou grupo.
+- Armazenar os membros do cashflow.
 - Garantir que as alterações respeitem regras de domínio.
-- Coordenar o fechamento do mês.
-- Ponto de entrada para operações relacionadas às transações e ao estado financeiro
-- Garantir que só haja um único `owner` em cada cashflow
+- Garantir que só haja um único `owner` em cada cashflow.
+- Servir como referência para transações por meio de seu `Id`.
 
 ### Objetos de Valor
 
@@ -156,9 +162,18 @@ Representa o título de um Cashflow, utilizado para identificar e descrever o co
 Responsabilidades
 
 - Representar uma movimentação financeira (`income` ou `expense`).
-- Garantir a consistência dos dados financeiros.
+- Garantir a consistência dos seus próprios dados financeiros.
 - Garantir que a transação pertença a um único Cashflow.
-- Garantir que regras de período (ex: mês fechado) sejam respeitadas.
+- Controlar suas regras de status e transições permitidas.
+- Referenciar o cashflow por identidade, sem ser parte interna do agregado `Cashflow`.
+
+**Decisão de agregado:**
+
+- `Transaction` é um Aggregate Root próprio.
+- Deve possuir repositório de escrita próprio.
+- Deve ser associada a `Cashflow` por `CashflowId`.
+- O agregado `Cashflow` não deve manter uma coleção de transações.
+- Regras de coordenação, como validar membership e impedir criação em mês fechado, devem ser aplicadas no caso de uso ou por policies/domain services.
 
 ---
 

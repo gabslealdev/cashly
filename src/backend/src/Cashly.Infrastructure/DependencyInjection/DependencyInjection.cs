@@ -9,10 +9,13 @@ using Cashly.Application.IdentityContext.Interfaces.Security;
 using Cashly.Application.IdentityContext.UseCases.LoginUser;
 using Cashly.Application.IdentityContext.UseCases.RegisterUser;
 using Cashly.Application.Shared.Results;
+using Cashly.Application.TransactionContext.Interfaces.Repository;
+using Cashly.Application.TransactionContext.UseCases.CreateTransaction;
 using Cashly.Infrastructure.Authentication;
 using Cashly.Infrastructure.Data.Context;
 using Cashly.Infrastructure.Data.Repositories.CashflowContext;
 using Cashly.Infrastructure.Data.Repositories.IdentityContext;
+using Cashly.Infrastructure.Data.Repositories.TransactionContext;
 using Cashly.Infrastructure.Data.UnitOfWork;
 using Cashly.Infrastructure.Messaging;
 using Cashly.Infrastructure.Security;
@@ -32,6 +35,7 @@ public static class DependencyInjection
         services.AddAuthenticationInfrastructure(configuration);
         services.AddIdentityContext();
         services.AddCashflowContext();
+        services.AddTransactionContext();
         
         return services;
     }
@@ -72,6 +76,7 @@ public static class DependencyInjection
         services.AddScoped<ICommandHandler<LoginUserCommand, Result<LoginUserResponse>>, LoginUserHandler>();
         services.AddScoped<IValidator<RegisterUserCommand>, RegisterUserCommandValidator>();
         services.AddScoped<IValidator<LoginUserCommand>, LoginUserCommandValidator>();
+        services.AddScoped<IValidator<CreateTransactionCommand>, CreateTransactionCommandValidator>();
         
         return services;
     }
@@ -87,7 +92,10 @@ public static class DependencyInjection
     private static IServiceCollection AddCashflowWrite(this IServiceCollection services)
     {
         services.AddScoped<ICashflowRepository, CashflowRepository>();
-        services.AddScoped<ICommandHandler<CreateCashflowCommand, Result<CreateCashflowResponse>>, CreateCashflowHandler>();
+        
+        services.AddScoped<ICommandHandler<CreateCashflowCommand,
+            Result<CreateCashflowResponse>>, CreateCashflowHandler>();
+        
         services.AddScoped<IValidator<CreateCashflowCommand>, CreateCashflowCommandValidator>();
 
         return services;
@@ -106,5 +114,24 @@ public static class DependencyInjection
         
         return services;
     }
+
+    private static IServiceCollection AddTransactionContext(this IServiceCollection services)
+    {
+        services.AddTransactionWrite();
+        
+        return services;
+    }
+
+    private static IServiceCollection AddTransactionWrite(this IServiceCollection services)
+    {
+        services.AddScoped<ITransactionRepository, TransactionRepository>();
+        services
+            .AddScoped<ICommandHandler<CreateTransactionCommand, Result<CreateTransactionResponse>>,
+                CreateTransactionHandler>();
+        
+        return services;
+    }
+    
+    
     
 }

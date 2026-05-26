@@ -1,6 +1,6 @@
 using Cashly.Domain.Shared.Errors;
 
-namespace Cashly.Domain.CashflowContext.Errors;
+namespace Cashly.Domain.TransactionContext.Errors;
 
 public static class AmountErrors
 {

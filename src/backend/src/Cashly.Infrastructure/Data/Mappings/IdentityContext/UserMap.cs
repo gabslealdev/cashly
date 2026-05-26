@@ -3,7 +3,7 @@ using Cashly.Domain.IdentityContext.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Cashly.Infrastructure.Data.Mappings.Identity
+namespace Cashly.Infrastructure.Data.Mappings.IdentityContext
 {
     public sealed class UserMap : IEntityTypeConfiguration<User>
     {

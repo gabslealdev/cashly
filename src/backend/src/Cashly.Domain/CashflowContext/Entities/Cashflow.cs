@@ -17,6 +17,7 @@ public sealed class Cashflow : Entity
     
     public IReadOnlyList<CashflowMember> CashflowMembers => _cashflowMembers;
 
+
     private Cashflow() {}
 
     private Cashflow(Title title)
@@ -48,6 +49,5 @@ public sealed class Cashflow : Entity
 
         UpdatedAt = DateTimeOffset.UtcNow;
     }
-    
     
 }

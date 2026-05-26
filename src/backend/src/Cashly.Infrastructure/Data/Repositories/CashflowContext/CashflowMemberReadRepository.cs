@@ -1,4 +1,5 @@
 using Cashly.Application.CashflowContext.Interfaces.Repository;
+using Cashly.Domain.CollaborationContext.Enums;
 using Cashly.Infrastructure.Data.Context;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,5 +21,16 @@ public sealed class CashflowMemberReadRepository : ICashflowMemberReadRepository
             .AnyAsync(member => 
                 member.UserId == userId &&
                 member.CashflowId == cashflowId);
+    }
+
+    public async Task<bool> CanCreateTransactionAsync(Guid userId, Guid cashflowId)
+    {
+        return await _context.CashflowMembers
+            .AsNoTracking()
+            .AnyAsync(member =>
+                member.UserId == userId &&
+                member.CashflowId == cashflowId && 
+                (member.Role == CashflowMemberRole.Owner ||
+                member.Role == CashflowMemberRole.Owner));
     }
 }

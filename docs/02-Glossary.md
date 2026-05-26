@@ -2,7 +2,9 @@
 
 Representa o controle financeiro de um usuário ou grupo de usuários.
 
-É o agregado responsável por gerenciar transações, saldo e histórico financeiro ao longo do tempo.
+É o agregado responsável pela identidade do controle financeiro, seus membros e regras de colaboração.
+
+Transações pertencem conceitualmente a um cashflow, mas são modeladas como agregado próprio e associadas por `CashflowId`.
 
 ---
 
@@ -11,6 +13,8 @@ Representa o controle financeiro de um usuário ou grupo de usuários.
 Representa uma movimentação financeira dentro de um cashflow.
 
 Pode ser uma receita (entrada) ou despesa (saída), impactando o saldo do período.
+
+É um agregado próprio, associado a um `Cashflow` por identidade (`CashflowId`), sem compor a fronteira do agregado `Cashflow`.
 
 ---
 

@@ -1,9 +1,9 @@
 using System.Globalization;
-using Cashly.Domain.CashflowContext.Errors;
 using Cashly.Domain.Shared.Exceptions;
 using Cashly.Domain.Shared.ValueObjects;
+using Cashly.Domain.TransactionContext.Errors;
 
-namespace Cashly.Domain.CashflowContext.ValueObjects;
+namespace Cashly.Domain.TransactionContext.ValueObjects;
 
 public sealed record Amount : ValueObject
 {

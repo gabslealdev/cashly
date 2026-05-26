@@ -61,7 +61,7 @@
 ### BR-06
 
 - **Descrição:** Não permitir fechar mês com transações pendentes
-- **Contexto:** Cashflow
+- **Contexto:** Cashflow / Transaction
 - **Condição:** Existência de transações com status `Scheduled` no período
 - **Ação esperada:** Bloquear o fechamento do mês
 - **Exceções:** Não se aplica
@@ -85,7 +85,7 @@
 ### BR-08
 
 - **Descrição:** Categoria deve existir no catálogo
-- **Contexto:** Cashflow
+- **Contexto:** Transaction
 - **Condição:** Criação ou atualização de transação com categoria
 - **Ação esperada:** Validar existência da categoria no catálogo seed
 - **Exceções:** Não se aplica
@@ -97,7 +97,7 @@
 ### BR-09
 
 - **Descrição:** Transição de Scheduled para Completed
-- **Contexto:** Cashflow
+- **Contexto:** Transaction
 - **Condição:** Transação em status `Scheduled`
 - **Ação esperada:** Permitir alteração para `Completed`
 - **Exceções:** Mês fechado
@@ -109,7 +109,7 @@
 ### BR-10
 
 - **Descrição:** Transição de Scheduled para Canceled
-- **Contexto:** Cashflow
+- **Contexto:** Transaction
 - **Condição:** Transação em status `Scheduled`
 - **Ação esperada:** Permitir alteração para `Canceled`
 - **Exceções:** Mês fechado
@@ -121,7 +121,7 @@
 ### BR-11
 
 - **Descrição:** Transição de Completed para Canceled (opcional)
-- **Contexto:** Cashflow
+- **Contexto:** Transaction
 - **Condição:** Transação em status `Completed`
 - **Ação esperada:** Permitir alteração para `Canceled` (se habilitado)
 - **Exceções:** Mês fechado
@@ -133,7 +133,7 @@
 ### BR-12
 
 - **Descrição:** Transação cancelada não pode voltar a estados anteriores
-- **Contexto:** Cashflow
+- **Contexto:** Transaction
 - **Condição:** Transação em status `Canceled`
 - **Ação esperada:** Bloquear alteração para `Scheduled` ou `Completed`
 - **Exceções:** Não se aplica

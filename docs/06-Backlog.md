@@ -94,15 +94,16 @@ Como usuário autenticado quero adicionar uma receita ou despesa para registrar 
 
 **Task**: 
 
-- [ ]  Criar entidade Transaction no domínio
-- [ ]  Definir ValueObjects (Amount, Description)
+- [ ]  Criar entidade Transaction como Aggregate Root próprio
+- [ ]  Associar Transaction ao Cashflow por `CashflowId`
+- [ ]  Definir ValueObjects (Amount, Title)
 - [ ]  Criar enum TransactionType (Income, Expense)
 - [ ]  Implementar regra de mês fechado
 - [ ]  Criar comando CreateTransactionCommand
 - [ ]  Criar validator
 - [ ]  Criar handler
-- [ ]  Atualizar repositório
-- [ ]  Criar endpoint POST /transactions
+- [ ]  Criar TransactionRepository
+- [ ]  Criar endpoint POST /cashflows/{cashflowId}/transactions
 - [ ]  Implementar form Angular
 
 ### Visualizar Dashboard Mensal
@@ -125,12 +126,13 @@ Como usuário autenticado quero visualizar minhas transações organizadas por m
 
 **Task**:
 
-- [ ]  Criar GetCashflowDashboardQuery
+- [ ]  Criar GetCashflowDashboardQuery / GetCashflowBoardQuery
 - [ ]  Criar ReadModel (MonthlyCashflowView)
 - [ ]  Implementar agrupamento por mês
 - [ ]  Implementar cálculo de saldo
+- [ ]  Derivar Health Status do período aberto a partir das transações
 - [ ]  Criar handler da query
-- [ ]  Criar endpoint GET /dashboard
+- [ ]  Criar endpoint GET /cashflows/{cashflowId}/board
 - [ ]  Criar estrutura de colunas no Angular
 - [ ]  Renderizar transações por mês
 

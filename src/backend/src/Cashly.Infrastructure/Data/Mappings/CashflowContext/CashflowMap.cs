@@ -16,7 +16,7 @@ public sealed class CashflowMap : IEntityTypeConfiguration<Cashflow>
         
         builder.Property(c => c.Id)
             .HasColumnName("id")
-            .ValueGeneratedOnAdd();
+            .ValueGeneratedNever();
 
         builder.Property(c => c.Title)
             .HasConversion(title => title.Value, value => Title.Create(value))

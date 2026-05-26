@@ -1,4 +1,4 @@
-namespace Cashly.Domain.CashflowContext.Enums;
+namespace Cashly.Domain.TransactionContext.Enums;
 
 public enum TransactionType
 {
