@@ -9,37 +9,40 @@ using Cashly.Domain.TransactionContext.Entity;
 using Cashly.Domain.TransactionContext.Enums;
 using Cashly.Domain.TransactionContext.ValueObjects;
 
-namespace Cashly.Application.TransactionContext.UseCases.CreateTransaction;
+namespace Cashly.Application.TransactionContext.UseCases.RegisterTransaction;
 
 public sealed class CreateTransactionHandler : ICommandHandler<CreateTransactionCommand
     , Result<CreateTransactionResponse>>
 {
+    private readonly ICashflowReadRepository _cashflowReadRepository;
     private readonly ITransactionRepository _transactionRepository;
-    private readonly ICashflowMemberReadRepository  _cashflowMemberReadRepository;
     private readonly IUnitOfWork _unitOfWork;
 
     public CreateTransactionHandler(ITransactionRepository transactionRepository, 
-        ICashflowMemberReadRepository cashflowMemberReadRepository, 
+        ICashflowReadRepository cashflowReadRepository,
         IUnitOfWork unitOfWork)
     {
+        _cashflowReadRepository = cashflowReadRepository;
         _transactionRepository = transactionRepository;
-        _cashflowMemberReadRepository = cashflowMemberReadRepository;
         _unitOfWork = unitOfWork;
     }
     
     public async Task<Result<CreateTransactionResponse>> HandleAsync(CreateTransactionCommand command)
     {
-        var hasPermission = await _cashflowMemberReadRepository.CanCreateTransactionAsync(
-            command.UserId, command.CashflowId);
+        var cashflow = await _cashflowReadRepository.GetCashflowById(command.CashflowId);
+
+        if (cashflow is null)
+            return Result<CreateTransactionResponse>.Failure(CreateTransactionErrors.CashflowNotFound);
         
-        if (!hasPermission)
-            return Result<CreateTransactionResponse>.Failure(CreateTransactionErrors.InvalidStatus);
+        cashflow.EnsureTransactionRegistration(command.UserId, command.Date);
 
         if (!Enum.TryParse<TransactionType>(command.Type, out var type))
             return Result<CreateTransactionResponse>.Failure(CreateTransactionErrors.InvalidType);
 
         if (!Enum.TryParse<TransactionStatus>(command.Status, out var status))
-            return Result<CreateTransactionResponse>.Failure(CreateTransactionErrors.InvalidStatus);
+            return Result<CreateTransactionResponse>.Failure(CreateTransactionErrors.PermissionDenied);
+        
+        
 
         var transaction = Transaction.Create(
             cashflowId: command.CashflowId,
@@ -52,7 +55,10 @@ public sealed class CreateTransactionHandler : ICommandHandler<CreateTransaction
         await _transactionRepository.AddAsync(transaction);
         await _unitOfWork.CommitAsync();
         
-        var response = new CreateTransactionResponse(transaction.Id, transaction.Amount.Value, transaction.Type.ToString());
+        var response = new CreateTransactionResponse(
+            transaction.Id,
+            transaction.Amount.Value,
+            transaction.Type.ToString());
         
         return Result<CreateTransactionResponse>.Success(response);
     }

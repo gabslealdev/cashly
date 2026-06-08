@@ -24,4 +24,9 @@
     <ProjectReference Include="..\..\src\Cashly.Domain\Cashly.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="CashflowContext\Builders\" />
+    <Folder Include="CashflowContext\Entities\" />
+  </ItemGroup>
+
 </Project>

@@ -10,12 +10,14 @@ namespace Cashly.Domain.CashflowContext.Entities;
 public sealed class Cashflow : Entity
 {
     private readonly List<CashflowMember> _cashflowMembers = [];
+    private readonly List<ClosedMonth> _closedMonths = [];
     
     public Title Title { get; private set; } = null!;
     public DateTimeOffset CreatedAt { get; private set; }
     public DateTimeOffset UpdatedAt { get; private set; }
     
     public IReadOnlyList<CashflowMember> CashflowMembers => _cashflowMembers;
+    public IReadOnlyList<ClosedMonth> ClosedMonths => _closedMonths;
 
 
     private Cashflow() {}
@@ -36,6 +38,12 @@ public sealed class Cashflow : Entity
        return cashflow;
     }
 
+    public void EnsureTransactionRegistration(Guid userId, DateTimeOffset transactionDate)
+    {
+        DomainExceptionValidation.When(IsClosedMonth(Period.From(transactionDate)), CashflowErrors.MonthIsClosed);
+        DomainExceptionValidation.When(!CanRegisterTransaction(userId), CashflowErrors.PermissionDenied);
+    }
+    
     private void AssignOwner(Guid userId)
     {
         DomainExceptionValidation.When(userId == Guid.Empty, CashflowErrors.InvalidOwner);
@@ -49,5 +57,25 @@ public sealed class Cashflow : Entity
 
         UpdatedAt = DateTimeOffset.UtcNow;
     }
+
+    private bool CanRegisterTransaction(Guid userId)
+        => IsOwner(userId) || IsContributor(userId);
     
+    private bool IsOwner(Guid userId)
+        => HasRole(userId, CashflowMemberRole.Owner);
+    
+    private bool IsContributor(Guid userId) 
+        => HasRole(userId, CashflowMemberRole.Contributor);
+
+    private bool HasRole(Guid userId, CashflowMemberRole role)
+    {
+        var member = GetMember(userId);
+        return member is not null && (member.Role == role);
+    }
+    
+    private bool IsClosedMonth(Period period)
+     => _closedMonths.Any(x => x.Period == period);
+    
+    private CashflowMember? GetMember(Guid userId)
+        =>  _cashflowMembers.FirstOrDefault(x => x.UserId == userId);
 }

@@ -1,7 +1,7 @@
 using Cashly.Domain.TransactionContext.Enums;
 using FluentValidation;
 
-namespace Cashly.Application.TransactionContext.UseCases.CreateTransaction;
+namespace Cashly.Application.TransactionContext.UseCases.RegisterTransaction;
 
 public sealed class CreateTransactionCommandValidator : AbstractValidator<CreateTransactionCommand>
 {
@@ -19,7 +19,7 @@ public sealed class CreateTransactionCommandValidator : AbstractValidator<Create
         
         RuleFor(c => c.Amount)
             .NotEmpty().WithMessage("Amount is required")
-            .GreaterThan(0).WithMessage("Amount must be greater than 0");
+            .GreaterThan(-1).WithMessage("Amount must be positive");
         
         RuleFor(c  => c.Type)
             .NotEmpty().WithMessage("Type is required")

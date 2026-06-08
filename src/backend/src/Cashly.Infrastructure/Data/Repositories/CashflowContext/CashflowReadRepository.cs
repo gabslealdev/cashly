@@ -1,6 +1,7 @@
 using Cashly.Application.CashflowContext.Interfaces.Repository;
 using Cashly.Application.CashflowContext.UseCases.GetCashflowBoard;
 using Cashly.Application.CashflowContext.UseCases.GetUserCashflows;
+using Cashly.Domain.CashflowContext.Entities;
 using Cashly.Infrastructure.Data.Context;
 using Microsoft.EntityFrameworkCore;
 
@@ -46,5 +47,13 @@ public class CashflowReadRepository : ICashflowReadRepository
                     .Select(member => member.Role.ToString())
                     .First()
             )).FirstOrDefaultAsync();
+    }
+
+    public async Task<Cashflow?> GetCashflowById(Guid cashflowId)
+    {
+        return await _context.Cashflows
+            .Include(cashflow => cashflow.CashflowMembers)
+            .Include(cashflow => cashflow.ClosedMonths)
+            .FirstOrDefaultAsync(x => x.Id == cashflowId);
     }
 }

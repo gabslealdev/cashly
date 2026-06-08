@@ -41,6 +41,14 @@ public sealed class CashflowMap : IEntityTypeConfiguration<Cashflow>
         
         builder.Navigation(c => c.CashflowMembers)
             .UsePropertyAccessMode(PropertyAccessMode.Field);
+
+        builder.HasMany(c => c.ClosedMonths)
+            .WithOne()
+            .HasForeignKey(closedMonth => closedMonth.CashflowId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Navigation(c => c.ClosedMonths)
+            .UsePropertyAccessMode(PropertyAccessMode.Field);
         
     }
 }

@@ -1,9 +1,8 @@
 using System.Security.Claims;
-using System.Transactions;
-using Cashly.Api.Contracts.TransactionContext.CreateTransaction;
+using Cashly.Api.Contracts.TransactionContext.RegisterTransaction;
 using Cashly.Application.Abstractions.Messaging;
 using Cashly.Application.Shared.Results;
-using Cashly.Application.TransactionContext.UseCases.CreateTransaction;
+using Cashly.Application.TransactionContext.UseCases.RegisterTransaction;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

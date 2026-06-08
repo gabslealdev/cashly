@@ -10,7 +10,7 @@ using Cashly.Application.IdentityContext.UseCases.LoginUser;
 using Cashly.Application.IdentityContext.UseCases.RegisterUser;
 using Cashly.Application.Shared.Results;
 using Cashly.Application.TransactionContext.Interfaces.Repository;
-using Cashly.Application.TransactionContext.UseCases.CreateTransaction;
+using Cashly.Application.TransactionContext.UseCases.RegisterTransaction;
 using Cashly.Infrastructure.Authentication;
 using Cashly.Infrastructure.Data.Context;
 using Cashly.Infrastructure.Data.Repositories.CashflowContext;

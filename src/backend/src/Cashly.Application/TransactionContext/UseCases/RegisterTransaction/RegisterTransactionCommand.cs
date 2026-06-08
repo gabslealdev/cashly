@@ -1,7 +1,7 @@
 using Cashly.Application.Abstractions.Messaging;
 using Cashly.Application.Shared.Results;
 
-namespace Cashly.Application.TransactionContext.UseCases.CreateTransaction;
+namespace Cashly.Application.TransactionContext.UseCases.RegisterTransaction;
 
 public sealed record CreateTransactionCommand(
     Guid UserId,

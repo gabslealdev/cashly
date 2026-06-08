@@ -4,8 +4,8 @@ using Cashly.Domain.IdentityContext.ValueObjects;
 using Cashly.Domain.Shared.Exceptions;
 using Shouldly;
 
-namespace Cashly.Domain.UnitTests.IdentityContext.ValueObjects
-{
+namespace Cashly.Domain.UnitTests.IdentityContext.ValueObjects;
+
     public class NameUnitTest
     {
         private readonly Faker _faker = new(); 
@@ -135,4 +135,4 @@ namespace Cashly.Domain.UnitTests.IdentityContext.ValueObjects
             result.ShouldBe("João Da Silva");
         }
     }
-}
+

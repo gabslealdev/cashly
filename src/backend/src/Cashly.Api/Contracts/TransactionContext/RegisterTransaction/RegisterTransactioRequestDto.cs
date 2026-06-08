@@ -1,4 +1,4 @@
-namespace Cashly.Api.Contracts.TransactionContext.CreateTransaction;
+namespace Cashly.Api.Contracts.TransactionContext.RegisterTransaction;
 
 public sealed record CreateTransactionRequestDto(
     string Title,
