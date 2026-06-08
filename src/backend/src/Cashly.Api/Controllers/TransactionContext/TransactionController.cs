@@ -26,7 +26,7 @@ public sealed class TransactionController : ControllerBase
     [HttpPost("{cashflowId:guid}/add")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> CreateTransaction([FromBody] CreateTransactionRequestDto request, [FromRoute] Guid cashflowId)
+    public async Task<IActionResult> CreateTransaction([FromBody] RegisterTransactionRequestDto request, [FromRoute] Guid cashflowId)
     {
         
         var userClaimId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -67,7 +67,7 @@ public sealed class TransactionController : ControllerBase
             });
         }
         
-        var response = new CreateTransactionResponseDto(
+        var response = new RegisterTransactionResponseDto(
             result.Value.TransactionId,
             result.Value.Amount,
             result.Value.Type);

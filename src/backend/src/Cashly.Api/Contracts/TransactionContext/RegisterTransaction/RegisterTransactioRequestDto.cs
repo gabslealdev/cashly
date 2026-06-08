@@ -1,6 +1,6 @@
 namespace Cashly.Api.Contracts.TransactionContext.RegisterTransaction;
 
-public sealed record CreateTransactionRequestDto(
+public sealed record RegisterTransactionRequestDto(
     string Title,
     decimal Amount,
     string Type,
