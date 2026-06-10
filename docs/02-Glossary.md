@@ -24,6 +24,8 @@ Representa um mês que foi encerrado dentro de um cashflow.
 
 Após o fechamento, os dados do período tornam-se imutáveis, preservando o histórico financeiro.
 
+Armazena o resultado financeiro líquido do período e o status financeiro classificado no momento do fechamento.
+
 ---
 
 ### Period
@@ -34,11 +36,19 @@ Representa um intervalo de tempo baseado em mês e ano (ex: 2026-04).
 
 ---
 
-### Balance
+### Period Financial Result
 
-Representa o saldo financeiro de um período.
+Representa a apuração financeira de um período.
 
-É calculado com base nas transações registradas.
+Consolida `TotalIncome`, `TotalExpense` e `PeriodResult` a partir das transações completas do período.
+
+---
+
+### Period Result
+
+Representa o resultado financeiro líquido de um período.
+
+É calculado como receitas completas menos despesas completas do período.
 
 ---
 
@@ -46,7 +56,7 @@ Representa o saldo financeiro de um período.
 
 Representa a saúde financeira de um período.
 
-É derivado do comportamento financeiro (ex: saldo positivo, negativo, variações, etc).
+É classificado a partir do resultado financeiro do período e da proporção entre sobra e renda.
 
 ---
 
@@ -116,22 +126,18 @@ Está planejada para uma data futura.
 
 ### Completed Transaction
 
-Transação que já foi realizada e impacta o saldo do período.
+Transação que já foi realizada e impacta a apuração financeira do período.
 
 ---
 
 ### Canceled Transaction
 
-Transação que foi invalidada e não deve impactar o saldo financeiro.
+Transação que foi invalidada e não deve impactar a apuração financeira.
 
 ---
 
-### Opening Balance
+### Month Closing Policy
 
-Saldo inicial de um período antes da aplicação das transações.
+Regra de domínio que define se um mês pode ser fechado.
 
----
-
-### Closing Balance
-
-Saldo final de um período após a aplicação de todas as transações.
+Um mês não pode ser fechado enquanto houver transações agendadas no período.

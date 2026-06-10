@@ -84,7 +84,7 @@ Criar uma aplicação simples e intuitiva para controle financeiro pessoal, perm
 
 - **Descrição:** Exibir transações por mês em formato de colunas
 - **Entrada:** Período
-- **Saída:** Lista de transações + saldo
+- **Saída:** Lista de transações + resultado financeiro do período
 - **Regras:**
     - Agrupar por mês
 - **Exceções:**

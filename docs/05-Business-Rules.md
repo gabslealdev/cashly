@@ -66,7 +66,7 @@
 - **Ação esperada:** Bloquear o fechamento do mês
 - **Exceções:** Não se aplica
 - **Origem:** Sistema
-- **Impacto:** ClosedMonth, Transaction
+- **Impacto:** MonthClosingPolicy, ClosedMonth, Transaction
 
 ---
 
@@ -78,11 +78,35 @@
 - **Ação esperada:** Bloquear a criação de um novo `ClosedMonth`
 - **Exceções:** Não se aplica
 - **Origem:** Sistema
-- **Impacto:** ClosedMonth
+- **Impacto:** Cashflow, ClosedMonth
 
 ---
 
 ### BR-08
+
+- **Descrição:** Apurar resultado financeiro do período
+- **Contexto:** Cashflow / Transaction
+- **Condição:** Fechamento ou consulta de resultado financeiro de um período
+- **Ação esperada:** Somar receitas completas, somar despesas completas e calcular `PeriodResult = TotalIncome - TotalExpense`
+- **Exceções:** Transações `Scheduled` e `Canceled` não entram na apuração
+- **Origem:** Sistema
+- **Impacto:** PeriodFinancialResultCalculator, PeriodFinancialResult, Transaction
+
+---
+
+### BR-09
+
+- **Descrição:** Classificar saúde financeira do período
+- **Contexto:** Cashflow
+- **Condição:** Existência de um `PeriodFinancialResult`
+- **Ação esperada:** Classificar o status financeiro usando `ResultPercent = PeriodResult / TotalIncome`
+- **Exceções:** Quando `TotalIncome` for zero, `ResultPercent` deve ser zero
+- **Origem:** Sistema
+- **Impacto:** FinancialHealthClassifier, PeriodFinancialResult, ClosedMonth
+
+---
+
+### BR-10
 
 - **Descrição:** Categoria deve existir no catálogo
 - **Contexto:** Transaction
@@ -94,7 +118,7 @@
 
 ---
 
-### BR-09
+### BR-11
 
 - **Descrição:** Transição de Scheduled para Completed
 - **Contexto:** Transaction
@@ -106,7 +130,7 @@
 
 ---
 
-### BR-10
+### BR-12
 
 - **Descrição:** Transição de Scheduled para Canceled
 - **Contexto:** Transaction
@@ -118,7 +142,7 @@
 
 ---
 
-### BR-11
+### BR-13
 
 - **Descrição:** Transição de Completed para Canceled (opcional)
 - **Contexto:** Transaction
@@ -130,7 +154,7 @@
 
 ---
 
-### BR-12
+### BR-14
 
 - **Descrição:** Transação cancelada não pode voltar a estados anteriores
 - **Contexto:** Transaction

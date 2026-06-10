@@ -1,14 +1,14 @@
 # Analise de cobertura de testes
 
-Data da analise: 2026-05-22
+Data da analise: 2026-06-10
 
 ## Resumo
 
-A cobertura automatizada atual esta concentrada no `IdentityContext` do backend. Existem testes unitarios para alguns value objects e entidade `User`, alem dos handlers de registro e login.
+A cobertura automatizada atual esta concentrada no `IdentityContext` do backend, com cobertura inicial em `CashflowContext`. Existem testes unitarios para alguns value objects, entidade `User`, parte dos value objects de cashflow, inicio dos testes de `Cashflow`, alem dos handlers de registro e login.
 
 Nao foram encontrados testes automatizados para:
 
-- `CashflowContext`
+- `CashflowContext` completo
 - `CollaborationContext`
 - controllers da API
 - repositorios EF Core
@@ -30,8 +30,14 @@ Cobertura encontrada:
 - `IdentityContext/ValueObjects/NameUnitTest.cs`
 - `IdentityContext/ValueObjects/PasswordHashUnitTest.cs`
 - `IdentityContext/Entities/UserUnitTest.cs`
+- `CashflowContext/ValueObjects/TitleUnitTest.cs`
+- `CashflowContext/ValueObjects/PeriodUnitTest.cs`
+- `CashflowContext/ValueObjects/MoneyUnitTest.cs`
+- `CashflowContext/Entities/CashflowUnitTest.cs`
 
 Esses testes cobrem criacao valida e algumas validacoes de erro para email, nome e password hash, alem de criacao/alteracao basica de `User`.
+
+Tambem ha builders em `CashflowContext/Builders` para apoiar criacao de objetos de dominio nos testes.
 
 ### Backend - Application
 
@@ -56,16 +62,50 @@ Nao ha specs Angular detectadas para services, forms, components, guards ou inte
 
 #### Cashflow domain
 
-Faltam testes para `Cashflow`.
+Cobertura parcial encontrada em `CashflowUnitTest`.
 
-Cenarios recomendados:
+Cenarios ja cobertos:
 
-- Deve criar cashflow com titulo valido e owner valido.
+- Cria cashflow com titulo valido e owner valido.
+- Rejeita `userId` vazio como owner.
+
+Cenarios ainda recomendados:
+
 - Deve adicionar exatamente um owner ao criar cashflow.
-- Deve rejeitar `userId` vazio como owner.
 - Deve preencher `CreatedAt` e `UpdatedAt`.
 - Deve atualizar `UpdatedAt` ao atribuir owner.
 - Deve garantir que nao exista mais de um owner no mesmo cashflow.
+- Deve fechar mes com `PeriodFinancialResult` e `FinancialHealthStatus` validos.
+- Deve adicionar `ClosedMonth` na colecao do agregado ao fechar mes.
+- Deve rejeitar fechamento duplicado para o mesmo periodo.
+
+#### ClosedMonth domain
+
+Faltam testes para `ClosedMonth`.
+
+Cenarios recomendados:
+
+- Deve criar snapshot com `cashflowId`, `period`, `periodResult`, `status` e `closedAt`.
+- Deve rejeitar `cashflowId` vazio.
+- Deve rejeitar `period` ausente.
+- Deve rejeitar `periodResult` ausente.
+- Deve rejeitar `FinancialHealthStatus` invalido.
+
+#### Cashflow domain services
+
+Faltam testes para os servicos de dominio do `CashflowContext`.
+
+Cenarios recomendados:
+
+- `PeriodFinancialResultCalculator` deve somar apenas receitas `Completed` do periodo.
+- `PeriodFinancialResultCalculator` deve somar apenas despesas `Completed` do periodo.
+- `PeriodFinancialResultCalculator` deve ignorar transacoes `Scheduled` e `Canceled`.
+- `PeriodFinancialResultCalculator` deve ignorar transacoes fora do periodo informado.
+- `PeriodFinancialResult` deve calcular `ResultPercent` como `PeriodResult / TotalIncome`.
+- `PeriodFinancialResult` deve retornar `ResultPercent` zero quando `TotalIncome` for zero.
+- `FinancialHealthClassifier` deve classificar `Critical`, `Warning`, `Attention`, `Healthy` e `Excellent` conforme os limites definidos.
+- `MonthClosingPolicy` deve rejeitar fechamento quando houver transacao `Scheduled` no periodo.
+- `MonthClosingPolicy` deve permitir fechamento quando transacoes `Scheduled` forem de outro periodo.
 
 #### Collaboration domain
 
@@ -83,17 +123,57 @@ Observacao: como os factories de contributor/viewer sao `internal`, os testes po
 
 #### Title value object
 
-Faltam testes para `CashflowContext/ValueObjects/Title`.
+Cobertura parcial encontrada em `CashflowContext/ValueObjects/Title`.
 
-Cenarios recomendados:
+Cenarios ja cobertos:
 
 - Deve criar title valido.
-- Deve normalizar com `Trim`.
-- Deve normalizar para lowercase, se essa regra for intencional.
 - Deve rejeitar nulo, vazio e whitespace.
 - Deve rejeitar titulo curto.
 - Deve rejeitar titulo longo.
-- Deve validar os limites exatos de tamanho, porque a implementacao atual usa `<= MinLength` e `>= MaxLength`.
+- Deve normalizar com `Trim`.
+- Deve validar os limites exatos de tamanho.
+
+Cenarios ainda recomendados:
+
+- Nao ha gaps relevantes enquanto a regra de normalizacao permanecer apenas `Trim`.
+
+#### Period value object
+
+Cobertura parcial encontrada em `CashflowContext/ValueObjects/Period`.
+
+Cenarios ja cobertos:
+
+- Deve criar periodo valido.
+- Deve rejeitar mes invalido.
+- Deve rejeitar ano invalido.
+- Deve comparar periodos iguais.
+- Deve comparar periodo posterior.
+- Deve comparar periodo anterior.
+- Deve formatar `ToString` como `MM/yyyy`.
+- Deve validar explicitamente os limites de mes `1` e `12`.
+- Deve validar o limite minimo de ano com `1900` como valido e anos menores como invalidos.
+- Deve criar `Period` a partir de `DateTimeOffset` usando ano e mes corretos.
+
+Cenarios ainda recomendados:
+
+- Nao ha gaps relevantes para a regra atual.
+
+#### Money value object
+
+Cobertura parcial encontrada em `CashflowContext/ValueObjects/Money`.
+
+Cenarios ja cobertos:
+
+- Deve criar money valido.
+- Deve arredondar valor para duas casas decimais.
+- Deve permitir valor negativo para representar resultado financeiro negativo.
+- Deve formatar `ToString` com duas casas decimais.
+
+Cenarios ainda recomendados:
+
+- Nao ha gaps relevantes enquanto `Money` permanecer apenas como representacao de valor monetario arredondado.
+- Teste de soma deve ser adicionado somente se `Money` passar a expor operador/metodo de soma.
 
 #### CreateCashflow use case
 
@@ -285,13 +365,15 @@ Antes de implementar a US de criar transacao, os testes esperados deveriam cobri
 
 ## Ordem sugerida
 
-1. Adicionar testes de dominio para `Title`, `Cashflow` e `CashflowMember`.
-2. Adicionar testes de application para `CreateCashflowHandler`, `GetUserCashflowsHandler` e `GetCashflowBoardHandler`.
-3. Adicionar testes de controller para os endpoints de cashflow e identity.
-4. Adicionar testes de repositorio/read models com banco relacional de teste.
-5. Adicionar specs Angular para services, guard, interceptor e formularios principais.
-6. Ao iniciar `Transaction`, escrever primeiro os testes de dominio e handler para fixar contrato antes do frontend.
-7. Incluir testes de mapping/repositorio para garantir a associacao entre `Transaction` e `Cashflow` por identidade, sem exigir `Cashflow.Transactions` no dominio.
+1. Adicionar testes de dominio para `PeriodFinancialResult`, `PeriodFinancialResultCalculator`, `FinancialHealthClassifier` e `MonthClosingPolicy`.
+2. Completar testes de `Cashflow`, cobrindo owner na colecao, datas, fechamento de mes, inclusao de `ClosedMonth` e rejeicao de fechamento duplicado.
+3. Adicionar testes de dominio para `ClosedMonth` e `CashflowMember`.
+4. Adicionar testes de application para `CreateCashflowHandler`, `GetUserCashflowsHandler` e `GetCashflowBoardHandler`.
+5. Adicionar testes de controller para os endpoints de cashflow e identity.
+6. Adicionar testes de repositorio/read models com banco relacional de teste.
+7. Ao iniciar `Transaction`, escrever primeiro os testes de dominio e handler para fixar contrato antes do frontend.
+8. Incluir testes de mapping/repositorio para garantir a associacao entre `Transaction` e `Cashflow` por identidade, sem exigir `Cashflow.Transactions` no dominio.
+9. Adicionar specs Angular para services, guard, interceptor e formularios principais.
 
 ## Observacao operacional
 

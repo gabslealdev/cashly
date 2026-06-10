@@ -105,7 +105,11 @@ Responsabilidade: Gerenciar o controle financeiro dos usuários, incluindo cashf
 - `Transaction` é um agregado próprio, associado a `Cashflow` por `CashflowId`.
 - O relacionamento `Cashflow 1:N Transaction` existe no banco e nos modelos de leitura, mas não implica uma coleção `Transactions` dentro do agregado `Cashflow`.
 - Saldos e `Health Status` de períodos abertos são derivados em consultas/read models a partir das transações.
-- O status consolidado de um período fechado pertence a `ClosedMonth`.
+- O fechamento mensal é registrado em `ClosedMonth`, que pertence ao agregado `Cashflow`.
+- `ClosedMonth` não recebe nem armazena transações; ele guarda um snapshot imutável do resultado financeiro já apurado.
+- O resultado financeiro do período é representado por `PeriodFinancialResult`, calculado a partir das transações completas do período.
+- O status financeiro consolidado é classificado por regra de domínio e armazenado em `ClosedMonth`.
+- Regras que dependem de transações, mas não pertencem à fronteira do agregado `Cashflow`, são expressas por domain services sem estado.
 
 # Entidades
 
@@ -226,16 +230,15 @@ Representa o valor monetário da transação.
 - `Id` → Guid
 - `CashflowId` → Guid
 - `Period` → Value Object
-- `OpeningBalance` → Value Object
-- `ClosingBalance` → Value Object
+- `PeriodResult` → Value Object
 - `Status` → Enum (Critical, Warning, Attention, Healthy, Excellent)
 - `ClosedAt` → DateTimeOffset
 
 Responsabilidades
 
 - Representar o fechamento financeiro de um mês.
-- Armazenar o saldo inicial e final do período fechado.
-- Registrar o status financeiro do mês no momento do fechamento.
+- Armazenar o resultado financeiro líquido do período fechado.
+- Registrar o status financeiro classificado no momento do fechamento.
 - Garantir que um mês fechado se torne imutável.
 - Preservar o histórico financeiro do Cashflow.
 
@@ -245,8 +248,68 @@ Responsabilidades
 - Um mesmo `Cashflow` não pode possuir dois fechamentos para o mesmo período.
 - O fechamento só pode existir para um período válido.
 - Após fechado, o mês não deve permitir alterações em seus dados.
-- O `ClosingBalance` deve refletir o resultado consolidado do período no momento do fechamento.
+- O `PeriodResult` deve refletir o resultado líquido das transações completas do período no momento do fechamento.
 - O `Status` do mês deve ser derivado das regras do domínio, e não definido livremente de forma manual.
+- A criação de `ClosedMonth` deve ocorrer por meio de `Cashflow.CloseMonth`, para que o agregado impeça fechamento duplicado.
+
+---
+
+### PERIODFINANCIALRESULT
+
+- `TotalIncome` → Value Object
+- `TotalExpense` → Value Object
+- `PeriodResult` → Value Object
+- `ResultPercent` → decimal derivado
+
+Responsabilidades
+
+- Representar a apuração financeira de um período.
+- Consolidar receitas completas, despesas completas e resultado líquido.
+- Expor o percentual do resultado em relação à renda do período.
+
+**Regras principais:**
+
+- `TotalIncome` soma apenas transações `Income` com status `Completed` no período.
+- `TotalExpense` soma apenas transações `Expense` com status `Completed` no período.
+- `PeriodResult` é calculado como `TotalIncome - TotalExpense`.
+- `ResultPercent` é calculado como `PeriodResult / TotalIncome`.
+- Quando `TotalIncome` for zero, `ResultPercent` deve ser zero para evitar divisão inválida.
+
+---
+
+### DOMAIN SERVICES DO CASHFLOW
+
+#### PeriodFinancialResultCalculator
+
+Responsável por apurar `PeriodFinancialResult` a partir de um `Period` e uma sequência de `Transaction`.
+
+Regras:
+
+- Considera apenas transações do período informado.
+- Considera apenas transações com status `Completed`.
+- Ignora transações `Scheduled` e `Canceled` no cálculo financeiro.
+- Não busca transações em repositório; recebe os dados já carregados pela camada de aplicação.
+
+#### FinancialHealthClassifier
+
+Responsável por classificar a saúde financeira de um `PeriodFinancialResult`.
+
+Regra inicial:
+
+- `Critical`: `PeriodResult` negativo ou ausência de sobra.
+- `Warning`: sobra positiva menor que 10% da renda.
+- `Attention`: sobra entre 10% e 19,99% da renda.
+- `Healthy`: sobra entre 20% e 29,99% da renda.
+- `Excellent`: sobra igual ou maior que 30% da renda.
+
+#### MonthClosingPolicy
+
+Responsável por validar regras de fechamento que dependem das transações do período.
+
+Regras:
+
+- Não permite fechar um período quando houver transações `Scheduled` no período.
+- Não cria `ClosedMonth`; apenas valida se o fechamento pode prosseguir.
 
 ---
 
