@@ -12,6 +12,9 @@ public static class CashflowErrors
     
     public static readonly DomainError MonthIsClosed =
         new DomainError("MonthIs.Closed", "Month is closed");
+
+    public static readonly DomainError ScheduledTransactionsCannotBeClosed =
+        new DomainError("Month.ScheduledTransactions", "Month cannot be closed with scheduled transactions.");
     
     public static readonly DomainError InvalidMember =
         new DomainError("Invalid.Member", "Invalid member");

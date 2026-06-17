@@ -1,4 +1,5 @@
 using Cashly.Domain.CashflowContext.Errors;
+using Cashly.Domain.CashflowContext.Enums;
 using Cashly.Domain.CashflowContext.ValueObjects;
 using Cashly.Domain.CollaborationContext.Entities;
 using Cashly.Domain.CollaborationContext.Enums;
@@ -42,6 +43,28 @@ public sealed class Cashflow : Entity
     {
         DomainExceptionValidation.When(IsClosedMonth(Period.From(transactionDate)), CashflowErrors.MonthIsClosed);
         DomainExceptionValidation.When(!CanRegisterTransaction(userId), CashflowErrors.PermissionDenied);
+    }
+
+    public ClosedMonth CloseMonth(
+        Period period,
+        PeriodFinancialResult financialResult,
+        FinancialHealthStatus status,
+        DateTimeOffset closedAt)
+    {
+        DomainExceptionValidation.When(IsClosedMonth(period), CashflowErrors.MonthIsClosed);
+
+        var closedMonth = ClosedMonth.Create(
+            cashflowId: Id,
+            period: period,
+            periodResult: financialResult.PeriodResult,
+            status: status,
+            closedAt: closedAt
+        );
+
+        _closedMonths.Add(closedMonth);
+        UpdatedAt = DateTimeOffset.UtcNow;
+
+        return closedMonth;
     }
     
     private void AssignOwner(Guid userId)

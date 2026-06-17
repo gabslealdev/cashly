@@ -31,11 +31,11 @@ public sealed class ClosedMonthMap : IEntityTypeConfiguration<ClosedMonth>
             .HasColumnType("int")
             .IsRequired();
 
-        builder.Property(closedMonth => closedMonth.Balance)
+        builder.Property(closedMonth => closedMonth.PeriodResult)
             .HasConversion(
                 money => money.Value,
                 value => Money.Create(value))
-            .HasColumnName("balance")
+            .HasColumnName("period_result")
             .HasColumnType("numeric(18,2)")
             .IsRequired();
 

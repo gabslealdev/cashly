@@ -14,7 +14,7 @@ public class TitleUnitTest
     public void CreateTitle_ShouldCreate_WhenValueIsValid()
     {
         // arrange
-        var value = _faker.Finance.Account();
+        var value = _faker.Finance.AccountName();
 
         //act
         Action action = () => Title.Create(value);
@@ -65,6 +65,59 @@ public class TitleUnitTest
         var exception = action.ShouldThrow<DomainExceptionValidation>();
         exception.Error.Code.ShouldBe(TitleErrors.TitleTooShort.Code);
         exception.Error.Message.ShouldBe(TitleErrors.TitleTooShort.Message);
+    }
+
+    [Fact]
+    public void CreateTitle_ShouldNormalizeWithTrim_WhenValueHasOuterSpaces()
+    {
+        // arrange
+        const string value = "  Main Cashflow  ";
+
+        // act
+        var title = Title.Create(value);
+
+        // assert
+        title.Value.ShouldBe("Main Cashflow");
+    }
+
+    [Theory]
+    [InlineData(4)]
+    [InlineData(49)]
+    public void CreateTitle_ShouldCreate_WhenLengthIsInsideBoundary(int length)
+    {
+        // arrange
+        var value = new string('a', length);
+
+        // act
+        Action action = () => Title.Create(value);
+
+        // assert
+        action.ShouldNotThrow();
+    }
+
+    [Theory]
+    [InlineData(3)]
+    [InlineData(50)]
+    public void CreateTitle_ShouldThrow_WhenLengthIsOutsideBoundary(int length)
+    {
+        // arrange
+        var value = new string('a', length);
+
+        // act
+        Action action = () => Title.Create(value);
+
+        // assert
+        var exception = action.ShouldThrow<DomainExceptionValidation>();
+
+        if (length == 3)
+        {
+            exception.Error.Code.ShouldBe(TitleErrors.TitleTooShort.Code);
+            exception.Error.Message.ShouldBe(TitleErrors.TitleTooShort.Message);
+            return;
+        }
+
+        exception.Error.Code.ShouldBe(TitleErrors.TitleTooLong.Code);
+        exception.Error.Message.ShouldBe(TitleErrors.TitleTooLong.Message);
     }
 }
     
