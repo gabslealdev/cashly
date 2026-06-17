@@ -4,6 +4,7 @@
 .DS_Store
 Thumbs.db
 desktop.ini
+.config
 
 # =========================
 # Logs
@@ -67,6 +68,7 @@ TestResults/
 
 # JetBrains Rider / ReSharper
 .idea/
+.idea/*
 .idea_modules/
 *.sln.iml
 *.DotSettings.user
@@ -117,6 +119,7 @@ Generated\ Files/
 *.vsp
 *.vspx
 *.sap
+.
 
 # =========================
 # VS Code
