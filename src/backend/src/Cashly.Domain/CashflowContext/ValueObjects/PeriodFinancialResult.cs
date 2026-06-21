@@ -4,9 +4,9 @@ namespace Cashly.Domain.CashflowContext.ValueObjects;
 
 public sealed record PeriodFinancialResult : ValueObject
 {
-    public Money TotalIncome { get; private set; }
-    public Money TotalExpense { get; private set; }
-    public Money PeriodResult { get; private set; } 
+    public Money TotalIncome { get; private set; } = null!;
+    public Money TotalExpense { get; private set; } = null!;
+    public Money PeriodResult { get; private set; } = null!; 
     public decimal ResultPercent => TotalIncome.Value == 0 ? 0 : PeriodResult.Value / TotalIncome.Value;
     
     private PeriodFinancialResult(){}

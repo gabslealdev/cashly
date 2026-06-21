@@ -118,6 +118,7 @@ public static class DependencyInjection
     private static IServiceCollection AddTransactionContext(this IServiceCollection services)
     {
         services.AddTransactionWrite();
+        services.AddTransactionRead();
         
         return services;
     }
@@ -129,6 +130,13 @@ public static class DependencyInjection
             .AddScoped<ICommandHandler<CreateTransactionCommand, Result<CreateTransactionResponse>>,
                 CreateTransactionHandler>();
         
+        return services;
+    }
+
+    private static IServiceCollection AddTransactionRead(this IServiceCollection services)
+    {
+        services.AddScoped<ITransactionReadRepository, TransactionReadRepository>();
+
         return services;
     }
     

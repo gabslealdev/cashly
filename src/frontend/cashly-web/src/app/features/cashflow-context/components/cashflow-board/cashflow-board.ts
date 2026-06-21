@@ -1,5 +1,5 @@
 import { Component, effect, inject, input, signal } from '@angular/core';
-import { GetCashflowBoardResponse } from '../../models/get-cashflow-board-response.model';
+import { CashflowBoardTransactionResponse, GetCashflowBoardResponse } from '../../models/get-cashflow-board-response.model';
 import { CashflowService } from '../../services/cashflow-service';
 
 @Component({
@@ -12,7 +12,8 @@ export class CashflowBoard {
   private readonly cashflowService = inject(CashflowService)
   cashflowId = input.required<string>()
 
-  protected board = signal<GetCashflowBoardResponse | null>(null);
+  protected board = signal<GetCashflowBoardResponse | null>(null)
+  // protected transactions = signal<CashflowBoardTransactionResponse[]>([]);
   protected isLoading = signal(false);
   protected errorMessage = signal('');
 

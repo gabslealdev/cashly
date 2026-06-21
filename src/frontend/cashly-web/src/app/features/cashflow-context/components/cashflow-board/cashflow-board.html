@@ -10,12 +10,18 @@
                             <p>{{month.period}}</p>
                         </div>
                         <div class="period-summary">
-                            <p class="balance">R$ 7000,00</p>
+                            <p class="balance">{{month.balance}}</p>
                             <div class="status-tag">
-                                <p>healthy</p>
+                                <p></p>
                             </div>
                         </div>
-                        <div class="transaction-card">
+                        @for(transaction of month.transactions; track transaction.transactionId){
+                            {{ transaction.title }} 
+
+                        }
+
+
+                        <!-- <div class="transaction-card">
                             <div class="header-card">
                                 <p class="type-card">ENTRADA</p>
                             </div>
@@ -27,7 +33,7 @@
                                 <p class="date-card">01/01/2024</p>
                                 <p class="status-card">COMPLETED</p>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 }
             </section>

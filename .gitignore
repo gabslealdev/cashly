@@ -4,7 +4,6 @@
 .DS_Store
 Thumbs.db
 desktop.ini
-.config
 
 # =========================
 # Logs
@@ -67,6 +66,7 @@ TestResults/
 *.sln.docstates
 
 # JetBrains Rider / ReSharper
+.config/
 .idea/
 .idea/*
 .idea_modules/
