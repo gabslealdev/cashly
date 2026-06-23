@@ -94,15 +94,16 @@ Como usuário autenticado quero adicionar uma receita ou despesa para registrar 
 
 **Task**: 
 
-- [ ]  Criar entidade Transaction no domínio
-- [ ]  Definir ValueObjects (Amount, Description)
+- [ ]  Criar entidade Transaction como Aggregate Root próprio
+- [ ]  Associar Transaction ao Cashflow por `CashflowId`
+- [ ]  Definir ValueObjects (Amount, Title)
 - [ ]  Criar enum TransactionType (Income, Expense)
 - [ ]  Implementar regra de mês fechado
 - [ ]  Criar comando CreateTransactionCommand
 - [ ]  Criar validator
 - [ ]  Criar handler
-- [ ]  Atualizar repositório
-- [ ]  Criar endpoint POST /transactions
+- [ ]  Criar TransactionRepository
+- [ ]  Criar endpoint POST /cashflows/{cashflowId}/transactions
 - [ ]  Implementar form Angular
 
 ### Visualizar Dashboard Mensal
@@ -116,21 +117,22 @@ Como usuário autenticado quero visualizar minhas transações organizadas por m
 - O sistema deve exibir:
     - Colunas por mês
     - Lista de transações por mês
-    - Saldo mensal
+    - Resultado financeiro mensal
 - O sistema deve agrupar transações por mês
-- O sistema deve calcular saldo:
+- O sistema deve calcular resultado financeiro:
     - Receitas (+)
     - Despesas (-)
 - O sistema deve permitir visualizar meses sem transações
 
 **Task**:
 
-- [ ]  Criar GetCashflowDashboardQuery
+- [ ]  Criar GetCashflowDashboardQuery / GetCashflowBoardQuery
 - [ ]  Criar ReadModel (MonthlyCashflowView)
 - [ ]  Implementar agrupamento por mês
-- [ ]  Implementar cálculo de saldo
+- [ ]  Implementar cálculo de resultado financeiro do período
+- [ ]  Derivar Health Status do período aberto a partir das transações
 - [ ]  Criar handler da query
-- [ ]  Criar endpoint GET /dashboard
+- [ ]  Criar endpoint GET /cashflows/{cashflowId}/board
 - [ ]  Criar estrutura de colunas no Angular
 - [ ]  Renderizar transações por mês
 
@@ -138,11 +140,11 @@ Como usuário autenticado quero visualizar minhas transações organizadas por m
 
 **[US-CFC-005]**
 
-Como usuário autenticado quero ver o saldo atualizado automaticamente ao adicionar ou remover transações para ter feedback imediato das minhas ações
+Como usuário autenticado quero ver o resultado financeiro atualizado automaticamente ao adicionar ou remover transações para ter feedback imediato das minhas ações
 
 **Critérios de aceitação:**
 
-- O saldo deve ser atualizado após:
+- O resultado financeiro deve ser atualizado após:
     - criação de transação
     - exclusão de transação
 - A atualização deve ocorrer sem reload da página

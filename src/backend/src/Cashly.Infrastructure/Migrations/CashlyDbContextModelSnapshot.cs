@@ -25,7 +25,6 @@ namespace Cashly.Infrastructure.Migrations
             modelBuilder.Entity("Cashly.Domain.CashflowContext.Entities.Cashflow", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
@@ -47,6 +46,43 @@ namespace Cashly.Infrastructure.Migrations
                         .HasName("PK_cashflows");
 
                     b.ToTable("cashflows", (string)null);
+                });
+
+            modelBuilder.Entity("Cashly.Domain.CashflowContext.Entities.ClosedMonth", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("id");
+
+                    b.Property<Guid>("CashflowId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("cashflow_id");
+
+                    b.Property<DateTimeOffset>("ClosedAt")
+                        .HasColumnType("datetimeoffset")
+                        .HasColumnName("closed_at");
+
+                    b.Property<int>("Period")
+                        .HasColumnType("int")
+                        .HasColumnName("period");
+
+                    b.Property<decimal>("PeriodResult")
+                        .HasColumnType("numeric(18,2)")
+                        .HasColumnName("period_result");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar")
+                        .HasColumnName("status");
+
+                    b.HasKey("Id")
+                        .HasName("PK_closed_months");
+
+                    b.HasIndex("CashflowId", "Period")
+                        .IsUnique();
+
+                    b.ToTable("closed_months", (string)null);
                 });
 
             modelBuilder.Entity("Cashly.Domain.CollaborationContext.Entities.CashflowMember", b =>
@@ -83,7 +119,7 @@ namespace Cashly.Infrastructure.Migrations
                     b.ToTable("cashflow_member", (string)null);
                 });
 
-            modelBuilder.Entity("Cashly.Domain.Identity.Entities.User", b =>
+            modelBuilder.Entity("Cashly.Domain.IdentityContext.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier")
@@ -118,6 +154,66 @@ namespace Cashly.Infrastructure.Migrations
                     b.ToTable("users", (string)null);
                 });
 
+            modelBuilder.Entity("Cashly.Domain.TransactionContext.Entity.Transaction", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("id");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric(18,2)")
+                        .HasColumnName("amount");
+
+                    b.Property<Guid>("CashflowId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("cashflow_id");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("datetimeoffset")
+                        .HasColumnName("created_at");
+
+                    b.Property<DateTimeOffset>("Date")
+                        .HasColumnType("datetimeoffset")
+                        .HasColumnName("date");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar")
+                        .HasColumnName("transaction_status");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar")
+                        .HasColumnName("title");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar")
+                        .HasColumnName("transaction_type");
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("datetimeoffset")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CashflowId");
+
+                    b.ToTable("transactions", (string)null);
+                });
+
+            modelBuilder.Entity("Cashly.Domain.CashflowContext.Entities.ClosedMonth", b =>
+                {
+                    b.HasOne("Cashly.Domain.CashflowContext.Entities.Cashflow", null)
+                        .WithMany("ClosedMonths")
+                        .HasForeignKey("CashflowId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Cashly.Domain.CollaborationContext.Entities.CashflowMember", b =>
                 {
                     b.HasOne("Cashly.Domain.CashflowContext.Entities.Cashflow", null)
@@ -127,9 +223,9 @@ namespace Cashly.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Cashly.Domain.Identity.Entities.User", b =>
+            modelBuilder.Entity("Cashly.Domain.IdentityContext.Entities.User", b =>
                 {
-                    b.OwnsOne("Cashly.Domain.Identity.ValueObjects.Name", "Name", b1 =>
+                    b.OwnsOne("Cashly.Domain.IdentityContext.ValueObjects.Name", "Name", b1 =>
                         {
                             b1.Property<Guid>("UserId")
                                 .HasColumnType("uniqueidentifier");
@@ -158,9 +254,20 @@ namespace Cashly.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Cashly.Domain.TransactionContext.Entity.Transaction", b =>
+                {
+                    b.HasOne("Cashly.Domain.CashflowContext.Entities.Cashflow", null)
+                        .WithMany()
+                        .HasForeignKey("CashflowId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Cashly.Domain.CashflowContext.Entities.Cashflow", b =>
                 {
                     b.Navigation("CashflowMembers");
+
+                    b.Navigation("ClosedMonths");
                 });
 #pragma warning restore 612, 618
         }

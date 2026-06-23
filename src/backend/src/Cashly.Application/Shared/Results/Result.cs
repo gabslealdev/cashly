@@ -4,14 +4,14 @@
     {
         public bool IsSuccess { get; private set; }
         public bool IsFailure => !IsSuccess;
-        public Error Error { get; private set; } = null!;
+        public ApplicationError Error { get; private set; } = null!;
 
-        protected Result(bool isSuccess, Error error)
+        protected Result(bool isSuccess, ApplicationError error)
         {
-            if (isSuccess && error != Error.None)
+            if (isSuccess && error != ApplicationError.None)
                 throw new InvalidOperationException("A successful result cannot have an error.");
 
-            if (!isSuccess && error == Error.None)
+            if (!isSuccess && error == ApplicationError.None)
                 throw new InvalidOperationException("A failed result must have an error.");
 
             IsSuccess = isSuccess;
@@ -19,9 +19,9 @@
         }
 
         public static Result Success()
-            => new(true, Error.None);
+            => new(true, ApplicationError.None);
 
-        public static Result Failure(Error error)
+        public static Result Failure(ApplicationError error)
             => new(false, error);
     }
 
@@ -29,10 +29,10 @@
     {
         private readonly T? _value;
 
-        private Result(T value) : base(true, Error.None)
+        private Result(T value) : base(true, ApplicationError.None)
             => _value = value;
 
-        private Result(Error error) : base(false, error)
+        private Result(ApplicationError error) : base(false, error)
             => _value = default;
 
         public T Value
@@ -41,7 +41,7 @@
         public static Result<T> Success(T value)
             => new(value);
 
-        public static new Result<T> Failure(Error error)
+        public new static Result<T> Failure(ApplicationError error)
             => new(error);
     }
 }

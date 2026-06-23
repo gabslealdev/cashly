@@ -28,7 +28,7 @@ form {
             height: 2.5rem;
             border: none;
             outline: none;
-            border-bottom: 2px solid var(--color-border);
+            border: 1px solid var(--color-input-border);
             border-radius: 4px;
             color: var(--color-text);
             background-color: var(--fill-transparent);
@@ -108,7 +108,7 @@ form {
                 height: 2.5rem;
                 border: none;
                 outline: none;
-                border-bottom: 2px solid var(--color-border);
+                border: 1px solid var(--color-input-border);
                 border-radius: 4px;
                 color: var(--color-text);
                 background-color: var(--fill-transparent);
@@ -161,7 +161,7 @@ form {
                 height: 2.5rem;
                 border: none;
                 outline: none;
-                border-bottom: 2px solid var(--color-border);
+                border: 1px solid var(--color-input-border);
                 border-radius: 4px;
                 color: var(--color-text);
                 background-color: var(--fill-transparent);

@@ -2,7 +2,7 @@
 
 namespace Cashly.Application.IdentityContext.UseCases.RegisterUser
 {
-    public class RegisterUserCommandValidator : AbstractValidator<RegisterUserCommand>
+    public sealed class RegisterUserCommandValidator : AbstractValidator<RegisterUserCommand>
     {
         public RegisterUserCommandValidator()
         {

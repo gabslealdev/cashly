@@ -24,9 +24,9 @@ public sealed record Title : ValueObject
         
         return new Title(normalizedValue);
     }
-    
+
     private static string Normalize(string value)
-        => value.Trim().ToLowerInvariant();
+        => value.Trim();
 
     private static void Validate(string value)
     {

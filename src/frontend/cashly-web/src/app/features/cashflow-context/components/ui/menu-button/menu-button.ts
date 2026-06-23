@@ -11,7 +11,7 @@ export class MenuButton {
 
  clicked = output<void>();
 
- onCLick(){
-  this.clicked.emit()
+ onClick(){
+  this.clicked.emit();
  }
 }

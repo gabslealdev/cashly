@@ -65,10 +65,15 @@ TestResults/
 *.suo
 *.sln.docstates
 
-# Rider / ReSharper
+# JetBrains Rider / ReSharper
+.config/
+.idea/
+.idea/*
+.idea_modules/
+*.sln.iml
+*.DotSettings.user
 _ReSharper*/
 *.[Rr]e[Ss]harper
-*.DotSettings.user
 
 # NuGet
 *.nupkg
@@ -114,10 +119,7 @@ Generated\ Files/
 *.vsp
 *.vspx
 *.sap
-
-# IIS Express / local config
-/.idea/
-*.sln.iml
+.
 
 # =========================
 # VS Code
@@ -179,25 +181,3 @@ pnpm-lock.yaml.*
 # yarn.lock
 # pnpm-lock.yaml
 
-# Build
-bin/
-obj/
-
-# JetBrains / Rider
-.idea/
-*.sln.iml
-
-# User-specific
-*.user
-*.rsuser
-*.suo
-*.userosscache
-*.sln.docstates
-*.DotSettings.user
-
-# ReSharper
-_ReSharper*/
-*.[Rr]e[Ss]harper
-
-# Logs
-*.log

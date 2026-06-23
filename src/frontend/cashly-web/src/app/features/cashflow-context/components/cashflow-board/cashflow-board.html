@@ -1,35 +1,55 @@
 <main>
-    <section class="title">
-        <h2>{{board()?.title}}</h2>
+    <section class="board-header">
+        <app-cashflow-header-board-button 
+        label="Nova Transação +"
+        [board]="board()"
+        (clicked)="openRegisterTransactionModal()"></app-cashflow-header-board-button>
+        <app-modal [isOpen]="isRegisterTransactionModal()" title="Registrar Nova Transação" (closed)="closeRegisterTransactionModal()">
+            <app-register-transaction-form
+                [cashflowId]="cashflowId()"
+                (transactionRegistered)="onTransactionRegistered()"
+                (closeModal)="closeRegisterTransactionModal()"></app-register-transaction-form>
+        </app-modal>
     </section>
-        @if (board(); as board){
-            <section class="period-group">
-                @for(month of board.months; track month.period){
-                    <div class="period-column">
-                        <div class="period-header">
-                            <p>{{month.period}}</p>
-                        </div>
-                        <div class="period-summary">
-                            <p class="balance">R$ 7000,00</p>
-                            <div class="status-tag">
-                                <p>healthy</p>
-                            </div>
-                        </div>
-                        <div class="transaction-card">
-                            <div class="header-card">
-                                <p class="type-card">ENTRADA</p>
-                            </div>
-                            <div class="body-card">
-                                <p class="title-card">Salário do mês</p>
-                                <p class="amount-card">R$1650,00</p>
-                            </div>
-                            <div class="footer-card">
-                                <p class="date-card">01/01/2024</p>
-                                <p class="status-card">COMPLETED</p>
-                            </div>
-                        </div>
-                    </div>
+    @if (board(); as board) {
+    <section class="period-group">
+        @for (month of board.months; track month.period) {
+        <div class="period-column">
+            <div class="period-header">
+                <p>{{ month.period }}</p>
+                @if (month.isClosed){
+                    <svg lucideLockKeyhole size="14px" strokeWidth="3px"></svg>
+                }@else {
+                    <svg lucideLockKeyholeOpen size="14px" strokeWidth="3px"></svg>
                 }
-            </section>
+            </div>
+            <div class="period-summary">
+                <div class="period-balance">
+                    <div class="result">
+                        <span class="label-balance">Saldo:</span>
+                        {{month.balance | currency:'BRL'}}
+                    </div>
+                    @if (!month.isClosed) {
+                        <div class="projection">
+                            <span class="label-balance"> Projetado:</span>
+                            {{month.balance | currency:'BRL'}}
+                        </div>
+                    }
+                </div>
+                <div class="period-footer">
+                    <div class="financial-health-status">
+                        <span class="badge-health-status">HEALTH</span>
+                    </div>
+                </div>
+            </div>
+            @for (
+            transaction of month.transactions;
+            track transaction.transactionId
+            ) {
+                <app-transaction-card [transaction]="transaction"></app-transaction-card>
+            }
+        </div>
         }
+    </section>
+    }
 </main>

@@ -1,9 +1,10 @@
 import { Component, input, output } from '@angular/core';
 import { CreateCashflowForm } from "../../../features/cashflow-context/components/create-cashflow-form/create-cashflow-form";
+import { LucideX } from '@lucide/angular';
 
 @Component({
   selector: 'app-modal',
-  imports: [],
+  imports: [LucideX],
   templateUrl: './modal.html',
   styleUrl: './modal.scss',
 })

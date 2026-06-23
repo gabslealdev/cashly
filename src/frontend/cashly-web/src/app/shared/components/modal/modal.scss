@@ -12,7 +12,7 @@
 .modal-container {
   display: flex;
   flex-direction: column;
-  width: min(100%, 420px);
+  width: min(100%, 500px);
   background: var(--color-surface);
   color: var(--color-text);
   border-radius: var(--radius-xs);
@@ -35,4 +35,8 @@
   border: none;
   color: var(--color-text-muted);
   cursor: pointer;
+
+  & svg{
+    color: var(--color-text-muted);
+  }
 }

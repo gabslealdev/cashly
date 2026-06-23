@@ -4,6 +4,6 @@ namespace Cashly.Application.IdentityContext.UseCases.RegisterUser.Errors
 {
     public static class RegisterUserApplicationErrors
     {
-        public static readonly Error EmailAlreadyExists = new("Identity.RegisterUser.EmailAlreadyExist", "The email is already in use.");
+        public static readonly ApplicationError EmailAlreadyExists = new("Identity.RegisterUser.EmailAlreadyExist", "The email is already in use.");
     }
 }

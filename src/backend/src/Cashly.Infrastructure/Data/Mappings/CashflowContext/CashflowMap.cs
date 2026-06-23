@@ -16,7 +16,7 @@ public sealed class CashflowMap : IEntityTypeConfiguration<Cashflow>
         
         builder.Property(c => c.Id)
             .HasColumnName("id")
-            .ValueGeneratedOnAdd();
+            .ValueGeneratedNever();
 
         builder.Property(c => c.Title)
             .HasConversion(title => title.Value, value => Title.Create(value))
@@ -40,6 +40,14 @@ public sealed class CashflowMap : IEntityTypeConfiguration<Cashflow>
             .OnDelete(DeleteBehavior.Cascade);
         
         builder.Navigation(c => c.CashflowMembers)
+            .UsePropertyAccessMode(PropertyAccessMode.Field);
+
+        builder.HasMany(c => c.ClosedMonths)
+            .WithOne()
+            .HasForeignKey(closedMonth => closedMonth.CashflowId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Navigation(c => c.ClosedMonths)
             .UsePropertyAccessMode(PropertyAccessMode.Field);
         
     }

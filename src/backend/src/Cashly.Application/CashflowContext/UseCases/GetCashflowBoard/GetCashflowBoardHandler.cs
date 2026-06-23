@@ -2,6 +2,7 @@ using Cashly.Application.Abstractions.Messaging;
 using Cashly.Application.CashflowContext.Errors;
 using Cashly.Application.CashflowContext.Interfaces.Repository;
 using Cashly.Application.Shared.Results;
+using Cashly.Application.TransactionContext.Interfaces.Repository;
 
 namespace Cashly.Application.CashflowContext.UseCases.GetCashflowBoard;
 
@@ -9,12 +10,16 @@ public class GetCashflowBoardHandler : IQueryHandler<GetCashflowBoardQuery,Resul
 {
     private readonly ICashflowMemberReadRepository _cashflowMemberReadRepository;
     private readonly ICashflowReadRepository _cashflowReadRepository;
+    private readonly ITransactionReadRepository _transactionReadRepository;
 
-    public GetCashflowBoardHandler(ICashflowMemberReadRepository cashflowMemberReadRepository,
-        ICashflowReadRepository cashflowReadRepository)
+    public GetCashflowBoardHandler(
+        ICashflowMemberReadRepository cashflowMemberReadRepository,
+        ICashflowReadRepository cashflowReadRepository,
+        ITransactionReadRepository transactionReadRepository)
     {
         _cashflowMemberReadRepository = cashflowMemberReadRepository;
         _cashflowReadRepository = cashflowReadRepository;
+        _transactionReadRepository = transactionReadRepository;
     }
     
     public async Task<Result<GetCashflowBoardResponse>> HandleAsync(GetCashflowBoardQuery query)
@@ -28,8 +33,20 @@ public class GetCashflowBoardHandler : IQueryHandler<GetCashflowBoardQuery,Resul
 
         if (header is  null)
             return Result<GetCashflowBoardResponse>.Failure(GetCashflowBoardErrors.HeaderNotFound);
-
-        var months = BuildMonthColumns(DateTime.UtcNow);
+        
+        var currentMonth = new DateTimeOffset(
+            DateTimeOffset.UtcNow.Year,
+            DateTimeOffset.UtcNow.Month,
+            1, 0, 0, 0, TimeSpan.Zero);
+        
+        var startDate = currentMonth.AddMonths(-2);
+        var endDate = startDate.AddMonths(4);
+        
+        var transactions = await _transactionReadRepository
+            .GetBoardTransactionAsync(query.CashflowId, startDate, endDate);
+        
+        
+        var months = BuildMonthColumns(DateTime.UtcNow, transactions);
 
         var response = new GetCashflowBoardResponse(
             CashflowId: header.CashflowId,
@@ -41,22 +58,43 @@ public class GetCashflowBoardHandler : IQueryHandler<GetCashflowBoardQuery,Resul
         return Result<GetCashflowBoardResponse>.Success(response);
     }
     
-    private static IReadOnlyList<CashflowBoardMonthResponse> BuildMonthColumns(DateTime referenceDate)
+    private static IReadOnlyList<CashflowBoardMonthResponse> BuildMonthColumns(
+        DateTime referenceDate, 
+        IReadOnlyList<CashflowBoardTransactionReadModel> transactions)
     {
         var currentMonth = new DateTime(referenceDate.Year, referenceDate.Month, 1);
         
-        return Enumerable.Range(-2, 5)
+        return Enumerable.Range(-2, 4)
             .Select(offset =>
             {
                 var month = currentMonth.AddMonths(offset);
+
+                var monthTransactions = transactions
+                    .Where(transaction =>
+                        transaction.Date.Year == month.Year &&
+                        transaction.Date.Month == month.Month)
+                    .ToList();
+                
+                var balance = monthTransactions
+                    .Where(transaction => transaction.Status == "Completed")
+                    .Sum(transaction => transaction.Type == "Income" ? transaction.Amount : -transaction.Amount);
 
                 return new CashflowBoardMonthResponse(
                     Year: month.Year,
                     Month: month.Month,
                     Period: $"{month.Month:D2}/{month.Year:D4}",
-                    Balance: 0,
+                    Balance: balance,
                     IsClosed: false,
-                    Transactions: []
+                    Transactions: monthTransactions
+                        .Select(transaction =>
+                            new CashflowBoardTransactionResponse(
+                                transaction.TransactionId,
+                                transaction.Title,
+                                transaction.Amount,
+                                transaction.Type,
+                                transaction.Date,
+                                transaction.Status))
+                        .ToList()
                 );
             }).ToList();
     }
