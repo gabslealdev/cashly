@@ -1,4 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { MenuButton } from '../../components/ui/menu-button/menu-button';
 import { Modal } from '../../../../shared/components/modal/modal';
 import { CreateCashflowForm } from '../../components/create-cashflow-form/create-cashflow-form';
@@ -6,6 +7,7 @@ import { CashflowHeaderCard } from "../../components/ui/cashflow-header-card/cas
 import { UserCashflowReadModel } from '../../models/user-cashflow-read-model.model';
 import { CashflowService } from '../../services/cashflow-service';
 import { CashflowBoard } from '../../components/cashflow-board/cashflow-board';
+import { AuthService } from '../../../identity-context/services/auth-service';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -15,6 +17,8 @@ import { CashflowBoard } from '../../components/cashflow-board/cashflow-board';
 })
 export class DashboardPage {
   private readonly cashflowService = inject(CashflowService)
+  private readonly authService = inject(AuthService)
+  private readonly router = inject(Router)
 
   selectedCashflow = signal<UserCashflowReadModel | null>(null);
   isAsideExpanded = signal(false);
@@ -59,5 +63,10 @@ export class DashboardPage {
 
   protected onCashflowCreated(): void {
     this.loadCashflows();
+  }
+
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }

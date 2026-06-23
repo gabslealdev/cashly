@@ -1,4 +1,4 @@
-      <section class="cashflow-card" (click)="selectCashflow()">
+      <section class="cashflow-card" [class.selected]="isSelected()" (click)="selectCashflow()">
         <h2 class="cashflow-title">{{ cashflow().title }}</h2>
         <hr>
         <div class="cashflow-info">

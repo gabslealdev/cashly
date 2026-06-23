@@ -9,6 +9,7 @@ import { UserCashflowReadModel } from '../../../models/user-cashflow-read-model.
 })
 export class CashflowHeaderCard {
   cashflow = input.required<UserCashflowReadModel>();
+  isSelected = input(false);
   selected = output<UserCashflowReadModel>();
 
   selectCashflow(): void {

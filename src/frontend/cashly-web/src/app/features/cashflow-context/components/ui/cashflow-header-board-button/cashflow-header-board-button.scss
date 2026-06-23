@@ -1,0 +1,15 @@
+        .header-button{
+            padding: var(--space-2) var(--space-4);
+            border: 0;
+            border-radius: var(--radius-xs);
+            background-color: var(--color-primary);
+            color: var(--color-background);
+            font: inherit;
+            font-size: var(--font-size-sm);
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .header-button:hover {
+            background-color: var(--color-primary-hover);
+        }

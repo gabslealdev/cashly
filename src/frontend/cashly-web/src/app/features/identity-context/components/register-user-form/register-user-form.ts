@@ -17,7 +17,7 @@ import { Router } from '@angular/router';
 export class RegisterUserForm {
   private readonly formBuilder = inject(FormBuilder);
   private identityService = inject(IdentityService);
-  private readonly router = inject(Router)
+  private readonly router = inject(Router);
 
   protected registerForm = this.formBuilder.group({
     firstName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(80)]],

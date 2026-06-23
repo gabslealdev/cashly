@@ -1,3 +1,9 @@
+:host {
+    display: block;
+    height: 100vh;
+    overflow: hidden;
+}
+
 main {
     background-color: var(--color-background);
     display: flex;
@@ -42,6 +48,17 @@ main {
             margin-bottom: var(--space-3);
             margin-left: var(--space-3);
         }
+
+        & .aside-menu {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            padding-bottom: var(--space-3);
+
+            & .logout-button {
+                margin-top: auto;
+            }
+        }
     }
 
     & .main-container {
@@ -50,6 +67,7 @@ main {
         gap: var(--space-3);
         width: 88%;
         height: 100%;
+        min-height: 0;
 
 
         & .dashboard-header {
@@ -65,9 +83,17 @@ main {
         & .dashboard-main {
             background-color: var(--color-surface);
             height: 90%;
+            min-height: 0;
             width: 100%;
             border-radius: var(--radius-xs);
             padding: var(--space-3);
+            overflow: hidden;
+
+            & app-cashflow-board {
+                display: block;
+                height: 100%;
+                min-height: 0;
+            }
         }
     }
 }
@@ -158,6 +184,7 @@ main {
             gap: var(--space-2);
             width: 95%;
             height: 100%;
+            min-height: 0;
 
 
             & .dashboard-header {
@@ -173,9 +200,11 @@ main {
             & .dashboard-main {
                 background-color: var(--color-surface);
                 height: 86%;
+                min-height: 0;
                 width: 100%;
                 border-radius: var(--radius-xs);
                 padding: var(--space-2);
+                overflow: hidden;
             }
         }
     }
@@ -204,7 +233,7 @@ main {
             }
 
             & .aside-menu {
-                display: block;
+                display: flex;
             }
         }
 

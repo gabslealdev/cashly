@@ -1,0 +1,53 @@
+<main>
+  <form [formGroup]="registerTransactionForm" (ngSubmit)="onSubmit()">
+    <div class="fieldset-wrapper">
+      <fieldset>
+        <legend>Tipo da transação</legend>
+        <div class="radio-wrapper">
+          <div class="radio-group ">
+            <label for="income" class="label-income">
+                <input type="radio" formControlName="type" value="Income" class="ipt-income" id="income"/>
+                Receita
+            </label>
+          </div>
+          <div class="radio-group expense-group">
+            <label for="expense" class="label-expense">
+                 <input type="radio" formControlName="type" value="Expense" class="ipt-expense" id="expense"/>
+                Despesa
+            </label>            
+          </div>
+        </div>
+      </fieldset>
+    </div>
+    <div class="main-group">
+      <input
+        type="text"
+        formControlName="title"
+        class="title"
+        placeholder="Título"
+      />
+      <input
+        type="text"
+        formControlName="amount"
+        inputmode="decimal"
+        autocomplete="off"
+        class="amount"
+        placeholder="Valor"
+        (blur)="formatAmountOnBlur()"
+      />
+    </div>
+    <div class="footer-group">
+      <input type="date" formControlName="date" />
+      <label class="status-dropdown" for="status">
+        <select formControlName="status" id="status">
+          <option value="Scheduled">Agendada</option>
+          <option value="Completed">Realizada</option>
+        </select>
+      </label>
+    </div>
+    @if (errorMessage()) {
+      <p class="error-message">{{ errorMessage() }}</p>
+    }
+    <app-identity-button text="Adicionar" [disabled]="isSubmitting()"></app-identity-button>
+  </form>
+</main>
