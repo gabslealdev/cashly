@@ -123,12 +123,36 @@ main {
                     width: 100%;
 
                     & .financial-health-status{
+
                         & span{
-                            background-color: var(--green);
                             padding-inline: var(--space-1);
                             border-radius: var(--radius-xs);
                             font-size: var(--font-size-xs);
                             font-weight: 600;
+                        }
+
+                        .no-activity{
+                            background-color: var(--off-white);
+                        }
+
+                        .critical{
+                            background-color: var(--red);
+                        }
+
+                        .warning{
+                            background-color: var(--orange);
+                        }
+
+                        .attention{
+                            background-color: var(--yellow);
+                        }
+
+                        .healthy{
+                            background-color: var(--green);
+                        }
+
+                        .excellent{
+                            background-color: var(--blue);
                         }
                     }
                 }

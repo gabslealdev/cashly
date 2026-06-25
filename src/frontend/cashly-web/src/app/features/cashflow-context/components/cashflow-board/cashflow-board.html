@@ -32,13 +32,20 @@
                     @if (!month.isClosed) {
                         <div class="projection">
                             <span class="label-balance"> Projetado:</span>
-                            {{month.balance | currency:'BRL'}}
+                            {{month.projected | currency:'BRL'}}
                         </div>
                     }
                 </div>
                 <div class="period-footer">
                     <div class="financial-health-status">
-                        <span class="badge-health-status">HEALTH</span>
+                        <span class="badge-health-status" 
+                            [class.no-activity]="month.financialHealthStatus == 'NoActivity'"
+                            [class.critical]="month.financialHealthStatus == 'Critical'"
+                            [class.warning]="month.financialHealthStatus == 'Warning'"
+                            [class.attention]="month.financialHealthStatus == 'Attention'"
+                            [class.healthy]="month.financialHealthStatus == 'Healthy'"
+                            [class.excellent]="month.financialHealthStatus == 'Excellent'"
+                        >{{month.financialHealthStatus.toUpperCase()}}</span>
                     </div>
                 </div>
             </div>
