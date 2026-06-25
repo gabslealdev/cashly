@@ -11,7 +11,9 @@ export interface CashflowBoardMonthResponse{
     month: number;
     period: string;
     balance: number;
+    projected: number;
     isClosed: boolean;
+    financialHealthStatus: string;
     transactions: CashflowBoardTransactionResponse[];
 }
 

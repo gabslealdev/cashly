@@ -139,7 +139,7 @@ Responsavel pela colaboracao dentro de um cashflow:
 
 - Selecao de cashflow e abertura do dashboard mensal.
 - Criacao de transacoes.
-- Visualizacao mensal com 2 meses anteriores, mes atual e 2 meses futuros.
+- Visualizacao mensal com 2 meses anteriores, mes atual e 1 mes futuro.
 - Agrupamento de transacoes por mes.
 - Atualizacao dinamica de saldo.
 
@@ -147,7 +147,7 @@ Responsavel pela colaboracao dentro de um cashflow:
 
 - Fechamento mensal.
 - Historico imutavel de meses fechados.
-- Status financeiro por periodo: `Critical`, `Warning`, `Attention`, `Healthy`, `Excellent`.
+- Status financeiro por periodo: `NoActivity`, `Critical`, `Warning`, `Attention`, `Healthy`, `Excellent`.
 - Colaboracao avancada entre membros.
 
 ## Estrutura Do Projeto
@@ -268,4 +268,3 @@ A documentacao do projeto esta em `docs/`:
 ## Status Do Projeto
 
 Cashly esta em desenvolvimento ativo. O foco atual e evoluir o Cashflow Context para permitir que o usuario selecione um cashflow, visualize uma janela mensal e registre transacoes.
-

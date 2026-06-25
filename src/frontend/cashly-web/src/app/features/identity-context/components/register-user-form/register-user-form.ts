@@ -47,8 +47,6 @@ export class RegisterUserForm {
         this.router.navigate(['login'])
       }
     });
-
-
   }
 
   protected get firstName(){

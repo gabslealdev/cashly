@@ -103,7 +103,7 @@ Cenarios recomendados:
 - `PeriodFinancialResultCalculator` deve ignorar transacoes fora do periodo informado.
 - `PeriodFinancialResult` deve calcular `ResultPercent` como `PeriodResult / TotalIncome`.
 - `PeriodFinancialResult` deve retornar `ResultPercent` zero quando `TotalIncome` for zero.
-- `FinancialHealthClassifier` deve classificar `Critical`, `Warning`, `Attention`, `Healthy` e `Excellent` conforme os limites definidos.
+- `FinancialHealthClassifier` ja cobre `NoActivity` e despesa sem renda; ainda deve classificar os limites de `Critical`, `Warning`, `Attention`, `Healthy` e `Excellent`.
 - `MonthClosingPolicy` deve rejeitar fechamento quando houver transacao `Scheduled` no periodo.
 - `MonthClosingPolicy` deve permitir fechamento quando transacoes `Scheduled` forem de outro periodo.
 
@@ -199,7 +199,7 @@ Cenarios recomendados:
 - Deve retornar falha quando usuario nao e membro do cashflow.
 - Deve retornar falha quando header nao existe.
 - Deve retornar sucesso quando usuario e membro e header existe.
-- Deve montar cinco colunas mensais.
+- Deve montar quatro colunas mensais: 2 meses anteriores, mes atual e 1 mes futuro.
 - Deve montar periodo no formato esperado.
 - Deve retornar os meses em ordem cronologica.
 - Deve retornar saldo zero, `IsClosed = false` e lista vazia enquanto ainda nao ha transacoes.

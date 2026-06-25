@@ -11,7 +11,9 @@ public sealed record CashflowBoardMonthResponse(
     int Month,
     string Period,
     decimal Balance,
+    decimal Projected,
     bool IsClosed,
+    string FinancialHealthStatus,
     IReadOnlyList<CashflowBoardTransactionResponse> Transactions);
 
 public sealed record CashflowBoardTransactionResponse(

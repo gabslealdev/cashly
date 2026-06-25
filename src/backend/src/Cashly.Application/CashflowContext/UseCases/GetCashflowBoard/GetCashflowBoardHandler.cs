@@ -3,6 +3,8 @@ using Cashly.Application.CashflowContext.Errors;
 using Cashly.Application.CashflowContext.Interfaces.Repository;
 using Cashly.Application.Shared.Results;
 using Cashly.Application.TransactionContext.Interfaces.Repository;
+using Cashly.Domain.CashflowContext.Services;
+using Cashly.Domain.CashflowContext.ValueObjects;
 
 namespace Cashly.Application.CashflowContext.UseCases.GetCashflowBoard;
 
@@ -75,16 +77,35 @@ public class GetCashflowBoardHandler : IQueryHandler<GetCashflowBoardQuery,Resul
                         transaction.Date.Month == month.Month)
                     .ToList();
                 
-                var balance = monthTransactions
-                    .Where(transaction => transaction.Status == "Completed")
+                var totalIncome = monthTransactions
+                    .Where(transaction => transaction.Type == "Income" && transaction.Status == "Completed")
+                    .Sum(transaction => transaction.Amount);
+                
+                var totalExpense = monthTransactions
+                    .Where(transaction =>   transaction.Type == "Expense" && transaction.Status == "Completed")
+                    .Sum(transaction => transaction.Amount);
+                
+                var periodFinancialResult = PeriodFinancialResult.Create(
+                    Money.Create(totalIncome),
+                    Money.Create(totalExpense));
+
+                var balance = periodFinancialResult.PeriodResult.Value;
+                
+                var projected = monthTransactions
+                    .Where(transaction => transaction.Status != "Cancelled")
                     .Sum(transaction => transaction.Type == "Income" ? transaction.Amount : -transaction.Amount);
 
+                var financialHealth = new FinancialHealthClassifier();
+                var healthStatus = financialHealth.Classify(periodFinancialResult);
+                
                 return new CashflowBoardMonthResponse(
                     Year: month.Year,
                     Month: month.Month,
                     Period: $"{month.Month:D2}/{month.Year:D4}",
                     Balance: balance,
+                    Projected: projected,
                     IsClosed: false,
+                    FinancialHealthStatus: healthStatus.ToString(),
                     Transactions: monthTransactions
                         .Select(transaction =>
                             new CashflowBoardTransactionResponse(
