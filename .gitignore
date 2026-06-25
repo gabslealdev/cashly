@@ -160,6 +160,11 @@ publish/
 out/
 
 # =========================
+# Private project planning
+# =========================
+docs/08-Portfolio-Release-Roadmap.md
+
+# =========================
 # Temporary files
 # =========================
 tmp/
