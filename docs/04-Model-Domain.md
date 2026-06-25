@@ -231,7 +231,7 @@ Representa o valor monetário da transação.
 - `CashflowId` → Guid
 - `Period` → Value Object
 - `PeriodResult` → Value Object
-- `Status` → Enum (Critical, Warning, Attention, Healthy, Excellent)
+- `Status` → Enum (NoActivity, Critical, Warning, Attention, Healthy, Excellent)
 - `ClosedAt` → DateTimeOffset
 
 Responsabilidades
@@ -296,6 +296,7 @@ Responsável por classificar a saúde financeira de um `PeriodFinancialResult`.
 
 Regra inicial:
 
+- `NoActivity`: ausência de receitas e despesas no período.
 - `Critical`: `PeriodResult` negativo ou ausência de sobra.
 - `Warning`: sobra positiva menor que 10% da renda.
 - `Attention`: sobra entre 10% e 19,99% da renda.

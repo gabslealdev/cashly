@@ -7,6 +7,10 @@ public sealed class FinancialHealthClassifier
 {
     public FinancialHealthStatus Classify(PeriodFinancialResult financialResult)
     {
+        if (financialResult.TotalIncome.Value == 0 &&
+            financialResult.TotalExpense.Value == 0)
+            return FinancialHealthStatus.NoActivity;
+
         if (financialResult.PeriodResult.Value < 0)
             return FinancialHealthStatus.Critical;
 

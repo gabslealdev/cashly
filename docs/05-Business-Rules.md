@@ -100,7 +100,7 @@
 - **Contexto:** Cashflow
 - **Condição:** Existência de um `PeriodFinancialResult`
 - **Ação esperada:** Classificar o status financeiro usando `ResultPercent = PeriodResult / TotalIncome`
-- **Exceções:** Quando `TotalIncome` for zero, `ResultPercent` deve ser zero
+- **Exceções:** Quando receitas e despesas forem zero, o status deve ser `NoActivity`. Quando `TotalIncome` for zero, `ResultPercent` deve ser zero
 - **Origem:** Sistema
 - **Impacto:** FinancialHealthClassifier, PeriodFinancialResult, ClosedMonth
 
