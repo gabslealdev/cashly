@@ -1,4 +1,8 @@
-# Cashly
+<p align="center">
+  <img src="docs/assets/cashly-logo.svg" alt="Cashly" width="180" />
+</p>
+
+<h1 align="center">Cashly</h1>
 
 ![.NET](https://img.shields.io/badge/.NET-9.0-512BD4?style=flat&logo=dotnet&logoColor=white)
 ![ASP.NET Core](https://img.shields.io/badge/ASP.NET%20Core-9.0-512BD4?style=flat&logo=dotnet&logoColor=white)
