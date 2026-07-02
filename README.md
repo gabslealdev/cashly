@@ -107,10 +107,10 @@ Responsavel pelo controle financeiro:
 
 - Criacao de cashflows.
 - Listagem de cashflows vinculados ao usuario autenticado.
-- Registro futuro de transacoes.
+- Registro de transacoes.
 - Organizacao mensal.
 - Calculo de saldo por periodo.
-- Fechamento mensal.
+- Base de dominio para fechamento mensal.
 
 ### Collaboration Context
 
@@ -131,23 +131,26 @@ Responsavel pela colaboracao dentro de um cashflow:
 - Criador definido automaticamente como `Owner`.
 - Listagem de cashflows do usuario autenticado.
 - Dashboard inicial com cards de cashflows.
+- Selecao de cashflow e abertura do board mensal.
+- Registro de transacoes em cashflows.
+- Visualizacao mensal com 2 meses anteriores, mes atual e 1 mes futuro.
+- Agrupamento de transacoes por mes.
+- Calculo de saldo, projecao e status financeiro por periodo no board.
 - Interceptor HTTP para envio de token JWT.
 - Auth guard no Angular.
-- Testes unitarios de dominio e application.
+- Testes unitarios de dominio.
+- Testes unitarios de application para identidade.
 
 ### Em Desenvolvimento
 
-- Selecao de cashflow e abertura do dashboard mensal.
-- Criacao de transacoes.
-- Visualizacao mensal com 2 meses anteriores, mes atual e 1 mes futuro.
-- Agrupamento de transacoes por mes.
-- Atualizacao dinamica de saldo.
+- Fechamento mensal no dominio.
+- Integracao do fluxo de fechamento mensal na API e no frontend.
+- Refinamento do board mensal e do formulario de transacoes.
+- Ampliacao da cobertura de testes para cashflow board e transacoes.
 
 ### Planejado
 
-- Fechamento mensal.
-- Historico imutavel de meses fechados.
-- Status financeiro por periodo: `NoActivity`, `Critical`, `Warning`, `Attention`, `Healthy`, `Excellent`.
+- Historico imutavel de meses fechados exposto na aplicacao.
 - Colaboracao avancada entre membros.
 
 ## Estrutura Do Projeto
@@ -161,7 +164,8 @@ Responsavel pela colaboracao dentro de um cashflow:
 │   ├── 04-Model-Domain.md
 │   ├── 05-Business-Rules.md
 │   ├── 06-Backlog.md
-│   └── 07-Traceability.md
+│   ├── 07-Traceability.md
+│   └── TEST-COVERAGE-GAPS.md
 └── src
     ├── backend
     │   ├── Cashly.sln
@@ -264,7 +268,10 @@ A documentacao do projeto esta em `docs/`:
 - [Business Rules](docs/05-Business-Rules.md)
 - [Backlog](docs/06-Backlog.md)
 - [Traceability](docs/07-Traceability.md)
+- [Test Coverage Gaps](docs/TEST-COVERAGE-GAPS.md)
 
 ## Status Do Projeto
 
-Cashly esta em desenvolvimento ativo. O foco atual e evoluir o Cashflow Context para permitir que o usuario selecione um cashflow, visualize uma janela mensal e registre transacoes.
+Cashly esta em desenvolvimento ativo. O fluxo principal de autenticacao, criacao de cashflows, selecao de cashflow, visualizacao do board mensal e registro de transacoes ja esta implementado em backend e frontend.
+
+O foco atual e consolidar o fechamento mensal, expor o historico de meses fechados na aplicacao, refinar a experiencia do board e ampliar a cobertura de testes dos contextos de cashflow e transacoes.
