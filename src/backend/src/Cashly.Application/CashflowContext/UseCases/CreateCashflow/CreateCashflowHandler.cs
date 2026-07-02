@@ -22,9 +22,11 @@ public class CreateCashflowHandler : ICommandHandler<CreateCashflowCommand, Resu
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result<CreateCashflowResponse>> HandleAsync(CreateCashflowCommand command)
+    public async Task<Result<CreateCashflowResponse>> HandleAsync(
+        CreateCashflowCommand command,
+        CancellationToken cancellationToken = default)
     {
-        var userExists = await _userRepository.ExistByIdAsync(command.UserId);
+        var userExists = await _userRepository.ExistByIdAsync(command.UserId, cancellationToken);
 
         if (!userExists)
             return Result<CreateCashflowResponse>.Failure(CreateCashflowErrors.UserNotFound);
@@ -32,8 +34,8 @@ public class CreateCashflowHandler : ICommandHandler<CreateCashflowCommand, Resu
         var title = Title.Create(command.Title);
         var cashflow = Cashflow.Create(title, command.UserId);
 
-        await _cashflowRepository.AddAsync(cashflow);
-        await _unitOfWork.CommitAsync();
+        await _cashflowRepository.AddAsync(cashflow, cancellationToken);
+        await _unitOfWork.CommitAsync(cancellationToken);
         
         return Result<CreateCashflowResponse>.Success(new CreateCashflowResponse(cashflow.Id, cashflow.Title.Value));
     }

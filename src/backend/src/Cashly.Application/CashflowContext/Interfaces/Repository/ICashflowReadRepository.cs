@@ -6,9 +6,14 @@ namespace Cashly.Application.CashflowContext.Interfaces.Repository;
 
 public interface ICashflowReadRepository
 {
-    Task<IReadOnlyList<UserCashflowReadModel>> GetUserCashflowsAsync(Guid userId);
+    Task<IReadOnlyList<UserCashflowReadModel>> GetUserCashflowsAsync(
+        Guid userId,
+        CancellationToken cancellationToken = default);
     
-    Task<CashflowBoardHeaderReadModel?> GetCashflowBoardHeaderAsync(Guid cashflowId, Guid userId);
+    Task<CashflowBoardHeaderReadModel?> GetCashflowBoardHeaderAsync(
+        Guid cashflowId,
+        Guid userId,
+        CancellationToken cancellationToken = default);
     
-    Task<Cashflow?> GetCashflowById(Guid cashflowId);
+    Task<Cashflow?> GetCashflowById(Guid cashflowId, CancellationToken cancellationToken = default);
 }

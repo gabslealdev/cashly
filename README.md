@@ -11,21 +11,21 @@
 ![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?style=flat&logo=docker&logoColor=white)
 ![xUnit](https://img.shields.io/badge/xUnit-Tests-5E2B97?style=flat)
 
-Cashly é uma aplicação de controle financeiro pessoal e colaborativo. O objetivo do projeto e permitir que usuários registrem receitas e despesas, acompanhem saldos mensais e visualizem a evolução financeira de um cashflow ao longo do tempo.
+Cashly é uma aplicação de controle financeiro pessoal e colaborativo. O objetivo do projeto é permitir que usuários registrem receitas e despesas, acompanhem saldos mensais e visualizem a evolução financeira de um cashflow ao longo do tempo.
 
 O projeto está sendo desenvolvido como um monorepo fullstack, com backend em ASP.NET Core, frontend em Angular e arquitetura inspirada em Clean Architecture para melhor testabilidade.
 
-A modelagem do domínio segue os princípios do Domain-Driven-Design (DDD) aplicando conceitos como Entities, Value Objects e Aggregates bem como encapsulamento das regras de negócio e separação de responsabilidades, mantendo assim o domínio independente de detalhes de infraestrutura visando ortogonalidade, coesão e manutenibilidade. 
+A modelagem do domínio segue os princípios do Domain-Driven Design (DDD), aplicando conceitos como Entities, Value Objects e Aggregates, bem como encapsulamento das regras de negócio e separação de responsabilidades. Isso mantém o domínio independente de detalhes de infraestrutura, visando ortogonalidade, coesão e manutenibilidade.
 
 ## Visão
 
-Indivíduos e famílias frequentemente acompanham e controlam gastos por planilhas ou grupos em whatsapp, isso dificulta colaboração, histórico financeiro e acompanhamento recorrente. 
+Indivíduos e famílias frequentemente acompanham e controlam gastos por planilhas ou grupos em WhatsApp. Isso dificulta colaboração, histórico financeiro e acompanhamento recorrente.
 
 Cashly busca resolver esse problema oferecendo:
 
-- Cadastro e autenticacao de usuarios.
+- Cadastro e autenticação de usuários.
 - Criação de cashflows pessoais ou compartilhados.
-- Associação de membros a um cashflow com papeis de acesso.
+- Associação de membros a um cashflow com papéis de acesso.
 - Registro de receitas e despesas.
 - Visualização mensal de transações e saldos.
 - Base para fechamento mensal e preservação de histórico financeiro.
@@ -79,83 +79,83 @@ src/backend/src
 
 **Domain**
 
-Contem entidades, value objects, erros e regras centrais do dominio. Exemplos: `User`, `Cashflow`, `CashflowMember`, `Email`, `Name`, `Title`.
+Contém entidades, value objects, erros e regras centrais do domínio. Exemplos: `User`, `Cashflow`, `CashflowMember`, `Email`, `Name`, `Title`.
 
 **Application**
 
-Contem casos de uso, comandos, queries, handlers, contratos de persistencia, contratos de seguranca e modelos de resposta.
+Contém casos de uso, comandos, queries, handlers, contratos de persistência, contratos de segurança e modelos de resposta.
 
 **Infrastructure**
 
-Contem implementacoes externas, como EF Core, DbContext, repositorios, Unit of Work, hashing de senha, JWT e mediator interno.
+Contém implementações externas, como EF Core, DbContext, repositórios, Unit of Work, hashing de senha, JWT e mediator interno.
 
 **Api**
 
-Expoe os casos de uso via controllers HTTP, autenticacao, autorizacao, CORS e Swagger.
+Expõe os casos de uso via controllers HTTP, autenticação, autorização, CORS e Swagger.
 
 ## Domínio e Agregados
 
 ### Identity Context
 
-Responsavel por identidade e autenticacao:
+Responsável por identidade e autenticação:
 
-- Registro de usuario.
-- Login de usuario.
+- Registro de usuário.
+- Login de usuário.
 - Email normalizado.
 - Senha armazenada como hash.
-- Geracao de token JWT.
+- Geração de token JWT.
 
 ### Cashflow Context
 
-Responsavel pelo controle financeiro:
+Responsável pelo controle financeiro:
 
-- Criacao de cashflows.
-- Listagem de cashflows vinculados ao usuario autenticado.
-- Registro de transacoes.
-- Organizacao mensal.
-- Calculo de saldo por periodo.
-- Base de dominio para fechamento mensal.
+- Criação de cashflows.
+- Listagem de cashflows vinculados ao usuário autenticado.
+- Registro de transações.
+- Organização mensal.
+- Cálculo de saldo por período.
+- Base de domínio para fechamento mensal.
 
 ### Collaboration Context
 
-Responsavel pela colaboracao dentro de um cashflow:
+Responsável pela colaboração dentro de um cashflow:
 
 - Membros de cashflow.
-- Papel do usuario: `Owner`, `Contributor`, `Viewer`.
-- Garantia de owner unico por cashflow.
+- Papel do usuário: `Owner`, `Contributor`, `Viewer`.
+- Garantia de owner único por cashflow.
 
 ## Funcionalidades
 
 ### Implementado
 
-- Cadastro de usuario.
+- Cadastro de usuário.
 - Login com JWT.
 - Hash de senha com Argon2.
-- Criacao de cashflow.
+- Criação de cashflow.
 - Criador definido automaticamente como `Owner`.
-- Listagem de cashflows do usuario autenticado.
+- Listagem de cashflows do usuário autenticado.
 - Dashboard inicial com cards de cashflows.
-- Selecao de cashflow e abertura do board mensal.
-- Registro de transacoes em cashflows.
-- Visualizacao mensal com 2 meses anteriores, mes atual e 1 mes futuro.
-- Agrupamento de transacoes por mes.
-- Calculo de saldo, projecao e status financeiro por periodo no board.
+- Seleção de cashflow e abertura do board mensal.
+- Registro de transações em cashflows.
+- Visualização mensal com 2 meses anteriores, mês atual e 1 mês futuro.
+- Agrupamento de transações por mês.
+- Cálculo de saldo, projeção e status financeiro por período no board.
 - Interceptor HTTP para envio de token JWT.
 - Auth guard no Angular.
-- Testes unitarios de dominio.
-- Testes unitarios de application para identidade.
+- Testes unitários de domínio.
+- Testes unitários de application para identidade.
 
 ### Em Desenvolvimento
 
-- Fechamento mensal no dominio.
-- Integracao do fluxo de fechamento mensal na API e no frontend.
-- Refinamento do board mensal e do formulario de transacoes.
-- Ampliacao da cobertura de testes para cashflow board e transacoes.
+- Fechamento mensal no domínio.
+- Integração do fluxo de fechamento mensal na API e no frontend.
+- Refinamento do board mensal e do formulário de transações.
+- Ampliação da cobertura de testes para cashflow board e transações.
 
 ### Planejado
 
-- Historico imutavel de meses fechados exposto na aplicacao.
-- Colaboracao avancada entre membros.
+- Histórico imutável de meses fechados exposto na aplicação.
+- Colaboração avançada entre membros.
 
 ## Estrutura Do Projeto
 
@@ -188,29 +188,49 @@ Responsavel pela colaboracao dentro de um cashflow:
 
 ## Como Rodar Localmente
 
-### Pre-requisitos
+### Pré-requisitos
 
 - .NET SDK 9
-- Node.js compativel com Angular 20
+- Node.js compatível com Angular 20
 - Angular CLI
 - Docker
 
 ### Banco De Dados
 
-Na pasta do backend, configure a senha do SQL Server em um arquivo `.env`:
+Na pasta do backend, copie o arquivo de exemplo para criar a configuração local:
+
+```bash
+cd src/backend
+cp .env.example .env
+```
+
+O Docker Compose usa o `.env` dessa pasta para configurar o SQL Server. A variável obrigatória para o container é:
 
 ```env
 MSSQL_SA_PASSWORD=Your_strong_password123
 ```
 
-Suba o SQL Server:
+Suba o SQL Server ainda na pasta `src/backend`:
 
 ```bash
-cd src/backend
 docker compose -f compose.YAML up -d
 ```
 
-Configure a connection string e JWT via `appsettings.Development.json`, user secrets ou variaveis de ambiente.
+### Configuração Da API
+
+A API precisa de connection string e configurações de JWT. Essas configurações podem ser definidas via `appsettings.Development.json`, user secrets ou variáveis de ambiente.
+
+Variáveis esperadas quando usar ambiente:
+
+```env
+ConnectionStrings__DefaultConnection=Server=localhost,1433;Database=Cashly;User Id=sa;Password=Your_strong_password123;TrustServerCertificate=True
+Jwt__SecretKey=replace-with-a-long-local-development-secret
+Jwt__Issuer=Cashly.Api
+Jwt__Audience=Cashly.Web
+Jwt__ExpirationInMinutes=180
+```
+
+O arquivo `.env` é usado pelo Docker Compose. A API ASP.NET Core não carrega esse arquivo automaticamente; para usar as mesmas chaves na API, exporte as variáveis no shell, use user secrets ou configure o `appsettings.Development.json` localmente.
 
 ### Backend
 
@@ -220,7 +240,7 @@ dotnet restore Cashly.sln
 dotnet run --project src/Cashly.Api/Cashly.Api.csproj
 ```
 
-Por padrao, a API usa:
+Por padrão, a API usa:
 
 ```text
 http://localhost:5066
@@ -240,7 +260,7 @@ npm install
 npm start
 ```
 
-Aplicacao Angular:
+Aplicação Angular:
 
 ```text
 http://localhost:4200
@@ -261,9 +281,9 @@ cd src/frontend/cashly-web
 npm test
 ```
 
-## Documentacao
+## Documentação
 
-A documentacao do projeto esta em `docs/`:
+A documentação do projeto está em `docs/`:
 
 - [Vision](docs/01-Vision.md)
 - [Glossary](docs/02-Glossary.md)
@@ -276,6 +296,6 @@ A documentacao do projeto esta em `docs/`:
 
 ## Status Do Projeto
 
-Cashly esta em desenvolvimento ativo. O fluxo principal de autenticacao, criacao de cashflows, selecao de cashflow, visualizacao do board mensal e registro de transacoes ja esta implementado em backend e frontend.
+Cashly está em desenvolvimento ativo. O fluxo principal de autenticação, criação de cashflows, seleção de cashflow, visualização do board mensal e registro de transações já está implementado em backend e frontend.
 
-O foco atual e consolidar o fechamento mensal, expor o historico de meses fechados na aplicacao, refinar a experiencia do board e ampliar a cobertura de testes dos contextos de cashflow e transacoes.
+O foco atual é consolidar o fechamento mensal, expor o histórico de meses fechados na aplicação, refinar a experiência do board e ampliar a cobertura de testes dos contextos de cashflow e transações.

@@ -25,7 +25,9 @@ public sealed class RegisterUserHandlerTests
 
         var command = new RegisterUserCommand ("João", "Silva", "joao.silva@email.com", "password1234");
 
-        userRepositoryMock.Setup(x => x.ExistByEmailAsync(It.IsAny<Email>())).ReturnsAsync(false);
+        userRepositoryMock
+            .Setup(x => x.ExistByEmailAsync(It.IsAny<Email>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(false);
         
         passwordHasherMock.Setup(x => x.Hash("password1234")).Returns("hashedPassword1234");
         
@@ -40,8 +42,10 @@ public sealed class RegisterUserHandlerTests
         // assert
         result.IsSuccess.ShouldBeTrue();
         
-        userRepositoryMock.Verify(x => x.ExistByEmailAsync(It.IsAny<Email>()), Times.Once);
-        unitOfWorkMock.Verify(x => x.CommitAsync(), Times.Once);
+        userRepositoryMock.Verify(
+            x => x.ExistByEmailAsync(It.IsAny<Email>(), It.IsAny<CancellationToken>()),
+            Times.Once);
+        unitOfWorkMock.Verify(x => x.CommitAsync(It.IsAny<CancellationToken>()), Times.Once);
         passwordHasherMock.Verify(x => x.Hash("password1234"), Times.Once);
     }
 
@@ -55,7 +59,9 @@ public sealed class RegisterUserHandlerTests
         
         var command = new RegisterUserCommand("João", "Silva", "joao.silva@email.com", "password1234");
         
-        userRepositoryMock.Setup(x => x.ExistByEmailAsync(It.IsAny<Email>())).ReturnsAsync(true);
+        userRepositoryMock
+            .Setup(x => x.ExistByEmailAsync(It.IsAny<Email>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(true);
         
         var mediator = CreateMediator(
             userRepositoryMock,
@@ -71,9 +77,11 @@ public sealed class RegisterUserHandlerTests
         
         passwordHasherMock.Verify(x => x.Hash(It.IsAny<string>()), Times.Never);
         
-        userRepositoryMock.Verify(x => x.ExistByEmailAsync(It.IsAny<Email>()), Times.Once);
+        userRepositoryMock.Verify(
+            x => x.ExistByEmailAsync(It.IsAny<Email>(), It.IsAny<CancellationToken>()),
+            Times.Once);
         
-        unitOfWorkMock.Verify(x => x.CommitAsync(), Times.Never);
+        unitOfWorkMock.Verify(x => x.CommitAsync(It.IsAny<CancellationToken>()), Times.Never);
     }
 
     private static IMediator CreateMediator(

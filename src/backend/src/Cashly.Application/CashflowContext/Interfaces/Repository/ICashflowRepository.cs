@@ -4,5 +4,5 @@ namespace Cashly.Application.CashflowContext.Interfaces.Repository;
 
 public interface ICashflowRepository
 {
-    Task AddAsync(Cashflow cashflow);
+    Task AddAsync(Cashflow cashflow, CancellationToken cancellationToken = default);
 }

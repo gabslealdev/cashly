@@ -24,11 +24,13 @@ namespace Cashly.Application.IdentityContext.UseCases.LoginUser
             _jwtTokenGenerator = jwtTokenGenerator;
         }
 
-        public async Task<Result<LoginUserResponse>> HandleAsync(LoginUserCommand command)
+        public async Task<Result<LoginUserResponse>> HandleAsync(
+            LoginUserCommand command,
+            CancellationToken cancellationToken = default)
         {
             var email = Email.Create(command.Email);
 
-            var user = await _userRepository.GetByEmailAsync(email);
+            var user = await _userRepository.GetByEmailAsync(email, cancellationToken);
 
             if (user is null)
                 return Result<LoginUserResponse>.Failure(LoginUserApplicationErrors.InvalidCredentials);

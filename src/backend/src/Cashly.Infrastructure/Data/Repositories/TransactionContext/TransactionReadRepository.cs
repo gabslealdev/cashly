@@ -14,7 +14,11 @@ public class TransactionReadRepository : ITransactionReadRepository
         _context = context;
     }
     public async Task<IReadOnlyList<CashflowBoardTransactionReadModel>> 
-        GetBoardTransactionAsync(Guid cashflowId, DateTimeOffset startDate, DateTimeOffset endDate)
+        GetBoardTransactionAsync(
+            Guid cashflowId,
+            DateTimeOffset startDate,
+            DateTimeOffset endDate,
+            CancellationToken cancellationToken = default)
     {
         return await _context.Transactions
             .AsNoTracking()
@@ -30,6 +34,6 @@ public class TransactionReadRepository : ITransactionReadRepository
                 transaction.Type.ToString(),
                 transaction.Date,
                 transaction.Status.ToString()))
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
 }

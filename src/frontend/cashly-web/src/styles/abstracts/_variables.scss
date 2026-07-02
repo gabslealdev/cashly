@@ -1,4 +1,26 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lexend+Mega:wght@100..900&display=swap');
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/inter/inter-latin.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/inter/inter-italic-latin.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Lexend Mega';
+  src: url('/fonts/lexend-mega/lexend-mega-latin.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
 
 :root {
   /* colors */
@@ -34,8 +56,8 @@
   --font-size-2xl: 2rem;
 
   --font: 'Inter', sans-serif;
-
-  
+  --font-base: 'Inter', sans-serif;
+  --font-special: 'Lexend Mega', sans-serif;
 
   /* spacing */
   --space-1: 0.25rem;

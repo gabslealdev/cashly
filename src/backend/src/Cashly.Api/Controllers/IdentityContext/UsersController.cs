@@ -27,7 +27,7 @@ namespace Cashly.Api.Controllers.IdentityContext
         {
             var command = new RegisterUserCommand(request.FirstName, request.LastName, request.Email, request.Password);
 
-            var validationResult = await _validator.ValidateAsync(command);
+            var validationResult = await _validator.ValidateAsync(command, cancellationToken);
 
             if (!validationResult.IsValid)
             {

@@ -37,7 +37,7 @@ public sealed class CashflowsController : ControllerBase
         
         var command = new CreateCashflowCommand(request.Title, userId);
 
-        var validationResult = await _validator.ValidateAsync(command);
+        var validationResult = await _validator.ValidateAsync(command, cancellationToken);
 
         if (!validationResult.IsValid)
         {

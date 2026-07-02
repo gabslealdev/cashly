@@ -13,9 +13,9 @@ public class CashflowRepository : ICashflowRepository
     {
         _context = context;
     }
-    public async Task AddAsync(Cashflow cashflow)
+    public async Task AddAsync(Cashflow cashflow, CancellationToken cancellationToken = default)
     {
-        await _context.Cashflows.AddAsync(cashflow);
+        await _context.Cashflows.AddAsync(cashflow, cancellationToken);
     }
     
 }

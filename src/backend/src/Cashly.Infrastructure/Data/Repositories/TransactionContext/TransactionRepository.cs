@@ -13,8 +13,8 @@ public sealed class TransactionRepository : ITransactionRepository
         _context = context;
     }
     
-    public async Task AddAsync(Transaction transaction)
+    public async Task AddAsync(Transaction transaction, CancellationToken cancellationToken = default)
     {
-        await _context.Transactions.AddAsync(transaction);
+        await _context.Transactions.AddAsync(transaction, cancellationToken);
     }
 }

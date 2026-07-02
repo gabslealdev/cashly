@@ -25,7 +25,7 @@ public sealed class Mediator : IMediator
         if (method is null)
             throw new InvalidOperationException($"No handler found for {commandType}");
         
-        if(method.Invoke(handler, [command]) is not Task<TResponse> task)
+        if(method.Invoke(handler, [command, cancellationToken]) is not Task<TResponse> task)
             throw new InvalidOperationException($"No task found for {commandType}");
 
         return await ExecuteAsync(task, cancellationToken);
@@ -43,7 +43,7 @@ public sealed class Mediator : IMediator
         if (method is null)
             throw new InvalidOperationException($"No task handler for {queryType}");
 
-        if (method.Invoke(handler, [query]) is not Task<TResponse> task)
+        if (method.Invoke(handler, [query, cancellationToken]) is not Task<TResponse> task)
             throw new InvalidOperationException($"No task found for {queryType}");
         
         return await ExecuteAsync(task, cancellationToken);

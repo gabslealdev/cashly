@@ -15,7 +15,9 @@ public class CashflowReadRepository : ICashflowReadRepository
     {
         _context = context;
     }
-    public async Task<IReadOnlyList<UserCashflowReadModel>> GetUserCashflowsAsync(Guid userId)
+    public async Task<IReadOnlyList<UserCashflowReadModel>> GetUserCashflowsAsync(
+        Guid userId,
+        CancellationToken cancellationToken = default)
     {
         var cashflows = await _context.Cashflows
             .AsNoTracking()
@@ -28,12 +30,15 @@ public class CashflowReadRepository : ICashflowReadRepository
                     .Select(member => member.Role.ToString())
                     .First(),
                 cashflow.CashflowMembers.Count
-            )).ToListAsync();
+            )).ToListAsync(cancellationToken);
         
         return cashflows;
     }
 
-    public async Task<CashflowBoardHeaderReadModel?> GetCashflowBoardHeaderAsync(Guid cashflowId, Guid userId)
+    public async Task<CashflowBoardHeaderReadModel?> GetCashflowBoardHeaderAsync(
+        Guid cashflowId,
+        Guid userId,
+        CancellationToken cancellationToken = default)
     {
         return await _context.Cashflows
             .AsNoTracking()
@@ -46,14 +51,16 @@ public class CashflowReadRepository : ICashflowReadRepository
                     .Where(member => member.UserId == userId)
                     .Select(member => member.Role.ToString())
                     .First()
-            )).FirstOrDefaultAsync();
+            )).FirstOrDefaultAsync(cancellationToken);
     }
 
-    public async Task<Cashflow?> GetCashflowById(Guid cashflowId)
+    public async Task<Cashflow?> GetCashflowById(
+        Guid cashflowId,
+        CancellationToken cancellationToken = default)
     {
         return await _context.Cashflows
             .Include(cashflow => cashflow.CashflowMembers)
             .Include(cashflow => cashflow.ClosedMonths)
-            .FirstOrDefaultAsync(x => x.Id == cashflowId);
+            .FirstOrDefaultAsync(x => x.Id == cashflowId, cancellationToken);
     }
 }

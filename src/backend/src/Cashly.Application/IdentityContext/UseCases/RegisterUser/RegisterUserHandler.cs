@@ -26,13 +26,15 @@ namespace Cashly.Application.IdentityContext.UseCases.RegisterUser
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Result<RegisterUserResponse>> HandleAsync(RegisterUserCommand command)
+        public async Task<Result<RegisterUserResponse>> HandleAsync(
+            RegisterUserCommand command,
+            CancellationToken cancellationToken = default)
         {
             var name = Name.Create(command.FirstName, command.LastName);
 
             var email = Email.Create(command.Email);
 
-            var emailExist = await _userRepository.ExistByEmailAsync(email);
+            var emailExist = await _userRepository.ExistByEmailAsync(email, cancellationToken);
 
             if (emailExist)
                 return Result<RegisterUserResponse>.Failure(RegisterUserApplicationErrors.EmailAlreadyExists);
@@ -43,8 +45,8 @@ namespace Cashly.Application.IdentityContext.UseCases.RegisterUser
             var user = User.Create(name, email, passwordHash);
             var response = new RegisterUserResponse(user.Id);
 
-            await _userRepository.AddAsync(user);
-            await _unitOfWork.CommitAsync();
+            await _userRepository.AddAsync(user, cancellationToken);
+            await _unitOfWork.CommitAsync(cancellationToken);
 
             return Result<RegisterUserResponse>.Success(response);
         }
