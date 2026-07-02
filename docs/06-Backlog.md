@@ -94,17 +94,17 @@ Como usuário autenticado quero adicionar uma receita ou despesa para registrar 
 
 **Task**: 
 
-- [ ]  Criar entidade Transaction como Aggregate Root próprio
-- [ ]  Associar Transaction ao Cashflow por `CashflowId`
-- [ ]  Definir ValueObjects (Amount, Title)
-- [ ]  Criar enum TransactionType (Income, Expense)
-- [ ]  Implementar regra de mês fechado
-- [ ]  Criar comando CreateTransactionCommand
-- [ ]  Criar validator
-- [ ]  Criar handler
-- [ ]  Criar TransactionRepository
+- [x]  Criar entidade Transaction como Aggregate Root próprio
+- [x]  Associar Transaction ao Cashflow por `CashflowId`
+- [x]  Definir ValueObjects (Amount, Title)
+- [x]  Criar enum TransactionType (Income, Expense)
+- [x]  Implementar regra de mês fechado
+- [x]  Criar comando CreateTransactionCommand
+- [x]  Criar validator
+- [x]  Criar handler
+- [x]  Criar TransactionRepository
 - [ ]  Criar endpoint POST /cashflows/{cashflowId}/transactions
-- [ ]  Implementar form Angular
+- [x]  Implementar form Angular
 
 ### Visualizar Dashboard Mensal
 
@@ -126,15 +126,15 @@ Como usuário autenticado quero visualizar minhas transações organizadas por m
 
 **Task**:
 
-- [ ]  Criar GetCashflowDashboardQuery / GetCashflowBoardQuery
-- [ ]  Criar ReadModel (MonthlyCashflowView)
-- [ ]  Implementar agrupamento por mês
-- [ ]  Implementar cálculo de resultado financeiro do período
-- [ ]  Derivar Health Status do período aberto a partir das transações
-- [ ]  Criar handler da query
-- [ ]  Criar endpoint GET /cashflows/{cashflowId}/board
-- [ ]  Criar estrutura de colunas no Angular
-- [ ]  Renderizar transações por mês
+- [x]  Criar GetCashflowDashboardQuery / GetCashflowBoardQuery
+- [x]  Criar ReadModel (MonthlyCashflowView)
+- [x]  Implementar agrupamento por mês
+- [x]  Implementar cálculo de resultado financeiro do período
+- [x]  Derivar Health Status do período aberto a partir das transações
+- [x]  Criar handler da query
+- [x]  Criar endpoint GET /cashflows/{cashflowId}/board
+- [x]  Criar estrutura de colunas no Angular
+- [x]  Renderizar transações por mês
 
 ## Atualizar Saldo Dinamicamente
 
@@ -152,7 +152,7 @@ Como usuário autenticado quero ver o resultado financeiro atualizado automatica
 
 **Tasks:**
 
-- [ ]  Atualizar estado local após criação
+- [x]  Atualizar estado local após criação
 - [ ]  Evitar refetch completo (opcional)
-- [ ]  Sincronizar UI com backend
-- [ ]  Implementar feedback visual
+- [x]  Sincronizar UI com backend
+- [x]  Implementar feedback visual

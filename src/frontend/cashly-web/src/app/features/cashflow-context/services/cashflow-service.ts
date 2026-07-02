@@ -11,7 +11,6 @@ import { GetCashflowBoardResponse } from '../models/get-cashflow-board-response.
   providedIn: 'root',
 })
 export class CashflowService {
-  [x: string]: any;
   private readonly http = inject(HttpClient);
   private readonly apiUrl = environment.apiUrl 
 
@@ -27,4 +26,3 @@ export class CashflowService {
     return this.http.get<GetCashflowBoardResponse>(`${this.apiUrl}/api/cashflows/${cashflowId}/board`)
   }
 }
-
