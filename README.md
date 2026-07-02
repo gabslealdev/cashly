@@ -11,22 +11,24 @@
 ![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?style=flat&logo=docker&logoColor=white)
 ![xUnit](https://img.shields.io/badge/xUnit-Tests-5E2B97?style=flat)
 
-Cashly e uma aplicacao de controle financeiro pessoal e colaborativo. O objetivo do projeto e permitir que usuarios registrem receitas e despesas, acompanhem saldos mensais e visualizem a evolucao financeira de um cashflow ao longo do tempo.
+Cashly é uma aplicação de controle financeiro pessoal e colaborativo. O objetivo do projeto e permitir que usuários registrem receitas e despesas, acompanhem saldos mensais e visualizem a evolução financeira de um cashflow ao longo do tempo.
 
-O projeto esta sendo construido como uma aplicacao full stack, com backend em ASP.NET Core, frontend em Angular e modelagem inspirada em Clean Architecture e DDD tactico.
+O projeto está sendo desenvolvido como um monorepo fullstack, com backend em ASP.NET Core, frontend em Angular e arquitetura inspirada em Clean Architecture para melhor testabilidade.
 
-## Visao Do Produto
+A modelagem do domínio segue os princípios do Domain-Driven-Design (DDD) aplicando conceitos como Entities, Value Objects e Aggregates bem como encapsulamento das regras de negócio e separação de responsabilidades, mantendo assim o domínio independente de detalhes de infraestrutura visando ortogonalidade, coesão e manutenibilidade. 
 
-Individuos, familias e pequenos grupos frequentemente controlam gastos em planilhas ou conversas dispersas. Isso dificulta colaboracao, historico financeiro e acompanhamento recorrente.
+## Visão
+
+Indivíduos e famílias frequentemente acompanham e controlam gastos por planilhas ou grupos em whatsapp, isso dificulta colaboração, histórico financeiro e acompanhamento recorrente. 
 
 Cashly busca resolver esse problema oferecendo:
 
 - Cadastro e autenticacao de usuarios.
-- Criacao de cashflows pessoais ou compartilhados.
-- Associacao de membros a um cashflow com papeis de acesso.
+- Criação de cashflows pessoais ou compartilhados.
+- Associação de membros a um cashflow com papeis de acesso.
 - Registro de receitas e despesas.
-- Visualizacao mensal de transacoes e saldos.
-- Base para fechamento mensal e preservacao de historico financeiro.
+- Visualização mensal de transações e saldos.
+- Base para fechamento mensal e preservação de histórico financeiro.
 
 ## Stack
 
@@ -91,7 +93,7 @@ Contem implementacoes externas, como EF Core, DbContext, repositorios, Unit of W
 
 Expoe os casos de uso via controllers HTTP, autenticacao, autorizacao, CORS e Swagger.
 
-## Modulos Do Dominio
+## Domínio e Agregados
 
 ### Identity Context
 
