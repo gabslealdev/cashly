@@ -27,9 +27,11 @@ public sealed class CreateTransactionHandler : ICommandHandler<CreateTransaction
         _unitOfWork = unitOfWork;
     }
     
-    public async Task<Result<CreateTransactionResponse>> HandleAsync(CreateTransactionCommand command)
+    public async Task<Result<CreateTransactionResponse>> HandleAsync(
+        CreateTransactionCommand command,
+        CancellationToken cancellationToken = default)
     {
-        var cashflow = await _cashflowReadRepository.GetCashflowById(command.CashflowId);
+        var cashflow = await _cashflowReadRepository.GetCashflowById(command.CashflowId, cancellationToken);
 
         if (cashflow is null)
             return Result<CreateTransactionResponse>.Failure(CreateTransactionErrors.CashflowNotFound);
@@ -52,8 +54,8 @@ public sealed class CreateTransactionHandler : ICommandHandler<CreateTransaction
             date: command.Date,
             status: status);
         
-        await _transactionRepository.AddAsync(transaction);
-        await _unitOfWork.CommitAsync();
+        await _transactionRepository.AddAsync(transaction, cancellationToken);
+        await _unitOfWork.CommitAsync(cancellationToken);
         
         var response = new CreateTransactionResponse(
             transaction.Id,

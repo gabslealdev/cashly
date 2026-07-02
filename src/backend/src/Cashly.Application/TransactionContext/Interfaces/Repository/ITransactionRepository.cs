@@ -4,5 +4,5 @@ namespace Cashly.Application.TransactionContext.Interfaces.Repository;
 
 public interface ITransactionRepository
 {
-    Task AddAsync(Transaction transaction);
+    Task AddAsync(Transaction transaction, CancellationToken cancellationToken = default);
 }

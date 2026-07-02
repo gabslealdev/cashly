@@ -7,5 +7,6 @@ public interface ITransactionReadRepository
     Task<IReadOnlyList<CashflowBoardTransactionReadModel>> GetBoardTransactionAsync(
         Guid cashflowId, 
         DateTimeOffset startDate,
-        DateTimeOffset endDate);
+        DateTimeOffset endDate,
+        CancellationToken cancellationToken = default);
 }

@@ -26,7 +26,10 @@ public sealed class TransactionController : ControllerBase
     [HttpPost("{cashflowId:guid}/add")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> CreateTransaction([FromBody] RegisterTransactionRequestDto request, [FromRoute] Guid cashflowId)
+    public async Task<IActionResult> CreateTransaction(
+        [FromBody] RegisterTransactionRequestDto request,
+        [FromRoute] Guid cashflowId,
+        CancellationToken cancellationToken)
     {
         
         var userClaimId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -43,7 +46,7 @@ public sealed class TransactionController : ControllerBase
             request.Date,
             request.Status);
         
-        var validationResult = await _validator.ValidateAsync(command);
+        var validationResult = await _validator.ValidateAsync(command, cancellationToken);
 
         if (!validationResult.IsValid)
         {
@@ -56,7 +59,7 @@ public sealed class TransactionController : ControllerBase
             return BadRequest(error);
         }
         
-        Result<CreateTransactionResponse> result = await _mediator.SendAsync(command);
+        Result<CreateTransactionResponse> result = await _mediator.SendAsync(command, cancellationToken);
 
         if (result.IsFailure)
         {

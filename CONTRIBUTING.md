@@ -1,10 +1,10 @@
 # Contributing
 
-Este guia define o fluxo minimo para manter o historico do Cashly organizado e as mudancas faceis de revisar.
+Este guia define o fluxo mínimo para manter o histórico do Cashly organizado e as mudanças fáceis de revisar.
 
 ## Branches
 
-Use nomes curtos, em minusculo e com kebab-case:
+Use nomes curtos, em minúsculo e com kebab-case:
 
 ```text
 <tipo>/<descricao-curta>
@@ -13,11 +13,11 @@ Use nomes curtos, em minusculo e com kebab-case:
 Tipos recomendados:
 
 - `feature/` para nova funcionalidade.
-- `fix/` para correcao de bug.
-- `docs/` para documentacao.
-- `refactor/` para refatoracao sem mudanca de comportamento.
+- `fix/` para correção de bug.
+- `docs/` para documentação.
+- `refactor/` para refatoração sem mudança de comportamento.
 - `test/` para testes.
-- `chore/` para manutencao, configs e dependencias.
+- `chore/` para manutenção, configs e dependências.
 - `infra/` para Docker, CI/CD, deploy e infraestrutura.
 
 Exemplos:
@@ -35,7 +35,7 @@ test/create-transaction-handler
 Use Conventional Commits:
 
 ```text
-<tipo>(escopo opcional): descricao curta
+<tipo>(escopo opcional): descrição curta
 ```
 
 Exemplos:
@@ -49,7 +49,7 @@ test(domain): cover financial health classifier
 chore(gitignore): ignore local editor files
 ```
 
-Prefira commits pequenos e coesos. Evite misturar feature, refactor e documentacao no mesmo commit quando puder separar.
+Prefira commits pequenos e coesos. Evite misturar feature, refactor e documentação no mesmo commit quando puder separar.
 
 ## Pull Requests
 
@@ -57,21 +57,21 @@ Antes de abrir um PR:
 
 - Atualize sua branch com a base mais recente.
 - Descreva objetivamente o que mudou.
-- Informe como a mudanca foi testada.
-- Cite migrations, alteracoes de contrato de API ou impacto em configuracao.
+- Informe como a mudança foi testada.
+- Cite migrations, alterações de contrato de API ou impacto em configuração.
 - Mantenha o PR focado em um objetivo principal.
 
 Checklist recomendado:
 
 ```text
-- [ ] Build do backend executado quando aplicavel.
-- [ ] Testes do backend executados quando aplicavel.
-- [ ] Build/testes do frontend executados quando aplicavel.
-- [ ] README/docs atualizados quando a mudanca altera uso, setup ou comportamento.
-- [ ] Nenhum arquivo local, secreto ou gerado foi incluido por engano.
+- [ ] Build do backend executado quando aplicável.
+- [ ] Testes do backend executados quando aplicável.
+- [ ] Build/testes do frontend executados quando aplicável.
+- [ ] README/docs atualizados quando a mudança altera uso, setup ou comportamento.
+- [ ] Nenhum arquivo local, secreto ou gerado foi incluído por engano.
 ```
 
-## Validacao Local
+## Validação Local
 
 Backend:
 
@@ -89,14 +89,14 @@ npm test
 npm run build
 ```
 
-Use os comandos relevantes para o tipo de mudanca. Uma alteracao apenas em documentacao nao precisa rodar toda a suite.
+Use os comandos relevantes para o tipo de mudança. Uma alteração apenas em documentação não precisa rodar toda a suite.
 
-## Configuracoes e Secrets
+## Configurações e Secrets
 
-- Nao versione `.env`, secrets, arquivos de usuario da IDE, `bin/`, `obj/`, `node_modules/` ou outputs de build.
-- Use `.env.example` para documentar variaveis obrigatorias sem valores sensiveis.
-- Preferencialmente configure JWT e connection strings via variaveis de ambiente, user secrets ou arquivos locais ignorados.
+- Não versione `.env`, secrets, arquivos de usuário da IDE, `bin/`, `obj/`, `node_modules/` ou outputs de build.
+- Use `.env.example` para documentar variáveis obrigatórias sem valores sensíveis.
+- Preferencialmente configure JWT e connection strings via variáveis de ambiente, user secrets ou arquivos locais ignorados.
 
 ## Escopo
 
-Mantenha mudancas pequenas e revisaveis. Se uma tarefa revelar outro problema, prefira abrir uma nova tarefa ou PR separado, a menos que o ajuste seja necessario para concluir a mudanca atual.
+Mantenha mudanças pequenas e revisáveis. Se uma tarefa revelar outro problema, prefira abrir uma nova tarefa ou PR separado, a menos que o ajuste seja necessário para concluir a mudança atual.

@@ -30,7 +30,9 @@ public class LoginUserHandlerTests
             Email.Create(email),
             PasswordHash.Create("hashedPassword"));
 
-        userRepositoryMock.Setup(x => x.GetByEmailAsync(It.IsAny<Email>())).ReturnsAsync(user);
+        userRepositoryMock
+            .Setup(x => x.GetByEmailAsync(It.IsAny<Email>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(user);
 
         passwordHasherMock.Setup(x => x.Verify(password, user.PasswordHash)).Returns(true);
 
@@ -49,7 +51,9 @@ public class LoginUserHandlerTests
         // assert
         result.IsSuccess.ShouldBeTrue();
         
-        userRepositoryMock.Verify(x => x.GetByEmailAsync(It.IsAny<Email>()), Times.Once);
+        userRepositoryMock.Verify(
+            x => x.GetByEmailAsync(It.IsAny<Email>(), It.IsAny<CancellationToken>()),
+            Times.Once);
         passwordHasherMock.Verify(x => x.Verify(password, user.PasswordHash), Times.Once);
         jwtTokenGeneratorMock.Verify(x => x.GenerateToken(user.Id, user.Email.Value), Times.Once);
 
@@ -65,7 +69,9 @@ public class LoginUserHandlerTests
         
         var command = new LoginUserCommand("joaosilva@email.com", "password123");
         
-        userRepositoryMock.Setup(x => x.GetByEmailAsync(It.IsAny<Email>())).ReturnsAsync((User?)null);
+        userRepositoryMock
+            .Setup(x => x.GetByEmailAsync(It.IsAny<Email>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync((User?)null);
         
         var mediator = CreateMediator(
             userRepositoryMock,

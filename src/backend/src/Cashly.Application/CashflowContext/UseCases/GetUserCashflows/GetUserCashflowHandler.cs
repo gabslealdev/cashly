@@ -13,9 +13,11 @@ public sealed class GetUserCashflowHandler : IQueryHandler<GetUserCashflowsQuery
         _cashflowReadRepository = cashflowReadRepository;
     }
 
-    public async Task<Result<GetUserCashflowsResponse>> HandleAsync(GetUserCashflowsQuery query)
+    public async Task<Result<GetUserCashflowsResponse>> HandleAsync(
+        GetUserCashflowsQuery query,
+        CancellationToken cancellationToken = default)
     {
-        var cashflows = await _cashflowReadRepository.GetUserCashflowsAsync(query.UserId);
+        var cashflows = await _cashflowReadRepository.GetUserCashflowsAsync(query.UserId, cancellationToken);
         
         var response = new GetUserCashflowsResponse(cashflows);
         

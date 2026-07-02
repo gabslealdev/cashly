@@ -14,12 +14,16 @@ public sealed class CashflowMemberReadRepository : ICashflowMemberReadRepository
         _context = context;
     }
     
-    public async Task<bool> HasMemberAsync(Guid userId, Guid cashflowId)
+    public async Task<bool> HasMemberAsync(
+        Guid userId,
+        Guid cashflowId,
+        CancellationToken cancellationToken = default)
     {
         return await _context.CashflowMembers
             .AsNoTracking()
             .AnyAsync(member => 
                 member.UserId == userId &&
-                member.CashflowId == cashflowId);
+                member.CashflowId == cashflowId,
+                cancellationToken);
     }
 }

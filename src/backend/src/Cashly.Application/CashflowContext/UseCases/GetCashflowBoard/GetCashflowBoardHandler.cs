@@ -24,14 +24,22 @@ public class GetCashflowBoardHandler : IQueryHandler<GetCashflowBoardQuery,Resul
         _transactionReadRepository = transactionReadRepository;
     }
     
-    public async Task<Result<GetCashflowBoardResponse>> HandleAsync(GetCashflowBoardQuery query)
+    public async Task<Result<GetCashflowBoardResponse>> HandleAsync(
+        GetCashflowBoardQuery query,
+        CancellationToken cancellationToken = default)
     {
-        var isMember = await _cashflowMemberReadRepository.HasMemberAsync(query.UserId, query.CashflowId);
+        var isMember = await _cashflowMemberReadRepository.HasMemberAsync(
+            query.UserId,
+            query.CashflowId,
+            cancellationToken);
 
         if (!isMember)
             return Result<GetCashflowBoardResponse>.Failure(GetCashflowBoardErrors.CashflowNotFound);
         
-        var header = await _cashflowReadRepository.GetCashflowBoardHeaderAsync(query.CashflowId, query.UserId);
+        var header = await _cashflowReadRepository.GetCashflowBoardHeaderAsync(
+            query.CashflowId,
+            query.UserId,
+            cancellationToken);
 
         if (header is  null)
             return Result<GetCashflowBoardResponse>.Failure(GetCashflowBoardErrors.HeaderNotFound);
@@ -45,7 +53,7 @@ public class GetCashflowBoardHandler : IQueryHandler<GetCashflowBoardQuery,Resul
         var endDate = startDate.AddMonths(4);
         
         var transactions = await _transactionReadRepository
-            .GetBoardTransactionAsync(query.CashflowId, startDate, endDate);
+            .GetBoardTransactionAsync(query.CashflowId, startDate, endDate, cancellationToken);
         
         
         var months = BuildMonthColumns(DateTime.UtcNow, transactions);

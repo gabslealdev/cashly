@@ -14,24 +14,24 @@ namespace Cashly.Infrastructure.Data.Repositories.IdentityContext
         {
             _context = context;
         }
-        public async Task AddAsync(User user)
+        public async Task AddAsync(User user, CancellationToken cancellationToken = default)
         {
-            await _context.Users.AddAsync(user);
+            await _context.Users.AddAsync(user, cancellationToken);
         }
 
-        public async Task<bool> ExistByEmailAsync(Email email)
+        public async Task<bool> ExistByEmailAsync(Email email, CancellationToken cancellationToken = default)
         {
-            return await _context.Users.AnyAsync(u => u.Email == email);
+            return await _context.Users.AnyAsync(u => u.Email == email, cancellationToken);
         }
 
-        public async Task<User?> GetByEmailAsync(Email email)
+        public async Task<User?> GetByEmailAsync(Email email, CancellationToken cancellationToken = default)
         {
-            return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            return await _context.Users.FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
         }
 
-        public async Task<bool> ExistByIdAsync(Guid id)
+        public async Task<bool> ExistByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            return await _context.Users.AnyAsync(x => x.Id == id);
+            return await _context.Users.AnyAsync(x => x.Id == id, cancellationToken);
         }
     }
 }
