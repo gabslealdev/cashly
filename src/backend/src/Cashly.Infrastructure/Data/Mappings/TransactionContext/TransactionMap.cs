@@ -71,5 +71,11 @@ public sealed class TransactionMap : IEntityTypeConfiguration<Transaction>
             .HasForeignKey(x => x.CashflowId)
             .OnDelete(DeleteBehavior.NoAction)
             .IsRequired();
+        
+        builder
+            .HasIndex(transaction => new { transaction.CashflowId, transaction.Date })
+            .HasDatabaseName("IX_transactions_cashflow_id_date");
+            
+        
     }
 }

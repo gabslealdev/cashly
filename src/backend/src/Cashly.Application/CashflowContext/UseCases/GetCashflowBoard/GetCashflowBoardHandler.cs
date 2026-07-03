@@ -10,7 +10,6 @@ namespace Cashly.Application.CashflowContext.UseCases.GetCashflowBoard;
 
 public class GetCashflowBoardHandler : IQueryHandler<GetCashflowBoardQuery,Result<GetCashflowBoardResponse>>
 {
-    private readonly ICashflowMemberReadRepository _cashflowMemberReadRepository;
     private readonly ICashflowReadRepository _cashflowReadRepository;
     private readonly ITransactionReadRepository _transactionReadRepository;
 
@@ -19,7 +18,6 @@ public class GetCashflowBoardHandler : IQueryHandler<GetCashflowBoardQuery,Resul
         ICashflowReadRepository cashflowReadRepository,
         ITransactionReadRepository transactionReadRepository)
     {
-        _cashflowMemberReadRepository = cashflowMemberReadRepository;
         _cashflowReadRepository = cashflowReadRepository;
         _transactionReadRepository = transactionReadRepository;
     }
@@ -28,14 +26,6 @@ public class GetCashflowBoardHandler : IQueryHandler<GetCashflowBoardQuery,Resul
         GetCashflowBoardQuery query,
         CancellationToken cancellationToken = default)
     {
-        var isMember = await _cashflowMemberReadRepository.HasMemberAsync(
-            query.UserId,
-            query.CashflowId,
-            cancellationToken);
-
-        if (!isMember)
-            return Result<GetCashflowBoardResponse>.Failure(GetCashflowBoardErrors.CashflowNotFound);
-        
         var header = await _cashflowReadRepository.GetCashflowBoardHeaderAsync(
             query.CashflowId,
             query.UserId,

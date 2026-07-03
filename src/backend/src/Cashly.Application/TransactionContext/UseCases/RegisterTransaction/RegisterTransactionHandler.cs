@@ -42,7 +42,7 @@ public sealed class CreateTransactionHandler : ICommandHandler<CreateTransaction
             return Result<CreateTransactionResponse>.Failure(CreateTransactionErrors.InvalidType);
 
         if (!Enum.TryParse<TransactionStatus>(command.Status, out var status))
-            return Result<CreateTransactionResponse>.Failure(CreateTransactionErrors.PermissionDenied);
+            return Result<CreateTransactionResponse>.Failure(CreateTransactionErrors.InvalidStatus);
         
         
 

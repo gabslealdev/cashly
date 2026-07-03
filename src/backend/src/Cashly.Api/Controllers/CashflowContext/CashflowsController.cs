@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using Cashly.Api.Contracts.Common.Errors;
 using Cashly.Api.Contracts.CashflowContext.CreateCashflow;
 using Cashly.Application.Abstractions.Messaging;
 using Cashly.Application.CashflowContext.UseCases.CreateCashflow;
@@ -27,13 +28,18 @@ public sealed class CashflowsController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> CreateCashflow([FromBody] CreateCashflowRequestDto request, CancellationToken cancellationToken)
     {
         var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
         
         if (!Guid.TryParse(userIdClaim, out var userId))
-            return Unauthorized();
+            return Unauthorized(new ErrorResponse([
+                new ApiError(
+                    Code: "Authentication.Unauthorized",
+                    Message: "Authenticated user id is missing or invalid.")
+            ]));
         
         var command = new CreateCashflowCommand(request.Title, userId);
 
@@ -41,24 +47,22 @@ public sealed class CashflowsController : ControllerBase
 
         if (!validationResult.IsValid)
         {
-            var error = validationResult.Errors.Select(error => new
-            {
-                property = error.PropertyName,
-                error = error.ErrorMessage
-            });
+            var errors = validationResult.Errors.Select(error =>
+                new ApiError(
+                    Code: $"Validation.{error.PropertyName}",
+                    Message: error.ErrorMessage,
+                    Property: error.PropertyName)).ToList();
 
-            return BadRequest(error);
+            return BadRequest(new ErrorResponse(errors));
         }
 
         Result<CreateCashflowResponse> result = await _mediator.SendAsync(command, cancellationToken);
 
         if (result.IsFailure)
         {
-            return BadRequest(new
-            {
-                code = result.Error.Code,
-                message = result.Error.Message
-            });
+            return Unauthorized(new ErrorResponse([
+                new ApiError(result.Error.Code, result.Error.Message)
+            ]));
         }
 
         var response = new CreateCashflowResponseDto(result.Value.CashflowId, result.Value.Title);
@@ -68,14 +72,18 @@ public sealed class CashflowsController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetUserCashflows(CancellationToken cancellationToken)
     {
         var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
         
         if (!Guid.TryParse(userIdClaim, out var userId))
-            return Unauthorized();
+            return Unauthorized(new ErrorResponse([
+                new ApiError(
+                    Code: "Authentication.Unauthorized",
+                    Message: "Authenticated user id is missing or invalid.")
+            ]));
         
         var query = new GetUserCashflowsQuery(userId);
         
@@ -83,11 +91,9 @@ public sealed class CashflowsController : ControllerBase
 
         if (result.IsFailure)
         {
-            return BadRequest(new 
-            {
-                result.Error.Code,
-                result.Error.Message
-            });
+            return BadRequest(new ErrorResponse([
+                new ApiError(result.Error.Code, result.Error.Message)
+            ]));
         }
         
         return Ok(result.Value.Cashflows);
@@ -95,14 +101,18 @@ public sealed class CashflowsController : ControllerBase
 
     [HttpGet("{cashflowId:guid}/board")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetUserCashflowBoard([FromRoute] Guid cashflowId, CancellationToken cancellationToken)
     {
         var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
         if (!Guid.TryParse(userIdClaim, out var userId))
-            return Unauthorized();
+            return Unauthorized(new ErrorResponse([
+                new ApiError(
+                    Code: "Authentication.Unauthorized",
+                    Message: "Authenticated user id is missing or invalid.")
+            ]));
         
         var query = new GetCashflowBoardQuery(userId, cashflowId);
 
@@ -110,11 +120,9 @@ public sealed class CashflowsController : ControllerBase
 
         if (result.IsFailure)
         {
-            return NotFound(new
-            {
-                code = result.Error.Code,
-                message = result.Error.Message
-            });
+            return NotFound(new ErrorResponse([
+                new ApiError(result.Error.Code, result.Error.Message)
+            ]));
         }
 
         return Ok(result.Value);

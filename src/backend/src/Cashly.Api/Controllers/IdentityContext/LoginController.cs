@@ -1,4 +1,5 @@
-﻿using Cashly.Api.Contracts.IdentityContext.LoginUser;
+﻿using Cashly.Api.Contracts.Common.Errors;
+using Cashly.Api.Contracts.IdentityContext.LoginUser;
 using Cashly.Application.Abstractions.Messaging;
 using Cashly.Application.IdentityContext.UseCases.LoginUser;
 using Cashly.Application.Shared.Results;
@@ -22,7 +23,8 @@ namespace Cashly.Api.Controllers.IdentityContext
 
         [HttpPost]
         [ProducesResponseType(typeof(LoginUserResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Login([FromBody] LoginUserRequestDto request, CancellationToken cancellationToken)
         {
             var command = new LoginUserCommand(request.Email, request.Password);
@@ -31,24 +33,22 @@ namespace Cashly.Api.Controllers.IdentityContext
 
             if (!validationResult.IsValid)
             {
-                var errors = validationResult.Errors.Select(error => new
-                {
-                    property = error.PropertyName,
-                    message = error.ErrorMessage,
-                });
+                var errors = validationResult.Errors.Select(error =>
+                    new ApiError(
+                        Code: $"Validation.{error.PropertyName}",
+                        Message: error.ErrorMessage,
+                        Property: error.PropertyName)).ToList();
 
-                return BadRequest(errors);
+                return BadRequest(new ErrorResponse(errors));
             }
 
             Result<LoginUserResponse> result = await _mediator.SendAsync(command, cancellationToken);
 
             if (result.IsFailure)
             {
-                return BadRequest(new
-                {
-                    code = result.Error.Code,
-                    message = result.Error.Message,
-                });
+                return Unauthorized(new ErrorResponse([
+                    new ApiError(result.Error.Code, result.Error.Message)
+                ]));
             }
 
             var response = new LoginUserResponseDto(result.Value.AccessToken, result.Value.ExpiresAt);
