@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using Cashly.Api.Contracts.Common.Errors;
 using Cashly.Api.Contracts.TransactionContext.RegisterTransaction;
 using Cashly.Application.Abstractions.Messaging;
 using Cashly.Application.Shared.Results;
@@ -11,7 +12,7 @@ namespace Cashly.Api.Controllers.TransactionContext;
 
 [Authorize(Policy = "AuthenticatedOnly")]
 [ApiController]
-[Route("api/transaction")]
+[Route("api/cashflows")]
 public sealed class TransactionController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -23,9 +24,11 @@ public sealed class TransactionController : ControllerBase
         _validator = validator;
     }
 
-    [HttpPost("{cashflowId:guid}/add")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [HttpPost("{cashflowId:guid}/transactions")]
+    [ProducesResponseType(typeof(RegisterTransactionResponseDto), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> CreateTransaction(
         [FromBody] RegisterTransactionRequestDto request,
         [FromRoute] Guid cashflowId,
@@ -35,7 +38,11 @@ public sealed class TransactionController : ControllerBase
         var userClaimId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
         if (!Guid.TryParse(userClaimId, out var userId))
-            return Unauthorized();
+            return Unauthorized(new ErrorResponse([
+                new ApiError(
+                    Code: "Authentication.Unauthorized",
+                    Message: "Authenticated user id is missing or invalid.")
+            ]));
         
         var command = new CreateTransactionCommand(
             userId,
@@ -50,24 +57,22 @@ public sealed class TransactionController : ControllerBase
 
         if (!validationResult.IsValid)
         {
-            var error = validationResult.Errors.Select(error => new
-            {
-                property = error.PropertyName,
-                error = error.ErrorMessage
-            });
+            var errors = validationResult.Errors.Select(error =>
+                new ApiError(
+                    Code: $"Validation.{error.PropertyName}",
+                    Message: error.ErrorMessage,
+                    Property: error.PropertyName)).ToList();
 
-            return BadRequest(error);
+            return BadRequest(new ErrorResponse(errors));
         }
         
         Result<CreateTransactionResponse> result = await _mediator.SendAsync(command, cancellationToken);
 
         if (result.IsFailure)
         {
-            return BadRequest(new
-            {
-                code = result.Error.Code,
-                message = result.Error.Message
-            });
+            return NotFound(new ErrorResponse([
+                new ApiError(result.Error.Code, result.Error.Message)
+            ]));
         }
         
         var response = new RegisterTransactionResponseDto(
@@ -75,7 +80,7 @@ public sealed class TransactionController : ControllerBase
             result.Value.Amount,
             result.Value.Type);
         
-        return Ok(response);
+        return Created(string.Empty, response);
     }
 
 }
