@@ -34,6 +34,7 @@ export class CashflowBoard {
   private loadBoard(cashflowId: string): void {
     this.isLoading.set(true);
     this.errorMessage.set('');
+    this.board.set(null);
 
     this.cashflowService.getCashflowBoard(cashflowId).subscribe({
       next: (response) => {

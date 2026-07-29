@@ -13,7 +13,7 @@ export class TransactionService {
     private readonly apiUrl = environment.apiUrl
 
     registerTransaction(request: RegisterTransactionRequest, cashflowId: string): Observable<RegisterTransactionResponse>{
-      return this.http.post<RegisterTransactionResponse>(`${this.apiUrl}/api/transaction/${cashflowId}/add`, request)
+      return this.http.post<RegisterTransactionResponse>(`${this.apiUrl}/api/cashflows/${cashflowId}/transactions`, request)
     }
 
 }

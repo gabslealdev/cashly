@@ -20,6 +20,7 @@ main {
         margin-right: var(--space-3);
         border-radius: var(--radius-xs);
         padding-inline: var(--space-2);
+        position: relative;
 
         & .aside-toggle {
             display: none;
@@ -59,6 +60,10 @@ main {
                 margin-top: auto;
             }
         }
+
+        & .mobile-menu {
+            display: none;
+        }
     }
 
     & .main-container {
@@ -72,12 +77,32 @@ main {
 
         & .dashboard-header {
             display: flex;
+            align-items: center;
             gap: var(--space-3);
             background-color: var(--color-surface);
             height: 10%;
             width: 100%;
             border-radius: var(--radius-xs);
             padding: var(--space-3);
+
+            & .cashflow-mobile-select {
+                display: none;
+            }
+
+            & .cashflow-card-list {
+                display: flex;
+                gap: var(--space-3);
+            }
+        }
+
+        & .dashboard-state {
+            color: var(--color-text-muted);
+            font-size: var(--font-size-sm);
+            width: 100%;
+
+            &.error {
+                color: var(--color-danger);
+            }
         }
 
         & .dashboard-main {
@@ -93,6 +118,20 @@ main {
                 display: block;
                 height: 100%;
                 min-height: 0;
+            }
+
+            & .dashboard-empty-state {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 100%;
+                color: var(--color-text-muted);
+                font-size: var(--font-size-sm);
+                text-align: center;
+
+                &.error {
+                    color: var(--color-danger);
+                }
             }
         }
     }
@@ -189,6 +228,7 @@ main {
 
             & .dashboard-header {
                 display: flex;
+                align-items: center;
                 gap: var(--space-2);
                 background-color: var(--color-surface);
                 height: 14%;
@@ -247,5 +287,128 @@ main {
         border-radius: var(--radius-xs);
         height: 100%;
         width: 15%;
+    }
+}
+
+@media (max-width: 768px) {
+    main {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-2);
+        max-height: 100vh;
+
+        & .aside-container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            height: 8%;
+            margin-right: 0;
+
+
+            & .logo-wrapper {
+                width: 14%;
+                height: auto;
+                margin-top: 0;
+                margin-bottom: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+            }
+
+            & .aside-menu {
+                display: none;
+            }
+
+            & .mobile-menu {
+                display: block;
+                margin-left: auto;
+                position: relative;
+
+                & .mobile-menu-button {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    flex-direction: column;
+                    gap: .25rem;
+                    width: 2.5rem;
+                    height: 2.5rem;
+                    border: 1px solid var(--fill-transparent);
+                    border-radius: var(--radius-xs);
+                    background-color: transparent;
+                    cursor: pointer;
+                    list-style: none;
+
+                    &::-webkit-details-marker {
+                        display: none;
+                    }
+
+                    & span {
+                        display: block;
+                        width: 1.1rem;
+                        height: 2px;
+                        border-radius: var(--radius-xs);
+                        background-color: var(--color-text);
+                    }
+                }
+
+                &[open] .mobile-menu-button {
+                    background-color: var(--fill-transparent-2);
+                }
+
+                & .mobile-menu-dropdown {
+                    position: absolute;
+                    top: calc(100% + var(--space-2));
+                    right: 0;
+                    z-index: 10;
+                    display: flex;
+                    flex-direction: column;
+                    gap: var(--space-2);
+                    min-width: 12rem;
+                    padding: var(--space-2);
+                    border: 1px solid var(--fill-transparent);
+                    border-radius: var(--radius-xs);
+                    background-color: var(--color-surface);
+                    box-shadow: 0 8px 24px rgb(0 0 0 / 18%);
+                }
+            }
+
+        }
+
+        & .main-container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 92%;
+
+            & .dashboard-header {
+                display: flex;
+                align-items: center;
+                gap: var(--space-2);
+                background-color: var(--color-surface);
+                height: 10%;
+                width: 100%;
+                border-radius: var(--radius-xs);
+                padding: var(--space-2);
+
+                & .cashflow-card-list {
+                    display: none;
+                }
+
+                & .cashflow-mobile-select {
+                    display: block;
+                    width: 100%;
+                    height: 2.5rem;
+                    border: 1px solid var(--fill-transparent);
+                    border-radius: var(--radius-xs);
+                    background-color: var(--color-background);
+                    color: var(--color-text);
+                    font-size: var(--font-size-sm);
+                    padding-inline: var(--space-2);
+                }
+            }
+        }
     }
 }

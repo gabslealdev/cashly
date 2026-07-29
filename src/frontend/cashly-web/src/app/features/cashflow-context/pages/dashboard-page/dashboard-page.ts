@@ -24,6 +24,10 @@ export class DashboardPage {
   isAsideExpanded = signal(false);
 
   toggleAsideMenu(): void {
+    if (window.innerWidth < 768) {
+      return;
+    }
+
     this.isAsideExpanded.update((isExpanded) => !isExpanded);
   }
 
@@ -31,22 +35,37 @@ export class DashboardPage {
     this.selectedCashflow.set(cashflow)
   }
 
+  onCashflowSelectedById(event: Event): void {
+    const cashflowId = (event.target as HTMLSelectElement).value;
+    const cashflow = this.cashflows().find((item) => item.cashflowId === cashflowId);
+
+    if (!cashflow) {
+      return;
+    }
+
+    this.onCashflowSelected(cashflow);
+  }
+
   ngOnInit(): void {
     this.loadCashflows();
   }
 
   cashflows = signal<UserCashflowReadModel[]>([]);
+  isLoadingCashflows = signal(false);
   errorMessage = signal('');
 
   private loadCashflows(): void{
+    this.isLoadingCashflows.set(true);
     this.errorMessage.set('');
 
     this.cashflowService.getUserCashflow().subscribe({
       next: (response) => {
-        this.cashflows.set(response)
+        this.cashflows.set(response);
+        this.isLoadingCashflows.set(false);
       },
-      error: (error) => {
+      error: () => {
         this.errorMessage.set('Não foi possível carregar seus cashflows.');
+        this.isLoadingCashflows.set(false);
       }
     });
   }

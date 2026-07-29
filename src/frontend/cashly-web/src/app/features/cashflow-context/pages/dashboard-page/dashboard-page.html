@@ -9,24 +9,61 @@
         <h2 class="menu-title">Menu</h2>
         <app-menu-button label="Novo Cashflow" (clicked)="openCreateCashflowModal()"></app-menu-button>
       </div>
-      <app-modal [isOpen]="isCreateCashflowModalOpen()" title="Novo Cashflow" (closed)="closeCreateCashflowModal()">
-        <app-create-cashflow-form (cashflowCreated)="onCashflowCreated()"
-          (closeModal)="closeCreateCashflowModal()"></app-create-cashflow-form>
-      </app-modal>
       <app-menu-button class="logout-button" label="Sair" (clicked)="logout()"></app-menu-button>
     </section>
+    <details class="mobile-menu">
+      <summary class="mobile-menu-button" aria-label="Abrir menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </summary>
+      <section class="mobile-menu-dropdown">
+        <app-menu-button label="Novo Cashflow" (clicked)="openCreateCashflowModal()"></app-menu-button>
+        <app-menu-button label="Sair" (clicked)="logout()"></app-menu-button>
+      </section>
+    </details>
+    <app-modal [isOpen]="isCreateCashflowModalOpen()" title="Novo Cashflow" (closed)="closeCreateCashflowModal()">
+      <app-create-cashflow-form (cashflowCreated)="onCashflowCreated()"
+        (closeModal)="closeCreateCashflowModal()"></app-create-cashflow-form>
+    </app-modal>
   </div>
   <div class="main-container">
     <div class="dashboard-header">
+      @if (isLoadingCashflows()) {
+      <div class="dashboard-state">Carregando cashflows...</div>
+      } @else if (errorMessage()) {
+      <div class="dashboard-state error">{{ errorMessage() }}</div>
+      } @else if (cashflows().length === 0) {
+      <div class="dashboard-state">Nenhum cashflow criado.</div>
+      } @else {
+      <select class="cashflow-mobile-select" [value]="selectedCashflow()?.cashflowId ?? ''"
+        (change)="onCashflowSelectedById($event)" aria-label="Selecionar cashflow">
+        @for(cashflow of cashflows(); track cashflow.cashflowId){
+        <option [value]="cashflow.cashflowId">{{ cashflow.title }}</option>
+        }
+      </select>
+      <div class="cashflow-card-list">
       @for(cashflow of cashflows(); track cashflow.cashflowId){
       <app-cashflow-header-card [cashflow]="cashflow"
         [isSelected]="selectedCashflow()?.cashflowId === cashflow.cashflowId"
         (selected)="onCashflowSelected($event)"></app-cashflow-header-card>
       }
+      </div>
+      }
     </div>
     <div class="dashboard-main">
+      @if (isLoadingCashflows()) {
+      <div class="dashboard-empty-state">Carregando dashboard...</div>
+      } @else if (errorMessage()) {
+      <div class="dashboard-empty-state error">{{ errorMessage() }}</div>
+      } @else if (cashflows().length === 0) {
+      <div class="dashboard-empty-state">Crie um cashflow para começar a registrar suas transações.</div>
+      } @else {
       @if (selectedCashflow(); as cashflow){
       <app-cashflow-board [cashflowId]="cashflow.cashflowId"></app-cashflow-board>
+      } @else {
+      <div class="dashboard-empty-state">Selecione um cashflow para visualizar o board mensal.</div>
+      }
       }
     </div>
   </div>

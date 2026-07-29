@@ -1,17 +1,23 @@
 <main>
     <section class="board-header">
         <app-cashflow-header-board-button 
-        label="Nova Transação +"
-        [board]="board()"
-        (clicked)="openRegisterTransactionModal()"></app-cashflow-header-board-button>
+            label="Nova Transação +"
+            [board]="board()"
+            (clicked)="openRegisterTransactionModal()">
+        </app-cashflow-header-board-button>
         <app-modal [isOpen]="isRegisterTransactionModal()" title="Registrar Nova Transação" (closed)="closeRegisterTransactionModal()">
             <app-register-transaction-form
                 [cashflowId]="cashflowId()"
                 (transactionRegistered)="onTransactionRegistered()"
-                (closeModal)="closeRegisterTransactionModal()"></app-register-transaction-form>
+                (closeModal)="closeRegisterTransactionModal()">
+            </app-register-transaction-form>
         </app-modal>
     </section>
-    @if (board(); as board) {
+    @if (isLoading()) {
+    <section class="board-state">Carregando board...</section>
+    } @else if (errorMessage()) {
+    <section class="board-state error">{{ errorMessage() }}</section>
+    } @else if (board(); as board) {
     <section class="period-group">
         @for (month of board.months; track month.period) {
         <div class="period-column">
@@ -54,9 +60,13 @@
             track transaction.transactionId
             ) {
                 <app-transaction-card [transaction]="transaction"></app-transaction-card>
+            } @empty {
+                <div class="empty-transactions">Nenhuma transação neste mês.</div>
             }
         </div>
         }
     </section>
+    } @else {
+    <section class="board-state">Selecione um cashflow para visualizar o board.</section>
     }
 </main>

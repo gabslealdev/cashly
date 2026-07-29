@@ -89,6 +89,7 @@ export class RegisterTransactionForm {
       },
       error: () => {
         this.errorMessage.set('Não foi possível registrar a transação.');
+        console.log(request);
         this.isSubmitting.set(false);
       }
     });

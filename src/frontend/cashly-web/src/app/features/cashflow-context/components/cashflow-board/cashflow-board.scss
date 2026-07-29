@@ -262,4 +262,30 @@ main {
             }
         }
     }
+
+}
+
+.board-state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+    text-align: center;
+
+    &.error {
+        color: var(--color-danger);
+    }
+}
+
+.empty-transactions {
+    border: 1px dashed var(--fill-transparent);
+    border-radius: var(--radius-xs);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-xs);
+    padding: var(--space-2);
+    text-align: center;
 }
