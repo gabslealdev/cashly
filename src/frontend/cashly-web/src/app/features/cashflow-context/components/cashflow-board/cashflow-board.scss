@@ -185,11 +185,26 @@ main {
 
         & .period-group {
             display: flex;
-            align-items: flex-start;
+            flex-direction: row;
+            align-items: stretch;
+
             width: 100%;
-            flex: 1;
+            padding-inline: var(--space-4);
+
+            overflow-x: auto;
+            overflow-y: auto;
+
+            scroll-snap-type: x mandatory;
+            scroll-padding: var(--space-4);
+            overscroll-behavior-inline: contain;
+            scrollbar-width: none;
+
             min-height: 0;
             gap: var(--space-2);
+
+            &::-webkit-scrollbar {
+                display: none;
+            }
 
             & .period-column {
                 display: flex;
@@ -197,7 +212,7 @@ main {
                 gap: var(--space-3);
                 border-radius: var(--radius-sm);
                 background-color: var(--fill-transparent-2);
-                width: 25%;
+                width: 100%;
                 min-height: 20%;
                 height: auto;
                 padding-block: var(--space-2);
