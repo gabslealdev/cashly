@@ -6,7 +6,7 @@ using Cashly.Domain.TransactionContext.Enums;
 
 namespace Cashly.Domain.CashflowContext.Services;
 
-public sealed class MonthClosingPolicy
+public sealed class  MonthClosingPolicy
 {
     public void EnsureCanClose(Period period, IEnumerable<Transaction> transactions)
     {
