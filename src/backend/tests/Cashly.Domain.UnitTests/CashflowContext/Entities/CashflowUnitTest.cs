@@ -3,6 +3,7 @@ using Cashly.Domain.CashflowContext.Entities;
 using Cashly.Domain.CashflowContext.Enums;
 using Cashly.Domain.CashflowContext.Errors;
 using Cashly.Domain.CashflowContext.ValueObjects;
+using Cashly.Domain.CollaborationContext.Enums;
 using Cashly.Domain.Shared.Exceptions;
 using Cashly.Domain.UnitTests.CashflowContext.Builders;
 using Cashly.Domain.UnitTests.IdentityContext.Builders;
@@ -140,5 +141,21 @@ public class CashflowUnitTest
         var exception = action.ShouldThrow<DomainExceptionValidation>();
         exception.Error.Code.ShouldBe(CashflowErrors.MonthIsClosed.Code);
         exception.Error.Message.ShouldBe(CashflowErrors.MonthIsClosed.Message);
+    }
+
+    [Fact]
+    public void AssignOwner_ShouldAssignOwner_WhenCashflowMemberIsValid()
+    {
+        // arrange
+        var userId = _faker.Random.Guid();
+        var title = Title.Create(_faker.Finance.AccountName());
+        var cashflow = Cashflow.Create(title, userId);
+
+        // action
+        var owner = cashflow.CashflowMembers.ShouldHaveSingleItem();
+
+        owner.UserId.ShouldBe(userId);
+        owner.CashflowId.ShouldBe(cashflow.Id);
+        owner.Role.ShouldBe(CashflowMemberRole.Owner);
     }
 }

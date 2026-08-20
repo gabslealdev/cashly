@@ -42,7 +42,7 @@ namespace Cashly.Domain.UnitTests.IdentityContext.ValueObjects
         public void CreateEmail_ShouldThrow_WhenFormatIsInvalid()
         {
             // arrange 
-            var email = _faker.Random.String2(2);
+            var email = _faker.Random.String2(15);
 
             // act 
             Action action = () => Email.Create(email);
