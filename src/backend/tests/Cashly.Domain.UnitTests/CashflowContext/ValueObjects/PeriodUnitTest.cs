@@ -44,7 +44,7 @@ public class PeriodUnitTest
     public void CompareTo_ShouldReturnZero_WhenPeriodsAreEqual()
     {
         // arrange
-        var date = _faker.Date.BetweenOffset(DateTimeOffset.Now, DateTimeOffset.Now.AddMonths(-1));
+        var date = new DateTimeOffset(2026, 8, 15, 0, 0, 0, TimeSpan.Zero);
         var period = Period.From(date);
         var samePeriod = Period.From(date);
         
@@ -57,50 +57,44 @@ public class PeriodUnitTest
     }
     
     [Fact]
-    public void CompareTo_ShouldBeTrue_WhenPeriodIsAfterOtherPeriod()
+    public void GreaterThan_ShouldReturnTrue_WhenPeriodIsAfterOtherPeriod()
     {
         // arrange
-        var date = _faker.Date.BetweenOffset(DateTimeOffset.Now, DateTimeOffset.Now.AddMonths(1));
-        var period = Period.From(date);
+        var period = Period.Create(2026, 8);
+        var pastPeriod = Period.Create(2026, 7);
 
-        var pastDate = _faker.Date.BetweenOffset(DateTimeOffset.Now.AddMonths(-1), DateTimeOffset.Now);
-        var pastPeriod = Period.From(pastDate);
-        
         // act
         var result = period > pastPeriod;
-        
+
         // assert
-        result.ShouldBe(true);
+        result.ShouldBeTrue();
     }
     
     [Fact]
-    public void CompareTO_ShouldBeTrue_WhenPeriodIsBeforeOtherPeriod()
+    public void LessThan_ShouldReturnTrue_WhenPeriodIsBeforeOtherPeriod()
     {
-        // arrange 
-        var date = _faker.Date.BetweenOffset(DateTimeOffset.Now, DateTimeOffset.Now.AddMonths(1));
-        var period =  Period.From(date);
-        
-        var futureDate =  _faker.Date.BetweenOffset(DateTimeOffset.Now.AddMonths(1), DateTimeOffset.Now.AddMonths(2));
-        var futurePeriod = Period.From(futureDate);
+        // arrange
+        var period = Period.Create(2026, 7);
+        var futurePeriod = Period.Create(2026, 8);
         
         // act 
         var result = period < futurePeriod;
         
         // assert
-        result.ShouldBe(true);
+        result.ShouldBeTrue();
     }
     
     [Fact]
-    public void ToString_ShouldBeTrue_When()
+    public void ToString_ShouldReturnMonthAndYear_WhenPeriodIsValid()
     {
         // arrange
         var date = new DateTimeOffset(2025, 12, 01, 00, 00, 00, TimeSpan.Zero);
         var  period = Period.From(date);
         // act 
-        var result = period.ToString() == "12/2025";
+        var result = period.ToString();
         
         // assert
-        result.ShouldBe(true);
+        result.ShouldBe("12/2025");
     }
 
     [Fact]

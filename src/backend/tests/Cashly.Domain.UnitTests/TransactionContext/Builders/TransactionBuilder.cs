@@ -56,11 +56,11 @@ public sealed class TransactionBuilder
 
     public Transaction Build()
     {
-        var cashflowId = _faker.Random.Guid();
+        var cashflowId = _cashflowId ?? _faker.Random.Guid();
         var title = _title ?? Title.Create(_faker.Commerce.ProductName());
         var amount = _amount ?? Amount.Create(_faker.Commerce.Random.Decimal());
         var type = _type ?? TransactionType.Expense;
-        var date = _date ?? _faker.Date.RecentOffset();
+        var date = _date ?? new DateTimeOffset(2026, 8, 10, 0, 0, 0, TimeSpan.Zero);
         var status = _status ?? TransactionStatus.Completed;
         
         return Transaction.Create(cashflowId, title, amount, type, date, status);

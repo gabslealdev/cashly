@@ -38,8 +38,8 @@ public class PeriodFinancialResultUnitTest
 
     [Theory]
     [InlineData(100, 80, 0.20)]
-    [InlineData(100, 70, 0.40)]
-    [InlineData(100, 70,  0.60)]
+    [InlineData(100, 60, 0.40)]
+    [InlineData(100, 40, 0.60)]
     [InlineData(200, 150,  0.25)]
     public void ResultPercent_ShouldReturnPeriodFinancialResultDivideByTotalIncome(decimal totalIncome, decimal totalExpense, decimal expectedPercent)
     {
