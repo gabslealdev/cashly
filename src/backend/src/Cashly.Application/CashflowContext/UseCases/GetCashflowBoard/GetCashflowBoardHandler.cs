@@ -14,7 +14,6 @@ public class GetCashflowBoardHandler : IQueryHandler<GetCashflowBoardQuery,Resul
     private readonly ITransactionReadRepository _transactionReadRepository;
 
     public GetCashflowBoardHandler(
-        ICashflowMemberReadRepository cashflowMemberReadRepository,
         ICashflowReadRepository cashflowReadRepository,
         ITransactionReadRepository transactionReadRepository)
     {

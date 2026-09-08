@@ -1,12 +1,12 @@
 using Cashly.Application.CashflowContext.UseCases.GetCashflowBoard;
-using Cashly.Application.CashflowContext.UseCases.GetUserCashflows;
+using Cashly.Application.CashflowContext.UseCases.GetUsersCashflow;
 using Cashly.Domain.CashflowContext.Entities;
 
 namespace Cashly.Application.CashflowContext.Interfaces.Repository;
 
 public interface ICashflowReadRepository
 {
-    Task<IReadOnlyList<UserCashflowReadModel>> GetUserCashflowsAsync(
+    Task<IReadOnlyList<UsersCashflowReadModel>> GetUserCashflowsAsync(
         Guid userId,
         CancellationToken cancellationToken = default);
     
