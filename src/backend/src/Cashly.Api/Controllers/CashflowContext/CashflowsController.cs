@@ -4,7 +4,7 @@ using Cashly.Api.Contracts.CashflowContext.CreateCashflow;
 using Cashly.Application.Abstractions.Messaging;
 using Cashly.Application.CashflowContext.UseCases.CreateCashflow;
 using Cashly.Application.CashflowContext.UseCases.GetCashflowBoard;
-using Cashly.Application.CashflowContext.UseCases.GetUserCashflows;
+using Cashly.Application.CashflowContext.UseCases.GetUsersCashflow;
 using Cashly.Application.Shared.Results;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
@@ -85,9 +85,9 @@ public sealed class CashflowsController : ControllerBase
                     Message: "Authenticated user id is missing or invalid.")
             ]));
         
-        var query = new GetUserCashflowsQuery(userId);
+        var query = new GetUsersCashflowQuery(userId);
         
-        Result<GetUserCashflowsResponse> result = await _mediator.SendAsync(query, cancellationToken);
+        Result<GetUsersCashflowResponse> result = await _mediator.SendAsync(query, cancellationToken);
 
         if (result.IsFailure)
         {

@@ -39,7 +39,7 @@ public sealed class Cashflow : Entity
        return cashflow;
     }
 
-    public void EnsureTransactionRegistration(Guid userId, DateTimeOffset transactionDate)
+    public void  EnsureTransactionRegistration(Guid userId, DateTimeOffset transactionDate)
     {
         DomainExceptionValidation.When(IsClosedMonth(Period.From(transactionDate)), CashflowErrors.MonthIsClosed);
         DomainExceptionValidation.When(!CanRegisterTransaction(userId), CashflowErrors.PermissionDenied);

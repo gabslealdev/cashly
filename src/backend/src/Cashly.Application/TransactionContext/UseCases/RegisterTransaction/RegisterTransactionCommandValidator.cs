@@ -19,7 +19,7 @@ public sealed class CreateTransactionCommandValidator : AbstractValidator<Create
         
         RuleFor(c => c.Amount)
             .NotEmpty().WithMessage("Amount is required")
-            .GreaterThan(-1).WithMessage("Amount must be positive");
+            .GreaterThan(0m).WithMessage("Amount must be positive");
         
         RuleFor(c  => c.Type)
             .NotEmpty().WithMessage("Type is required")
